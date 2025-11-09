@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<meta charset="utf-8">
+
+<link rel="icon" href="https://ru.siberianhealth.com/shopen/public/icon.svg" type="image/svg+xml">
+<title>Генератор рекламы продукта</title>
+<link href="grp_sw.css" rel="stylesheet">
+
+<div id="wrap">
+	<div id="copy"><span><button id="wa" disabled>Вацап</button><button id="tg" disabled>Телега</button></span> <span id="copied">Скопировано!</span></div>
+
+	<div id="img"></div>
+	<img id="pic" crossorigin>
+	<canvas id="canvas"></canvas>
+
+	<div id="slogans">
+		<input type="radio" name="period" id="week" class="offer" disabled><label for="week">Акция недели</label>
+		<input type="radio" name="period" id="month" class="offer" disabled><label for="month">Акция месяца</label>
+		<input type="radio" name="period" id="last_day" class="offer" disabled><label for="last_day">Последний день акции</label>
+		<input type="radio" name="period" id="season" class="offer" disabled><label for="season">Сезонная акция</label>
+		<br>
+		<input type="radio" name="period" id="new" class="no_offer" disabled><label for="new">Новинка</label>
+		<input type="radio" name="period" id="in_stock" class="no_offer" disabled><label for="in_stock">В наличии</label>
+		<input type="radio" name="period" id="on_sale" class="no_offer" disabled><label for="on_sale">Снова в продаже</label>
+		<br>
+		<input type="radio" name="period" id="wednesday" class="no_offer" disabled><label for="wednesday">Акция среды</label>
+		<input type="radio" name="period" id="friday" class="no_offer" disabled><label for="friday">Акция пятницы</label>
+		<br>
+		<input type="radio" name="period" id="exclusive" class="no_offer" disabled><label for="exclusive">Эксклюзив</label>
+		<input type="radio" name="period" id="special" class="no_offer" disabled><label for="special">Специальное предложение</label>
+		<input type="radio" name="period" id="nope" class="no_offer" disabled><label for="nope">Без подписи</label>
+		<br>
+		<input type="checkbox" id="other" disabled><label for="other">Свой заголовок</label>
+		<input type="checkbox" id="specialPrice" disabled><label for="specialPrice">Своя цена</label>
+		<br>
+		<input type="checkbox" id="remain" disabled><label for="remain">Осталось</label>
+		<input type="checkbox" id="link" disabled><label for="link">Ссылка на продукт</label>
+	</div>
+
+	<div id="text">
+		<div id="slogan" class="text" contenteditable></div><div id="copy_slogan" class="text"></div>
+		<div id="header" class="text" contenteditable></div>
+		<div id="price" class="text"></div>
+		<div id="points" class="text"></div>
+		<div id="descr" class="text" contenteditable></div><div id="copy_descr" class="text"></div>
+	</div>
+</div>
+
+<input type="checkbox" id="theme"><label for="theme"></label>
+
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script src="grp_sw.js"></script>
+
+
+
+
+
+
+
+
+
+<style>
+#stories{
+cursor:pointer;
+position:fixed;
+bottom:35.5px;
+right:20px;
+border:1px solid yellow;
+color:yellow;
+font-size:.9em;
+padding:4.5px 13.5px;
+border-radius:18px;
+}
+
+#wrap_story{
+display:none;
+background:#333;
+width:100%;
+position:absolute;
+z-index:100;
+top:0;
+}
+#story{
+font-family:Liter;
+overflow:hidden;
+width:700px;
+margin:30px auto;
+font-size:1.5em;
+position:relative;
+background:linear-gradient(to bottom,rgba(75,75,75,.725),transparent 100%);
+}
+#story div{
+outline:none;
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+text-decoration:none;
+}
+
+#story_bg{
+top:0;
+left:0;
+width:100%;
+height:100%;
+position:absolute;
+z-index:-1;
+background:url(https://images.unsplash.com/photo-1735394229689-35e980d354a6?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D) 50% 50% no-repeat;
+background-size:cover;
+}
+
+#wrap_slogan_date{
+margin:30px;
+text-align:center;
+}
+#wrap_slogan_date.left{
+text-align:left;
+}
+#slogan_date{
+background:rgba(255,255,255,.65);
+backdrop-filter:blur(15px);
+border-radius:10em;
+padding:.125em;
+display:inline-block;
+letter-spacing:-.25px;
+color:#4b4b4b;
+}
+#story_slogan{
+color:#fff;
+display:inline-block;
+padding:.6em .9em .5em;
+border-radius:10em;
+text-transform:uppercase;
+}
+#story_date{
+display:inline-block;
+padding:.6em .9em .5em;
+border-radius:10em;
+background:#fff;
+text-transform:uppercase;
+margin-left:.125em;
+}
+
+#story_img{
+background:#fff;
+border-radius:1.4em;
+width:52.5%;
+display:block;
+margin:30px auto;
+}
+
+#story_descr{
+letter-spacing:-1px;
+margin:30px;
+padding:25px 30px;
+border-radius:1.4em;
+line-height:1.4em;
+background:rgba(255,255,255,.725);
+backdrop-filter:blur(15px);
+color:#4b4b4b;
+}
+
+#story_header{
+font-family:Chiron Sung HK;
+font-weight:700;
+line-height:1.2em;
+font-size:1.5em;
+margin-bottom:.8em;
+}
+
+#price_points{
+font-family:Chiron Sung HK;
+font-weight:700;
+border:none;
+border-bottom:1.5px solid rgba(75,75,75,.3);
+margin-bottom:.6em;
+}
+
+#story_price{
+display:inline-block;
+padding-bottom:.6em;
+}
+#story_price span{
+font-size:1.5em;
+}
+#story_price span:before{
+content:' ';
+}
+#story_price span:after{
+content:' ₽';
+}
+#story_price del{
+opacity:.6;
+font-size:1.2em;
+}
+
+#story_points{
+font-size:1.5em;
+display:inline-block;
+border:none;
+border-left:1.5px solid rgba(75,75,75,.3);
+padding-left:.55em;
+margin-left:.6em;
+padding-bottom:.425em;
+}
+#story_points span{
+font-size:.7em;
+}
+
+#story_amount{
+letter-spacing:.25px;
+font-weight:bold;
+border:none;
+border-bottom:1.5px solid rgba(75,75,75,.3);
+padding-bottom:.5em;
+margin-bottom:.6em;
+}
+
+#wrap_descr{
+display:grid;
+grid-template-columns:42.5% 50%;
+gap:7.5%;
+}
+
+#stories_menu{
+z-index:-1;
+position:fixed;
+top:0;
+right:30px;
+list-style:none;
+margin:0;
+padding:0;
+}
+
+#stories_menu li{
+margin-top:30px;
+}
+
+#close{
+cursor:pointer;
+width:40px;
+height:40px;
+position:relative;
+}
+.close:before,.close:after{
+content:'';
+position:absolute;
+top:18.5px;
+left:-6.5px;
+width:130%;
+height:3px;
+background:#fff;
+}
+.close:before{
+transform:rotate(45deg);
+}
+.close:after{
+transform:rotate(-45deg);
+}
+
+#color_ctrl{
+background:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M21.143%209.667c-.733-1.392-1.914-3.05-3.617-4.753-2.977-2.978-5.478-3.914-6.785-3.914-.414%200-.708.094-.86.246l-1.361%201.36c-1.899-.236-3.42.106-4.294.983-.876.875-1.164%202.159-.792%203.523.492%201.806%202.305%204.049%205.905%205.375.038.323.157.638.405.885.588.588%201.535.586%202.121%200s.588-1.533.002-2.119c-.588-.587-1.537-.588-2.123-.001l-.17.256c-2.031-.765-3.395-1.828-4.232-2.9l3.879-3.875c.496%202.73%206.432%208.676%209.178%209.178l-7.115%207.107c-.234.153-2.798-.316-6.156-3.675-3.393-3.393-3.175-5.271-3.027-5.498l1.859-1.856c-.439-.359-.925-1.103-1.141-1.689l-2.134%202.131c-.445.446-.685%201.064-.685%201.82%200%201.634%201.121%203.915%203.713%206.506%202.764%202.764%205.58%204.243%207.432%204.243.648%200%201.18-.195%201.547-.562l8.086-8.078c.91.874-.778%203.538-.778%204.648%200%201.104.896%201.999%202%201.999%201.105%200%202-.896%202-2%200-3.184-1.425-6.81-2.857-9.34zm-16.209-5.371c.527-.53%201.471-.791%202.656-.761l-3.209%203.206c-.236-.978-.049-1.845.553-2.445zm9.292%204.079l-.03-.029c-1.292-1.292-3.803-4.356-3.096-5.063.715-.715%203.488%201.521%205.062%203.096.862.862%202.088%202.247%202.937%203.458-1.717-1.074-3.491-1.469-4.873-1.462z%22%2F%3E%3C%2Fsvg%3E') 50% 50% no-repeat;
+background-size:100%;
+width:40px;
+height:40px;
+cursor:pointer;
+}
+#color_ctrl_reverse{
+background:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20transform%3D%22scale(-1%2C1)%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M21.143%209.667c-.733-1.392-1.914-3.05-3.617-4.753-2.977-2.978-5.478-3.914-6.785-3.914-.414%200-.708.094-.86.246l-1.361%201.36c-1.899-.236-3.42.106-4.294.983-.876.875-1.164%202.159-.792%203.523.492%201.806%202.305%204.049%205.905%205.375.038.323.157.638.405.885.588.588%201.535.586%202.121%200s.588-1.533.002-2.119c-.588-.587-1.537-.588-2.123-.001l-.17.256c-2.031-.765-3.395-1.828-4.232-2.9l3.879-3.875c.496%202.73%206.432%208.676%209.178%209.178l-7.115%207.107c-.234.153-2.798-.316-6.156-3.675-3.393-3.393-3.175-5.271-3.027-5.498l1.859-1.856c-.439-.359-.925-1.103-1.141-1.689l-2.134%202.131c-.445.446-.685%201.064-.685%201.82%200%201.634%201.121%203.915%203.713%206.506%202.764%202.764%205.58%204.243%207.432%204.243.648%200%201.18-.195%201.547-.562l8.086-8.078c.91.874-.778%203.538-.778%204.648%200%201.104.896%201.999%202%201.999%201.105%200%202-.896%202-2%200-3.184-1.425-6.81-2.857-9.34zm-16.209-5.371c.527-.53%201.471-.791%202.656-.761l-3.209%203.206c-.236-.978-.049-1.845.553-2.445zm9.292%204.079l-.03-.029c-1.292-1.292-3.803-4.356-3.096-5.063.715-.715%203.488%201.521%205.062%203.096.862.862%202.088%202.247%202.937%203.458-1.717-1.074-3.491-1.469-4.873-1.462z%22%2F%3E%3C%2Fsvg%3E') 50% 50% no-repeat;
+background-size:100%;
+width:40px;
+height:40px;
+cursor:pointer;
+}
+
+#story_screenshot{
+background:url('data:image/svg+xml,%3Csvg%20clip-rule%3D%22evenodd%22%20fill-rule%3D%22evenodd%22%20stroke-linejoin%3D%22round%22%20stroke-miterlimit%3D%222%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22m6%2018h-3c-.48%200-1-.379-1-1v-14c0-.481.38-1%201-1h14c.621%200%201%20.522%201%201v3h3c.621%200%201%20.522%201%201v14c0%20.621-.522%201-1%201h-14c-.48%200-1-.379-1-1zm1.5-10.5v13h13v-13zm9-1.5v-2.5h-13v13h2.5v-9.5c0-.481.38-1%201-1z%22%20fill-rule%3D%22nonzero%22%2F%3E%3C%2Fsvg%3E') 50% 50% no-repeat;
+background-size:100%;
+width:40px;
+height:40px;
+cursor:pointer;
+}
+
+#story_top_screenshot{
+background:url('data:image/svg+xml,%3Csvg%20clip-rule%3D%22evenodd%22%20fill-rule%3D%22evenodd%22%20stroke-linejoin%3D%22round%22%20stroke-miterlimit%3D%222%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22m6%2019v2c0%20.621.52%201%201%201h2v-1.5h-1.5v-1.5zm7.5%203h-3.5v-1.5h3.5zm4.5%200h-3.5v-1.5h3.5zm4-3h-1.5v1.5h-1.5v1.5h2c.478%200%201-.379%201-1zm-1.5-1v-3.363h1.5v3.363zm0-4.363v-3.637h1.5v3.637zm-13-3.637v3.637h-1.5v-3.637zm11.5-4v1.5h1.5v1.5h1.5v-2c0-.478-.379-1-1-1zm-10%200h-2c-.62%200-1%20.519-1%201v2h1.5v-1.5h1.5zm4.5%201.5h-3.5v-1.5h3.5zm3-1.5v-2.5h-13v13h2.5v-1.863h1.5v3.363h-4.5c-.48%200-1-.379-1-1v-14c0-.481.38-1%201-1h14c.621%200%201%20.522%201%201v4.5h-3.5v-1.5z%22%20fill-rule%3D%22nonzero%22%2F%3E%3C%2Fsvg%3E') 50% 50% no-repeat;
+background-size:100%;
+width:40px;
+height:40px;
+cursor:pointer;
+}
+
+#story_header_copy{
+background:url('data:image/svg+xml,%3Csvg%20clip-rule%3D%22evenodd%22%20fill-rule%3D%22evenodd%22%20stroke-linejoin%3D%22round%22%20stroke-miterlimit%3D%222%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22m14.776%2018.689%207.012-7.012c.133-.133.217-.329.217-.532%200-.179-.065-.363-.218-.515l-2.423-2.415c-.144-.143-.333-.215-.522-.215s-.378.072-.523.215l-7.027%206.996c-.442%201.371-1.158%203.586-1.265%203.952-.125.433.199.834.573.834.41%200%20.696-.099%204.176-1.308zm-2.258-2.392%201.17%201.171c-.704.232-1.275.418-1.729.566zm.968-1.154%205.356-5.331%201.347%201.342-5.346%205.347zm-4.486-1.393c0-.402-.356-.75-.75-.75-2.561%200-2.939%200-5.5%200-.394%200-.75.348-.75.75s.356.75.75.75h5.5c.394%200%20.75-.348.75-.75zm5-3c0-.402-.356-.75-.75-.75-2.561%200-7.939%200-10.5%200-.394%200-.75.348-.75.75s.356.75.75.75h10.5c.394%200%20.75-.348.75-.75zm0-3c0-.402-.356-.75-.75-.75-2.561%200-7.939%200-10.5%200-.394%200-.75.348-.75.75s.356.75.75.75h10.5c.394%200%20.75-.348.75-.75zm0-3c0-.402-.356-.75-.75-.75-2.561%200-7.939%200-10.5%200-.394%200-.75.348-.75.75s.356.75.75.75h10.5c.394%200%20.75-.348.75-.75z%22%20fill-rule%3D%22nonzero%22%2F%3E%3C%2Fsvg%3E') 50% 50% no-repeat;
+background-size:100%;
+width:40px;
+height:40px;
+cursor:pointer;
+}
+
+#story_refresh{
+background:url('data:image/svg+xml,%3Csvg%20clip-rule%3D%22evenodd%22%20fill-rule%3D%22evenodd%22%20stroke-linejoin%3D%22round%22%20stroke-miterlimit%3D%222%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22m21.897%2013.404.008-.057v.002c.024-.178.044-.357.058-.537.024-.302-.189-.811-.749-.811-.391%200-.715.3-.747.69-.018.221-.044.44-.078.656-.645%204.051-4.158%207.153-8.391%207.153-3.037%200-5.704-1.597-7.206-3.995l1.991-.005c.414%200%20.75-.336.75-.75s-.336-.75-.75-.75h-4.033c-.414%200-.75.336-.75.75v4.049c0%20.414.336.75.75.75s.75-.335.75-.75l.003-2.525c1.765%202.836%204.911%204.726%208.495%204.726%205.042%200%209.217-3.741%209.899-8.596zm-19.774-2.974-.009.056v-.002c-.035.233-.063.469-.082.708-.024.302.189.811.749.811.391%200%20.715-.3.747-.69.022-.28.058-.556.107-.827.716-3.968%204.189-6.982%208.362-6.982%203.037%200%205.704%201.597%207.206%203.995l-1.991.005c-.414%200-.75.336-.75.75s.336.75.75.75h4.033c.414%200%20.75-.336.75-.75v-4.049c0-.414-.336-.75-.75-.75s-.75.335-.75.75l-.003%202.525c-1.765-2.836-4.911-4.726-8.495-4.726-4.984%200-9.12%203.654-9.874%208.426z%22%20fill-rule%3D%22nonzero%22%2F%3E%3C%2Fsvg%3E') 50% 50% no-repeat;
+background-size:100%;
+width:40px;
+height:40px;
+cursor:pointer;
+}
+</style>
+
+<div id="stories">Stories</div>
+
+<div id="wrap_story">
+	<ul id="stories_menu">
+		<li><div id="close"><div class="close"></div></div>
+		<li><div id="color_ctrl"></div>
+		<li><div id="color_ctrl_reverse"></div>
+		<li><div id="story_screenshot"></div>
+		<li><div id="story_top_screenshot"></div>
+		<li><div id="story_header_copy"></div>
+		<li><div id="story_refresh"></div>
+	</ul>
+	<div id="story">
+		<div id="story_bg"></div>
+		<div id="wrap_slogan_date">
+			<div id="slogan_date">
+				<div id="story_slogan" contenteditable></div><div id="story_date" contenteditable></div>
+			</div>
+		</div>
+		<img id="story_img" crossorigin>
+		<div id="story_descr">
+			<div id="story_header" contenteditable></div>
+			<div id="price_points">
+				<div id="story_price" contenteditable><del></del><span></span></div><div id="story_points" contenteditable></div>
+			</div>
+			<div id="story_amount" contenteditable></div>
+			<div id="wrap_descr" contenteditable></div>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+function story(){
+	stories=0;
+
+	var slogan='';
+	if($('[name=period]:checked').prop('checked')&&!$('#nope').prop('checked')){
+		slogan=$('[name=period]:checked+label').text()+'!';
+	}
+	if($('#other').prop('checked')){
+		$('#copy_slogan').html($('#slogan').html().replace(/\&nbsp\;|\t/g,' '));
+		if($('#copy_slogan').text().trim()!=''){
+			slogan=document.querySelector('#copy_slogan').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim();
+		}
+	}
+
+	$('#story_slogan').text(slogan);
+	if(slogan=='Акция среды!'){
+		$('#wrap_slogan_date').removeClass('left');
+		$('#story_slogan').show().css('background','#828dcb');
+		$('#story_date').show().text(wednesday());
+		$('#story_points').hide();
+	}else if(slogan=='Акция пятницы!'){
+		$('#wrap_slogan_date').removeClass('left');
+		$('#story_slogan').show().css('background','#288cbd');
+		$('#story_date').show().text(friday());
+		$('#story_points').hide();
+	}else if(slogan=='Акция недели!'){
+		$('#wrap_slogan_date').removeClass('left');
+		$('#story_slogan').show().css('background','#ff8257');
+		$('#story_date').show().text(weeksMonths('week'));
+		$('#story_points').show();
+	}else if(slogan=='Акция месяца!'){
+		$('#wrap_slogan_date').removeClass('left');
+		$('#story_slogan').show().css('background','#ff9944');
+		$('#story_date').show().text(weeksMonths('month'));
+		$('#story_points').show();
+	}else if(slogan=='Последний день акции!'){
+		$('#wrap_slogan_date').removeClass('left');
+		$('#story_slogan').show().css('background','#ff6759');
+		$('#story_date').hide();
+		$('#story_points').show();
+	}else if(slogan=='Сезонная акция!'){
+		$('#wrap_slogan_date').removeClass('left');
+		$('#story_slogan').show().css('background','#b9a16e');
+		$('#story_date').show().text('до '+until);
+		$('#story_points').show();
+	}else if(slogan==''){
+		$('#story_slogan').hide();
+		$('#story_date').hide();
+		$('#story_points').show();
+	}else{
+		$('#wrap_slogan_date').addClass('left');
+		$('#story_slogan').show().css('background','#95be5c');
+		$('#story_date').hide();
+		$('#story_points').show();
+	}
+
+	$('#story_header').html(prepositions($('#header').text()));
+
+	if(amount!=''){
+		$('#story_amount').show().text(amount);
+	}else{
+		$('#story_amount').hide();
+	}
+
+	$('#story_img').attr('src',$('#img img').attr('src'));
+
+	var scratchPrice='';
+	if($('#price span.del').text()!=''){
+		scratchPrice=$('#price span.del').text().replace(/\D/g,'');
+	}
+	var price=$('#price span:not(.del)').text().replace(/\D/g,'');
+	if($('#specialPrice+label').text().match(/\d+/)){
+		price=$('#specialPrice+label').text().match(/\d+/);
+	}
+	$('#story_price del').text(scratchPrice);
+	$('#story_price span').text(price);
+
+	$('#story_points').html($('#points').text().replace(/[балов]/g,'<span>$&</span>'));
+
+	$('#wrap_descr').html($('#descr').html().replace(/\&nbsp\;|\t/g,' '));
+	document.querySelector('#wrap_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').replace().trim();
+
+	$('#wrap_descr').html(prepositions($('#wrap_descr').text()));
+}
+
+$('#stories').click(function(){
+	$('#wrap').hide();
+	$('#wrap_story').show();
+	if(stories==1){
+		story();
+	}
+});
+$('#story_refresh').click(function(){
+	story();
+});
+
+$('#story_descr').on('paste',function(){
+	setTimeout(()=>{
+		$(this).html(prepositions($(this).html()));
+	},1);
+});
+
+$('#close').click(function(){
+	$('#wrap_story').hide();
+	$('#wrap').show();
+});
+$(document).keydown(function(e){
+	if(e.key=='Escape'){
+		$('#close').trigger('click');
+	}
+});
+
+var colorCtrl;
+$('#color_ctrl').click(function(){
+	colorCtrl=prompt('Ссылка на фон','');
+	if(colorCtrl!=null&&colorCtrl!=''){
+		$('#story_bg').css('background-image','url('+colorCtrl+')');
+	}
+});
+
+$('#color_ctrl_reverse').click(function(){
+	if($('#story_top').css('background').match('45deg')){
+		$('#story_top').css('background',$('#story_top').css('background').replace('45deg','225deg'));
+	}else{
+		$('#story_top').css('background',$('#story_top').css('background').replace('225deg','45deg'));
+	}
+});
+
+function story_tg(){
+	var storySlogan='';
+	if($('#story_slogan').css('display')!='none'){
+		storySlogan=$('#story_slogan').text().replace('!','');
+	}
+	var storyDate='';
+	if($('#story_date').css('display')!='none'){
+		storyDate=' ('+$('#story_date').text()+')';
+	}
+	var storyTg=storySlogan+storyDate+'\n**'+$('#story_header').text()+'**\n\n#сторис #статус';
+	return storyTg.trim();
+}
+
+$('#story_header_copy').click(function(){
+	navigator.clipboard.writeText(story_tg());
+});
+
+function downloadURI(uri,name){
+	var link=document.createElement('a');
+	link.download=name;
+	link.href=uri;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+	delete link;
+}
+
+$('#story_screenshot').click(async function(){
+	var canvas=document.querySelector('#canvas');
+	var context=canvas.getContext('2d');
+	var story=document.querySelector('#story');
+
+	var scale=window.devicePixelRatio||1;
+
+	var storyBg=document.querySelector('#story_bg img');
+	storyBg.left=($('#story_bg img').offset().left-$('#story').offset().left)*scale;
+	storyBg.top=($('#story_bg img').offset().top-$('#story').offset().top)*scale;
+
+	var storyImage=document.querySelector('#story_img');
+	storyImage.left=($('#story_img').offset().left-$('#story').offset().left)*scale;
+	storyImage.top=($('#story_img').offset().top-$('#story').offset().top)*scale;
+
+	var canvasImage=await html2canvas(story);
+	canvas.width=canvasImage.width;
+	canvas.height=canvasImage.height-scale;
+	context.drawImage(canvasImage,0,0);
+
+	var storyBgWidth=storyBg.width*scale;
+	var storyBgHeight=storyBg.height*scale;
+	context.drawImage(storyBg,storyBg.left,storyBg.top,storyBgWidth,storyBgHeight);
+
+	var storyImageWidth=storyImage.width*scale;
+	var storyImageHeight=storyImage.height*scale;
+	var radius=$('#story_img').css('border-radius').replace('px','')*scale;
+	context.save();
+	context.beginPath();
+	context.roundRect(storyImage.left,storyImage.top,storyImageWidth,storyImageHeight,radius);
+	context.clip();
+	context.drawImage(storyImage,storyImage.left,storyImage.top,storyImageWidth,storyImageHeight);
+	context.restore();
+
+	downloadURI(canvas.toDataURL(),($('#story_slogan').text()+' '+$('#story_header').text()).trim()+'.png');
+	navigator.clipboard.writeText(story_tg());
+});
+</script>
