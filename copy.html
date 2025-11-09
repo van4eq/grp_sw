@@ -45,28 +45,32 @@ display:none;
 $(document).on('paste',function(e){
 	e.preventDefault();
 	navigator.clipboard.readText().then(text=>{
-		$('#q div').html(text.replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка для оплаты'+text.split('Ссылка для оплаты')[1].replace('\r\n','<br>'));
-		$('#w div').html(text.split('\r\nСсылка для оплаты')[0].replace('\r\n','<br>'));
+		$('#q div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка для оплаты'+text.split('Ссылка для оплаты')[1].replace('\r\n','<br>'));
+		$('#w div').html(text.trim().split('\r\nСсылка для оплаты')[0].replace('\r\n','<br>'));
 	}).catch(err=>{
 		console.log('Опять чё-то не так',err);
 	});
 });
 $(document).on('copy',function(e){
 	e.preventDefault();
-	if($('#q:hover').length){
+	if($('#q:hover').length&&$('#q div').text()!=''){
 		navigator.clipboard.writeText($('#q div').html().replace('<br>','\n'));
 		$('#copied').fadeIn(100).fadeOut(1000);
-	}else if($('#w:hover').length){
+	}else if($('#w:hover').length&&$('#w div').text()!=''){
 		navigator.clipboard.writeText($('#w div').html().replace('<br>','\n'));
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
 $('#q').click(function(){
-	navigator.clipboard.writeText($('#q div').html().replace('<br>','\n'));
-	$('#copied').fadeIn(100).fadeOut(1000);
+	if($('#q div').text()!=''){
+		navigator.clipboard.writeText($('#q div').html().replace('<br>','\n'));
+		$('#copied').fadeIn(100).fadeOut(1000);
+	}
 });
 $('#w').click(function(){
-	navigator.clipboard.writeText($('#w div').html().replace('<br>','\n'));
-	$('#copied').fadeIn(100).fadeOut(1000);
+	if($('#w div').text()!=''){
+		navigator.clipboard.writeText($('#w div').html().replace('<br>','\n'));
+		$('#copied').fadeIn(100).fadeOut(1000);
+	}
 });
 </script>
