@@ -46,7 +46,7 @@ $(document).on('paste',function(e){
 	e.preventDefault();
 	navigator.clipboard.readText().then(text=>{
 		$('#q div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка для оплаты'+text.split('Ссылка для оплаты')[1].replace('\r\n','<br>'));
-		$('#w div').html(text.trim().split('\r\nСсылка для оплаты')[0].replace('\r\n','<br>'));
+		$('#w div').html(text.trim().split('\r\nСсылка на оплату')[0].replace('\r\n','<br>'));
 	}).catch(err=>{
 		console.log('Опять чё-то не так',err);
 	});
