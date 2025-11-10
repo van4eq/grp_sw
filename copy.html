@@ -69,7 +69,7 @@ $('#q').click(function(){
 });
 $('#w').click(function(){
 	if($('#w div').text()!=''){
-		navigator.clipboard.writeText($('#w div').html().replace('<br>','\n'));
+		navigator.clipboard.writeText($('#w div').html().replace(/\&amp\;/g,'&').replace('<br>','\n'));
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
