@@ -51,25 +51,15 @@ $(document).on('paste',function(e){
 		console.log('Опять чё-то не так',err);
 	});
 });
-$(document).on('copy',function(e){
-	e.preventDefault();
-	if($('#q:hover').length&&$('#q div').text()!=''){
-		navigator.clipboard.writeText($('#q div').html().replace('<br>','\n'));
-		$('#copied').fadeIn(100).fadeOut(1000);
-	}else if($('#w:hover').length&&$('#w div').text()!=''){
-		navigator.clipboard.writeText($('#w div').html().replace(/\&amp\;/g,'&').replace('<br>','\n'));
-		$('#copied').fadeIn(100).fadeOut(1000);
-	}
-});
 $('#q').click(function(){
 	if($('#q div').text()!=''){
-		navigator.clipboard.writeText($('#q div').html().replace('<br>','\n'));
+		navigator.clipboard.writeText($('#q div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n'));
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
 $('#w').click(function(){
 	if($('#w div').text()!=''){
-		navigator.clipboard.writeText($('#w div').html().replace(/\&amp\;/g,'&').replace('<br>','\n'));
+		navigator.clipboard.writeText($('#w div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n'));
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
