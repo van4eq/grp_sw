@@ -45,7 +45,7 @@ display:none;
 $(document).on('paste',function(e){
 	e.preventDefault();
 	navigator.clipboard.readText().then(text=>{
-		$('#q div').html(text.trim().split('\r\nСрок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('₽\r\nНомер QR-кода: ','(#').replace('\r\n','<br>')+')');
+		$('#q div').html(text.trim().split('\r\nСрок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace(' ₽\r\nНомер QR-кода: ','₽ (#').replace('\r\n','<br>')+')');
 		$('#w div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].replace('\r\n','<br>'));
 	}).catch(err=>{
 		console.log('Опять чё-то не так',err);
