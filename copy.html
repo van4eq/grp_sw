@@ -71,10 +71,7 @@ $('#q,#w,#e').click(function(){
 //$.post('https://shorturl.ru/shorten',{long_url:'https://systemdesign.ru/long-long-long-url'},function(data){
 	//alert(data+'!')
 //});
-POST http://shorturl.ru/shorten
-{
-  "long_url" : "https://systemdesign.ru/long-long-long-url"
-}
+
 $.ajax({
   type: 'POST',
   url: 'http://shorturl.ru/shorten', // здесь укажите верный адрес API
