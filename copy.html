@@ -9,17 +9,20 @@ padding:0;
 font-family:Jost;
 color:#333;
 }
-#q,#w{
+#q,#w,#e{
 position:relative;
 cursor:pointer;
 float:left;
 width:50%;
 height:100vh;
 }
-#q:hover,#w:hover{
+#w,#e{
+height:50vh;
+}
+#q:hover,#w:hover,#e:hover{
 background:rgb(250,250,250);
 }
-#q div,#w div{
+#q div,#w div,#e div{
 position:absolute;
 top:50px;
 left:50px;
@@ -37,6 +40,9 @@ display:none;
 	<div></div>
 </div>
 <div id="w">
+	<div></div>
+</div>
+<div id="e">
 	<div></div>
 </div>
 <div id="copied">Скопировано!</div>
