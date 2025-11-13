@@ -65,8 +65,9 @@ $('#q,#w,#e').click(function(){
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
-POST /api/links{
-  "domain": "clc.is",
-  "target_url": "https://systemdesign.ru/long-long-long-url"
-}
+curl -X POST \
+     -H 'Content-Type: application/json' \
+     -H 'Accept: application/json' \
+     https://clc.is/api/links \
+     -d '{"domain":"clc.is","target_url":"https://systemdesign.ru/long-long-long-url"}'
 </script>
