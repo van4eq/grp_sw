@@ -65,7 +65,7 @@ $(document).on('paste',function(e){
 				stories=1;
 				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
 
-				until=data.split('saleUntilDate&quot;:&quot;')[1].split('&quot;},&quot;categories')[0].match(/(\d{4}-\d{2}-\d{2})/g);
+				until=data.split('saleUntilDate&quot;:&quot;')[1].split('T23:59:59+06:00')[0].match(/(\d{4}-\d{2}-\d{2})/g);
 				if(until!=null){
 					until=new Date(until).toLocaleDateString('ru-RU',options);
 				}
@@ -117,7 +117,7 @@ $(document).on('paste',function(e){
 				}else{
 					$('#slogan').slideUp(200);
 				}
-console.log(until+', '+weeksMonths('week').split('—')[1]+', '+weeksMonths('month').split('—')[1])
+
 				if(sendData.price!=sendData.oldPrice){ // При загрузке акционного продукта
 					var oldPrice='<span class="del" contenteditable>'+sendData.oldPrice+'</span> ';
 					if(!$('.no_offer').prop('disabled')||$('[name=period]:disabled').length==$('[name=period]').length){
@@ -371,4 +371,5 @@ $('#theme').click(function(){
 	}
 
 });
+
 
