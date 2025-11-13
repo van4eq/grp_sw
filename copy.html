@@ -58,15 +58,9 @@ $(document).on('paste',function(e){
 		console.log('Опять чё-то не так',err);
 	});
 });
-$('#q').click(function(){
-	if($('#q div').text()!=''){
-		navigator.clipboard.writeText($('#q div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n').trim());
-		$('#copied').fadeIn(100).fadeOut(1000);
-	}
-});
-$('#w').click(function(){
-	if($('#w div').text()!=''){
-		navigator.clipboard.writeText($('#w div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n').trim());
+$('#q,#w,#e').click(function(){
+	if($(this+' div').text()!=''){
+		navigator.clipboard.writeText($(this+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n').trim());
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
