@@ -117,7 +117,7 @@ $(document).on('paste',function(e){
 				}else{
 					$('#slogan').slideUp(200);
 				}
-console.log(weeksMonths('week').split('—')[1]+', '+weeksMonths('week'))
+console.log(until+', '+weeksMonths('week').split('—')[1]+', '+weeksMonths('month').split('—')[1])
 				if(sendData.price!=sendData.oldPrice){ // При загрузке акционного продукта
 					var oldPrice='<span class="del" contenteditable>'+sendData.oldPrice+'</span> ';
 					if(!$('.no_offer').prop('disabled')||$('[name=period]:disabled').length==$('[name=period]').length){
@@ -371,3 +371,4 @@ $('#theme').click(function(){
 	}
 
 });
+
