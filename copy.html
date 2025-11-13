@@ -65,6 +65,17 @@ $('#q,#w,#e').click(function(){
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
-POST https://clc.is/api/links
- '{"domain":"clc.is","target_url":"https://systemdesign.ru/long-long-long-url"}'
+fetch('https://clc.is/api/links', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    domain: 'clc.is',
+    target_url: 'https://systemdesign.ru/long-long-long-url'
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Ошибка:', error));
 </script>
