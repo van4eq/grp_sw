@@ -71,4 +71,20 @@ $('#q,#w,#e').click(function(){
 //$.post('https://shorturl.ru/shorten',{long_url:'https://systemdesign.ru/long-long-long-url'},function(data){
 	//alert(data+'!')
 //});
+
+$.ajax({
+  type: 'POST',
+  url: 'https://your-api-domain/api/links', // здесь укажите верный адрес API
+  contentType: 'application/json',
+  data: JSON.stringify({
+    domain: 'clc.is',
+    target_url: 'https://qr.nspk.ru/AD10005SEUHIVR329H9Q2CCO3N7E4GRG?type=02&bank=100000000284&sum=54100&cur=RUB&crc=4E6F'
+  }),
+  success: function(result) {
+    console.log(result); // обработайте полученный ответ сервера
+  },
+  error: function(err) {
+    console.error('Ошибка:', err);
+  }
+});
 </script>
