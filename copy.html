@@ -52,8 +52,8 @@ $(document).on('paste',function(e){
 	e.preventDefault();
 	navigator.clipboard.readText().then(text=>{
 		$('#q div').html(text.trim().split('\r\nСрок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('\r\nНомер QR-кода: ',' (#').replace('\r\n','<br>')+')');
-		$('#w div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].replace('\r\n','<br>').trim());
-		$('#e div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].replace('\r\n','<br>').trim()+'<br><br>Заказ не готов к выдаче, поступит на след неделе');
+		$('#w div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>'));
+		$('#e div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ не готов к выдаче, поступит на след неделе');
 	}).catch(err=>{
 		console.log('Опять чё-то не так',err);
 	});
@@ -65,10 +65,10 @@ $('#q,#w,#e').click(function(){
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
-$.post('https://shorturl.ru/shorten',{"long_url":"https://systemdesign.ru/long-long-long-url"},function(data){
-	alert(data)
-});
-$.post('https://shorturl.ru/shorten',{long_url:'https://systemdesign.ru/long-long-long-url'},function(data){
-	alert(data+'!')
-});
+//$.post('https://shorturl.ru/shorten',{"long_url":"https://systemdesign.ru/long-long-long-url"},function(data){
+	//alert(data)
+//});
+//$.post('https://shorturl.ru/shorten',{long_url:'https://systemdesign.ru/long-long-long-url'},function(data){
+	//alert(data+'!')
+//});
 </script>
