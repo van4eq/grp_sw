@@ -65,7 +65,7 @@ $(document).on('paste',function(e){
 				stories=1;
 				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
 
-				until=data.split('saleUntilDate&quot;:&quot;')[1].split('T23:59:59+06:00')[0].match(/(\d{4}-\d{2}-\d{2})/g);
+				until=data.split('saleUntilDate&quot;:&quot;')[1].split('T23:59:59+')[0].match(/(\d{4}-\d{2}-\d{2})/g);
 				if(until!=null){
 					until=new Date(until).toLocaleDateString('ru-RU',options);
 				}
@@ -371,5 +371,6 @@ $('#theme').click(function(){
 	}
 
 });
+
 
 
