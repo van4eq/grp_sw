@@ -30,7 +30,7 @@
 		<input type="radio" name="period" id="special" class="no_offer" disabled><label for="special">Специальное предложение</label>
 		<input type="radio" name="period" id="nope" class="no_offer" disabled><label for="nope">Без подписи</label>
 		<br>
-		<input type="checkbox" id="other" disabled><label for="other">Свой заголовок</label>
+		<input type="checkbox" id="other" disabled><label for="other">Свой слоган</label>
 		<input type="checkbox" id="specialPrice" disabled><label for="specialPrice">Своя цена</label>
 		<br>
 		<input type="checkbox" id="remain" disabled><label for="remain">Осталось</label>
@@ -530,4 +530,5 @@ $('#story_screenshot').click(async function(){
 	downloadURI(canvas.toDataURL(),($('#story_slogan').text()+' '+$('#story_header').text()).trim()+'.png');
 	navigator.clipboard.writeText(story_tg());
 });
+
 </script>
