@@ -373,6 +373,3 @@ $('#theme').click(function(){
 	}
 
 });
-
-
-
