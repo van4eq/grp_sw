@@ -220,7 +220,7 @@ $('#specialPrice').click(function(){
 				if(specialPrice.replace(/\s/g,'').match(/^\d+$/)){
 					$('#specialPrice+label').append(': '+specialPrice.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
 					$('#price span').addClass('del');
-					$('#points').slideDown(200);
+					$('#points').slideUp(200);
 				}else{
 					specialPrice_1();
 				}
@@ -232,7 +232,7 @@ $('#specialPrice').click(function(){
 	}else{
 		$('#specialPrice+label').text('Своя цена');
 		$('#price span').removeClass('del');
-		$('#points').slideUp(200);
+		$('#points').slideDown(200);
 	}
 });
 
@@ -373,5 +373,6 @@ $('#theme').click(function(){
 	}
 
 });
+
 
 
