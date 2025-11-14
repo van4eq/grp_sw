@@ -183,7 +183,7 @@ $(document).on('paste',function(e){
 
 				$('#header').html(sendData.name);
 				$('#price').html(oldPrice+'<span contenteditable>'+sendData.price+'</span> ₽');
-				$('#points').html(declension(points,new Array('балл','балла','баллов'))).slideUp(200);
+				$('#points').html(declension(points,new Array('балл','балла','баллов'))).slideDown(200);
 				$('#descr').html(sendData.description);
 			}).fail(function(){
 				var paste=confirm('Возможно, Вы хотели загрузить информацию о продукте, но продукта с таким кодом нет или сайт временно не работает. Если Вы хотите просто вставить текст, нажмите ОК');
@@ -373,4 +373,5 @@ $('#theme').click(function(){
 	}
 
 });
+
 
