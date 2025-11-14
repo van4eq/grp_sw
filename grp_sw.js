@@ -183,7 +183,7 @@ $(document).on('paste',function(e){
 
 				$('#header').html(sendData.name);
 				$('#price').html(oldPrice+'<span contenteditable>'+sendData.price+'</span> ₽');
-				$('#points').html(declension(points,new Array('балл','балла','баллов')));
+				$('#points').html(declension(points,new Array('балл','балла','баллов'))).slideUp(200);
 				$('#descr').html(sendData.description);
 			}).fail(function(){
 				var paste=confirm('Возможно, Вы хотели загрузить информацию о продукте, но продукта с таким кодом нет или сайт временно не работает. Если Вы хотите просто вставить текст, нажмите ОК');
@@ -220,7 +220,7 @@ $('#specialPrice').click(function(){
 				if(specialPrice.replace(/\s/g,'').match(/^\d+$/)){
 					$('#specialPrice+label').append(': '+specialPrice.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
 					$('#price span').addClass('del');
-					$('#points').hide();
+					$('#points').slideDown(200);
 				}else{
 					specialPrice_1();
 				}
@@ -232,7 +232,7 @@ $('#specialPrice').click(function(){
 	}else{
 		$('#specialPrice+label').text('Своя цена');
 		$('#price span').removeClass('del');
-		$('#points').show();
+		$('#points').slideUp(200);
 	}
 });
 
@@ -373,3 +373,4 @@ $('#theme').click(function(){
 	}
 
 });
+
