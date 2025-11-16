@@ -59,7 +59,7 @@ $(document).on('paste',function(e){
 	});
 });
 $('#q,#w,#e').click(function(){
-	var r=$(this).attr('id');console.log(r='w')
+	var r=$(this).attr('id');console.log(r=='w')
 	if($('#'+r+' div').text()!=''){
 		navigator.clipboard.writeText('\n\n'+$('#'+r+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n').trim());
 		$('#copied').fadeIn(100).fadeOut(1000);
