@@ -187,7 +187,7 @@ content:' / 1024';
 
 	<div id="copied">Скопировано!</div>
 
-	<!-- <div id="text_length"></div> -->
+	<div id="text_length"></div>
 
 	<div contenteditable></div>
 </div>
@@ -202,14 +202,14 @@ $(document).click(function(e){ //Снять выделение с картино
 });
 
 $('[contenteditable]').on('paste keyup',function(){
-	<!-- $('#text_length').text($('[contenteditable]').html().length); -->
-	<!-- if($('[contenteditable]').html().length>1024){ -->
-		<!-- $('#text_length').addClass('overlimit'); -->
-		<!-- $('#copy button').prop('disabled',true); -->
-	<!-- }else{ -->
-		<!-- $('#text_length').removeClass('overlimit'); -->
-		<!-- $('#copy button').prop('disabled',false); -->
-	<!-- } -->
+	$('#text_length').text($('[contenteditable]').html().length);
+	if($('[contenteditable]').html().length>1024){
+		$('#text_length').addClass('overlimit');
+		$('#copy button').prop('disabled',true);
+	}else{
+		$('#text_length').removeClass('overlimit');
+		$('#copy button').prop('disabled',false);
+	}
 });
 
 // Вычисление даты среды
@@ -243,7 +243,7 @@ var discount;
 //}
 $(document).on('paste',function(e){ //Добавить картинку через вставку из буфера обмена адреса страницы продукта с сайта SW (Ctrl+V)
 	if(successfulPaste>0){
-		alert('Информация уже загружена! Обновите страницу, чтобы загрузить другой набор');
+		<!-- alert('Информация уже загружена! Обновите страницу, чтобы загрузить другой набор'); -->
 	}else{
 		navigator.clipboard.readText().then(text=>{
 			let excel=text.replace(/\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
@@ -381,14 +381,14 @@ $(document).keydown(function(e){
 });
 
 $('#step_text').click(function(){
-	<!-- $('#text_length').text($('[contenteditable]').html().length); -->
-	<!-- if($('[contenteditable]').html().length>1024){ -->
-		<!-- $('#text_length').addClass('overlimit'); -->
-		<!-- $('#copy button').prop('disabled',true); -->
-	<!-- }else{ -->
-		<!-- $('#text_length').removeClass('overlimit'); -->
-		<!-- $('#copy button').prop('disabled',false); -->
-	<!-- } -->
+	$('#text_length').text($('[contenteditable]').html().length);
+	if($('[contenteditable]').html().length>1024){
+		$('#text_length').addClass('overlimit');
+		$('#copy button').prop('disabled',true);
+	}else{
+		$('#text_length').removeClass('overlimit');
+		$('#copy button').prop('disabled',false);
+	}
 
 	var prod_disc=$('[contenteditable]').text().match(/за \d+ \d+ (рубль|рубля|рублей)/g)?'1 продукт со скидкой '+discount+'%':'';
 	var and=$('[contenteditable]').text().match(/за \d+ \d+ (рубль|рубля|рублей)/g)&&$('[contenteditable]').text().match(/за \d+ (рубль|рубля|рублей) в подарок/g)?' и ':'';
