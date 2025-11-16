@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ru">
+<meta charset="utf-8">
+
+<link rel="icon" href="https://ru.siberianhealth.com/shopen/public/icon.svg" type="image/svg+xml">
+<title>Генератор рекламы наборов</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap');
+body{
+overflow-y:scroll;
+font-family:Jost;
+font-weight:400;
+color:#333;
+background:#f8f8f8;
+padding:60px 0;
+margin:0;
+}
+
+#pics{
+position:absolute;
+text-align:center;
+}
+.pic{
+height:200px;
+vertical-align:bottom;
+}
+.pic:hover{
+opacity:.5;
+}
+
+input{
+display:none;
+}
+label{
+cursor:pointer;
+position:relative;
+}
+.checked{
+display:none;
+position:absolute;
+bottom:15px;
+left:15px;
+background:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjMmM4N2ZjIiBkPSJNMTkgMGgtMTRjLTIuNzYyIDAtNSAyLjIzOS01IDV2MTRjMCAyLjc2MSAyLjIzOCA1IDUgNWgxNGMyLjc2MiAwIDUtMi4yMzkgNS01di0xNGMwLTIuNzYxLTIuMjM4LTUtNS01em0tOC45NTkgMTdsLTQuNS00LjMxOSAxLjM5NS0xLjQzNSAzLjA4IDIuOTM3IDcuMDIxLTcuMTgzIDEuNDIyIDEuNDA5LTguNDE4IDguNTkxeiIvPjwvc3ZnPg==);
+background-size:20px;
+width:20px;
+height:20px;
+}
+input:checked+label .checked{
+display:block;
+}
+
+#wrap_canvas{
+width:300px;
+margin:auto;
+}
+#canvas{
+border-radius:20px;
+width:300px;
+cursor:pointer;
+}
+
+#copied{
+color:#F2685c;
+font-size:.9em;
+display:none;
+position:absolute;
+top:13px;
+right:20px;
+}
+
+
+#copy{
+text-align-last:justify;
+position:fixed;
+top:13px;
+left:20px;
+}
+#copy button{
+cursor:pointer;
+padding:5px 15px;
+border-radius:20px;
+background:transparent;
+font-family:inherit;
+font-size:inherit;
+}
+#copy button:disabled{
+color:#bfbfbf;
+border:1px solid #ddd;
+}
+#copy button:disabled.dark_theme{
+color:#888;
+border:1px solid #888;
+}
+#wa{
+color:#00A884;
+border:1px solid #00A884;
+margin-right:5px;
+}
+#tg{
+color:#179CDE;
+border:1px solid #179CDE;
+}
+
+
+
+#step_text{
+position:absolute;
+top:13px;
+right:20px;
+cursor:pointer;
+padding:5px 15px;
+border-radius:20px;
+background:transparent;
+font-family:inherit;
+font-size:inherit;
+color:#F2685c;
+border:1px solid #F2685c;
+}
+#step_text:disabled{
+color:#bfbfbf;
+border:1px solid #ddd;
+}
+
+.inactive{
+display:none;
+}
+
+
+
+[contenteditable]{
+background:#fff;
+border-radius:20px;
+padding:15px;
+margin:20px auto 0;
+width:470px;
+resize:none;
+cursor:text;
+outline:none;
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+text-decoration:none;
+}
+[contenteditable] b{
+font-weight:500;
+}
+[contenteditable] p{
+padding:0;
+margin:1em 0 0;
+}
+[contenteditable] p:first-child{
+margin:0;
+}
+
+#text_length{
+font-size:.9em;
+position:fixed;
+bottom:13px;
+right:20px;
+}
+#text_length.overlimit{
+color:#F2685c;
+}
+#text_length.overlimit:before{
+content:'Слишком большой текст! ';
+}
+#text_length:after{
+content:' / 1024';
+}
+</style>
+
+<button id="step_text" disabled>Вставьте данные из таблицы</button>
+
+<div class="step_pic">
+	<div id="screenshot">
+		<div id="pics"></div>
+	</div>
+</div>
+
+<div class="step_text inactive">
+	<div id="copy"><button id="wa">Вацап</button><button id="tg">Телега</button></div>
+
+	<div id="wrap_canvas">
+		<canvas id="canvas"></canvas>
+	</div>
+
+	<div id="copied">Скопировано!</div>
+
+	<!-- <div id="text_length"></div> -->
+
+	<div contenteditable></div>
+</div>
+
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).click(function(e){ //Снять выделение с картинок при нажатии на свободное поле
+	var clickOut=$('input,img'); //Как это понимать??? Работает, но почему только так?
+	if(!clickOut.is(e.target)&&!clickOut.has(e.target).length){
+		$('input').prop('checked',false);
+	}
+});
+
+$('[contenteditable]').on('paste keyup',function(){
+	<!-- $('#text_length').text($('[contenteditable]').html().length); -->
+	<!-- if($('[contenteditable]').html().length>1024){ -->
+		<!-- $('#text_length').addClass('overlimit'); -->
+		<!-- $('#copy button').prop('disabled',true); -->
+	<!-- }else{ -->
+		<!-- $('#text_length').removeClass('overlimit'); -->
+		<!-- $('#copy button').prop('disabled',false); -->
+	<!-- } -->
+});
+
+// Вычисление даты среды
+function wednesday(date=new Date()){
+	var day=date.getDay();
+	var diff=(day<=3)?3-day:10-day;
+	date.setDate(date.getDate()+diff);
+	var options={day:'numeric',month:'long'};
+	return date.toLocaleDateString('ru-RU',options);
+}
+
+// Склонение слов
+function declension(qty,titles){
+	let declension=new Array(2,0,1,1,1,2);
+	return qty+' '+titles[(qty%1!=0)?1:(qty%100>4&&qty%100<20)?2:declension[Math.min(qty%10,5)]];
+}
+
+function reset(){ //Функция для снятия отступов и выделения с картинок (вставляется в остальные действия)
+	$('#screenshot').width(0).height(0);
+	$('#pics').css('margin',0).html($('#pics').html().replace(/(?:<br>){2,}/g,'<br>'));
+	$('input:first').prev('br').remove();
+}
+
+var categoryChains; //Технические данные для беспроблемной вставки с сайта SW
+var cityId; //Технические данные для беспроблемной вставки с сайта SW
+var params; //Технические данные для беспроблемной вставки с сайта SW
+var successfulPaste=0;
+var discount;
+//function elemArray(arr,val){ //функция по поиску элемента массива по значению в любом из его подэлементов
+//	return arr.findIndex(subarray=>subarray.includes(String(val)));
+//}
+$(document).on('paste',function(e){ //Добавить картинку через вставку из буфера обмена адреса страницы продукта с сайта SW (Ctrl+V)
+	if(successfulPaste>0){
+		alert('Информация уже загружена! Обновите страницу, чтобы загрузить другой набор');
+	}else{
+		navigator.clipboard.readText().then(text=>{
+			let excel=text.replace(/\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
+			function paste(i){
+				$('#step_text').text('Загрузка...');
+				if(i>=excel.length){
+					if(successfulPaste==0){
+						alert('Что-то пошло не так. Возможно, артикулы некорректны, сайт недоступен или вставлены некорректные данные');
+					}else{
+						$('#step_text').text('Готово! Редактировать текст').prop('disabled',false);
+						<!-- if(excel[0][0]=='ПМГ'){ -->
+							<!-- $('[contenteditable]').prepend('Акция «Счастливая среда» / '+wednesday()+'!<br>'); -->
+						<!-- } -->
+						<!-- else if(excel[0][0].match('Бомба оффер')){ -->
+							<!-- $('[contenteditable]').prepend(excel[0][0].replaceAll('"','').replace('Бомба оффер ','Акция недели!<br>')+'<br>'); -->
+						<!-- } -->
+						<!-- else{ -->
+							<!-- $('[contenteditable]').prepend(excel[0][0]+'<br>'); -->
+						<!-- } -->
+						<!-- console.log(excel.some(row=>row[4]==='1,00')) // это проверка, есть ли в нужном столбце нужное значение -->
+						discount=excel[1][4].replace('0,','');
+					}
+					return;
+				}
+				if(excel[i][1].trim().match(/^\d{6}$/)){
+					$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+excel[i][1].trim()+'/',function(data){
+						let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
+
+						sendData.name=sendData.name
+							.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
+							.replace(/\, (\d{2,3} мл)/,' ($1)')
+							.replace(/\, (\d{2,3} г)/,' ($1)')
+							.replace(/\, (объем \d{2,3} мл)/,' ($1)')
+							.replace('Духи-концентрат,','Духи-концентрат')
+							.replace('Фиточай из диких трав № ','Чай №')
+							.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
+							.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
+							.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
+							.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
+							.replace(/^Истоки чистоты. Формула 3$/,'Формула 3')
+							.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
+							.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
+							.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
+							.replace(/^«Живокост», восстанавливающий бальзам форте$/,'Бальзам Живокост форте')
+							.replace(/^\«Уян Номо\»\, бальзам для тела$/,'Бальзам Уян Номо (Гибкий лук)')
+							.replace(/^(Бальзам широкого спектра действия)$/,'$1 Корень (без камфоры)')
+							.replace(/^(Бальзам широкого спектра действия) «Корень»$/,'$1 Корень (с камфорой)')
+							.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов)$/,'$1 '+sendData.vendor+' ($2)')
+							.replace(/^Хронобиологическая защита клеток мозга$|^Хронобиологическая защита сердца$|^Хронобиологическая защита печени$|^Хронобиологическая защита суставов$|^Хронобиологическая защита зрения$/,sendData.vendor+' ('+sendData.name+')')
+							.replace('. ',', ');
+						if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
+							sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
+						}
+						if(sendData.name.match(' / ')){
+							sendData.name=sendData.name.trim().replace(' / ',' (')+')';
+						}
+						var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
+						if(sendData.name.match(measurements)){
+							sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
+						}
+						
+						var oldPrice=(excel[i][5].match('-'))?declension(excel[i][3].replace(/\D/g,''),new Array('рубль','рубля','рублей')):excel[i][3].replace(/\D/g,'');
+
+						var price=(excel[i][5].match('-'))?'в подарок':(excel[i][5].trim()=='')?declension(excel[i][3]*(1-+excel[i][4].replace(',','.')),new Array('рубль','рубля','рублей')):declension(excel[i][5].replace(/\D/g,''),new Array('рубль','рубля','рублей'));
+
+						var points=(excel[i][6].match('-'))?excel[i][6]='':(excel[i][6].trim()=='')?'':'/'+declension(excel[i][6].trim().replace(',0',''),new Array('балл','балла','баллов'));
+
+						sendData.description=sendData.description.replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/\.\«/g,'<br>\«').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,'');
+
+						$('#pics').append('<input type="checkbox" id="p_'+successfulPaste+'"><label for="p_'+successfulPaste+'"><img crossorigin id="pic_'+successfulPaste+'" class="pic" src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'"><div class="checked"></div></label>');
+
+						$('[contenteditable]').append(
+							'<p id="par_'+successfulPaste+'"><b>- '
+							+sendData.name
+							+' за <s>'
+							+oldPrice
+							+'</s> '
+							+price
+							+points
+							+'</b>'
+							<!-- +'. ' -->
+							<!-- +sendData.description -->
+							+'</p>'
+						).html($('[contenteditable]').html().replace(/^(?:<br>){2}/,''));
+
+						successfulPaste++;
+						paste(i+1);
+					}).fail(function(){
+						paste(i+1);
+					});
+				}else{
+					paste(i+1);
+				}
+			}
+			paste(0);
+		}).catch(err=>{
+			console.log('Опять чё-то не так',err);
+		});
+	}
+});
+$(document).keydown(function(e){
+	if(!$('.step_pic').hasClass('inactive')){
+		if(e.which==46){ //Удалить картинку (Delete)
+			for(let i=0;i<successfulPaste;i++){
+				if($('input').eq(i).prop('checked')){
+					$('#par_'+$('input').eq(i).attr('id').replace(/\D/g,'')).remove();
+				}
+			}
+			$('input:checked,input:checked+label').remove();
+			reset();
+		}
+		if(e.which==13){ //Сделать перенос картинки на строку ниже (Enter)
+			$('input:checked').before('<br>');
+			reset();
+		}
+		if(e.which==8){ //Отменить перенос картинки на строку ниже (Backspace)
+			$('input:checked').prev('br').remove();
+			reset();
+		}
+		if(e.ctrlKey&&e.which==65){ //Выделить все картинки/Снять выделение со всех картинок (Ctrl+A)
+			if($('input:checked').length==$('input').length){
+				$('input').prop('checked',false);
+				return false;
+			}else{
+				$('input').prop('checked',true);
+				return false;
+			}
+		}
+		if(e.which==27){ //Снять выделение с выделенных картинок (Esc)
+			$('input').prop('checked',false);
+		}
+//		if(e.ctrlKey&&e.which==67){ //Рассчитать размеры белого полотна для скриншота общей картинки и скопировать её в буфер обмена (Ctrl+C)
+//		}
+	}
+});
+
+$('#step_text').click(function(){
+	<!-- $('#text_length').text($('[contenteditable]').html().length); -->
+	<!-- if($('[contenteditable]').html().length>1024){ -->
+		<!-- $('#text_length').addClass('overlimit'); -->
+		<!-- $('#copy button').prop('disabled',true); -->
+	<!-- }else{ -->
+		<!-- $('#text_length').removeClass('overlimit'); -->
+		<!-- $('#copy button').prop('disabled',false); -->
+	<!-- } -->
+
+	var prod_disc=$('[contenteditable]').text().match(/за \d+ \d+ (рубль|рубля|рублей)/g)?'1 продукт со скидкой '+discount+'%':'';
+	var and=$('[contenteditable]').text().match(/за \d+ \d+ (рубль|рубля|рублей)/g)&&$('[contenteditable]').text().match(/за \d+ (рубль|рубля|рублей) в подарок/g)?' и ':'';
+	var prod_gift=$('[contenteditable]').text().match(/за \d+ (рубль|рубля|рублей) в подарок/g)?'1 продукт в подарок':'';
+
+	$('[contenteditable]').prepend(
+		'Вы можете выбрать из этого списка '
+		+prod_disc
+		+and
+		+prod_gift
+		+':<br>'
+	);
+
+	reset();
+	if($('#pics').width()>=$('#pics').height()){
+		$('#screenshot').width($('#pics').width()).height($('#pics').width());
+		$('#pics').css('margin-top',($('#pics').width()-$('#pics').height())/2);
+	}else{
+		$('#screenshot').width($('#pics').height()).height($('#pics').height());
+		$('#pics').css('margin-left',($('#pics').height()-$('#pics').width())/2);
+	}
+	var scale=600/$('.pic').height(); //Коэффициент увеличения картинок, чтобы они были качественными в скопированной картинке (600 - это минимально качественное разрешение картинок с сайта SW)
+	var canvas=document.querySelector('#canvas');
+	canvas.width=document.querySelector('#screenshot').offsetWidth*scale;
+	canvas.height=document.querySelector('#screenshot').offsetHeight*scale;
+	var context=canvas.getContext('2d');
+	context.clearRect(0,0,canvas.width,canvas.height);
+	context.fillStyle='#fff';
+	context.fillRect(0,0,canvas.width,canvas.height);
+	for(let i=0;i<successfulPaste;i++){
+		var pic=document.querySelector('#pic_'+i);
+		if(pic!=null){
+			pic.left=($('#pic_'+i).offset().left-$('#screenshot').offset().left)*scale;
+			pic.top=($('#pic_'+i).offset().top-$('#screenshot').offset().top)*scale;
+			context.drawImage(pic,pic.left,pic.top,pic.width*scale,pic.height*scale);
+		}
+	}
+	$('#step_text,.step_pic').addClass('inactive');
+	$('#step_pic,.step_text').removeClass('inactive');
+});
+
+$('#canvas').click(function(){
+	document.querySelector('#canvas').toBlob(blob=>navigator.clipboard.write([new ClipboardItem({'image/png':blob})]));
+	$('#copied').fadeIn(100).fadeOut(1000);
+});
+
+$('#wa,#tg').click(function(){
+	if($(this).attr('id')=='wa'){
+		var bold='*';
+		var scratch='~';
+	}
+	if($(this).attr('id')=='tg'){
+		var bold='**';
+		var scratch='~~';
+	}
+	navigator.clipboard.writeText(
+		$('[contenteditable]').html().replace(/\&amp\;/g,'&').replace('&#039;',"'").replace(/\&nbsp\;|\t/g,' ').replace(/\s+/g,' ').replace(/^\ |\ $/gm,'').replace(/(?:<br>|<div>|<\/div>|<p>|<p id\=\"par\_\d+\">|<\/p>)/g,'\n').replace(/\n{2,}/g,'\n\n').replace(/(?:<s>|<\/s>)/g,scratch).replace(/(?:<b>|<b id\=\"product\">|<\/b>)/g,bold).trim()
+	);
+	$('#copied').fadeIn(100).fadeOut(1000);
+});
+</script>
