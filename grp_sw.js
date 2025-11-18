@@ -101,7 +101,7 @@ $(document).on('paste',function(e){
 					.replace(/^Хронобиологическая защита клеток мозга$|^Хронобиологическая защита сердца$|^Хронобиологическая защита печени$|^Хронобиологическая защита суставов$|^Хронобиологическая защита зрения$/,sendData.vendor+' ('+sendData.name+')')
 					.replace(/^(Метилсульфонилметан)$/,'$1 (Органическая сера)')
 					.replace('. ',', ');
-				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
+				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')&&sendData.name.trim().match('парфюмиров')){
 					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
 				}
 				if(sendData.name.match(' / ')){
@@ -373,3 +373,4 @@ $('#theme').click(function(){
 	}
 
 });
+
