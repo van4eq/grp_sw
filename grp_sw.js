@@ -104,7 +104,7 @@ $(document).on('paste',function(e){
 				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
 					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
 				}
-				if(sendData.name.trim().match('парфюмиров')){alert('123')
+				if(sendData.name.trim().match('парфюмиров')){
 					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
 				}
 				if(sendData.name.match(' / ')){
@@ -376,5 +376,6 @@ $('#theme').click(function(){
 	}
 
 });
+
 
 
