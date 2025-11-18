@@ -165,7 +165,7 @@ $(document).on('paste',function(e){
 					amount='';
 				}
 
-				sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\•)/g,'<br>$1').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,'');
+				sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$1').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,'');
 				if(sendData.description.length<100){
 					var extend=confirm('Загружено слишком короткое описание (менее 100 символов). Если Вы хотите открыть страницу продукта и вручную дополнить описание, нажмите ОК');
 					if(extend){
@@ -376,6 +376,7 @@ $('#theme').click(function(){
 	}
 
 });
+
 
 
 
