@@ -59,8 +59,8 @@ var stories; // Для корректного входа в режим реда�
 $(document).on('paste',function(e){
 	e.preventDefault();
 	navigator.clipboard.readText().then(text=>{ // Формирование рекламы при вставке ссылки на страницу с продуктом
-		link='https://ru.siberianhealth.com/ru/shop/catalog/product/'+text.trim()+'/';
 		if(text.trim().match(/^\d{6}$/)){
+			link='https://ru.siberianhealth.com/ru/shop/catalog/product/'+text.trim()+'/';
 			$.post(link,function(data){
 				stories=1;
 				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
@@ -327,7 +327,7 @@ $('#copy button').click(function(){
 	navigator.clipboard.writeText(
 		slogan
 		+bold
-			+$('#header').html().replace(/\&amp\;/g,'&').replace('&#039;',"'").replace(/\<br\>|\<div\>|\<\/div\>/g,'').replace(/\&nbsp\;/g,' ').replace(/\s+/g,' ').trim()
+			+$('#header').html().replace(/\<br\>|\<div\>|\<\/div\>/g,'').replace(/\&nbsp\;/g,' ').replace(/\s+/g,' ').trim()
 			+' за '
 			+scratchPrice
 			+declension(price,new Array('рубль','рубля','рублей'))
@@ -376,14 +376,3 @@ $('#theme').click(function(){
 	}
 
 });
-
-
-
-
-
-
-
-
-
-
-
