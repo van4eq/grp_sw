@@ -434,10 +434,9 @@ $('#story_refresh').click(function(){
 	story();
 });
 
-$('#story_descr').on('paste',function(){
-	setTimeout(()=>{
-		$(this).html(prepositions($(this).html()));
-	},1);
+$('#story_descr').on('paste',function(e){
+	document.execCommand('insertHtml',false,prepositions(e.originalEvent.clipboardData.getData('text')));
+	return false;
 });
 
 $('#close').click(function(){
