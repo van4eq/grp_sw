@@ -334,7 +334,7 @@ $('#copy button').click(function(){
 	navigator.clipboard.writeText(
 		slogan
 		+bold
-			+$('#header').html().replace(/\&amp\;/g,'&').replace(/\<br\>|\<div\>|\<\/div\>/g,'').replace(/\&nbsp\;/g,' ').replace(/\s+/g,' ').trim()
+			+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
 			+' за '
 			+scratchPrice
 			+declension(price,new Array('рубль','рубля','рублей'))
