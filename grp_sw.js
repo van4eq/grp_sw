@@ -76,6 +76,7 @@ $(document).on('paste',function(e){
 				$('#pic').attr('src',$('#img img').attr('src'));
 
 				sendData.name=sendData.name
+					.replace(/\&amp\;/g,'&')
 					.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
 					.replace(/\, (\d{2,3} мл)/,' ($1)')
 					.replace(/\, (\d{2,3} г)/,' ($1)')
