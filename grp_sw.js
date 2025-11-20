@@ -75,7 +75,7 @@ $(document).on('paste',function(e){
 				$('#img').html('<img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'">').css('background','none');
 				$('#pic').attr('src',$('#img img').attr('src'));
 
-				sendData.name=sendData.name
+				sendData.name=sendData.name.replaceAll('&amp;','&')
 					.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
 					.replace(/\, (\d{2,3} мл)/,' ($1)')
 					.replace(/\, (\d{2,3} г)/,' ($1)')
@@ -391,5 +391,6 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
