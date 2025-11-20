@@ -191,7 +191,7 @@ $(document).on('paste',function(e){
 				$('#remain+label').text('Осталось');
 				$('#specialPrice+label').text('Своя цена');
 
-				$('#header').html(sendData.name.replaceAll('&amp;','&'));
+				$('#header').html(sendData.name);
 				$('#price').html(oldPrice+'<span contenteditable>'+sendData.price+'</span> ₽');
 				$('#points').html(declension(points,new Array('балл','балла','баллов'))).slideDown(200);
 				$('#descr').html(sendData.description);
@@ -391,7 +391,3 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
-
-
-
-
