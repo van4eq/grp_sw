@@ -103,7 +103,7 @@ $(document).on('paste',function(e){
 					.replace(/^(Метилсульфонилметан)$/,'$1 (Органическая сера)')
 					.replace(/^Чайханский чай. Черный с травами$/,'Чайханский черный чай с травами')
 					.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
-					.replace('. ',', ');
+					.replace('. ',', ');console.log(sendData.name)
 				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
 					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
 				}
@@ -392,3 +392,4 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
