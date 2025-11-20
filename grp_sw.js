@@ -75,7 +75,7 @@ $(document).on('paste',function(e){
 				$('#img').html('<img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'">').css('background','none');
 				$('#pic').attr('src',$('#img img').attr('src'));
 
-				sendData.name=sendData.name.replaceAll('&amp;','&')
+				sendData.name=sendData.name
 					.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
 					.replace(/\, (\d{2,3} мл)/,' ($1)')
 					.replace(/\, (\d{2,3} г)/,' ($1)')
@@ -191,7 +191,7 @@ $(document).on('paste',function(e){
 				$('#remain+label').text('Осталось');
 				$('#specialPrice+label').text('Своя цена');
 
-				$('#header').html(sendData.name);
+				$('#header').html(sendData.name.replaceAll('&amp;','&'));
 				$('#price').html(oldPrice+'<span contenteditable>'+sendData.price+'</span> ₽');
 				$('#points').html(declension(points,new Array('балл','балла','баллов'))).slideDown(200);
 				$('#descr').html(sendData.description);
@@ -391,6 +391,7 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
 
