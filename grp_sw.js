@@ -183,6 +183,11 @@ $(document).on('paste',function(e){
 					other=0;
 				}
 				$('#link').prop('disabled',false);
+				if(localStorage['link']==1){
+					$('#link').prop('checked',true);
+				}else{
+					$('#link').prop('checked',false);
+				}
 				$('#remain+label').text('Осталось');
 				$('#specialPrice+label').text('Своя цена');
 
@@ -376,6 +381,13 @@ $('#theme').click(function(){
 		$('*').removeClass('dark_theme');
 		localStorage['dark']=0;
 	}
-
 });
 
+//Запомнить состояние отметки "Ссылка на продукт"
+$('#link').click(function(){
+	if($(this).prop('checked')){
+		localStorage['link']=1;
+	}else{
+		localStorage['link']=0;
+	}
+});
