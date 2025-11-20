@@ -76,7 +76,6 @@ $(document).on('paste',function(e){
 				$('#pic').attr('src',$('#img img').attr('src'));
 
 				sendData.name=sendData.name
-					.replace(/\&amp\;/g,'&')
 					.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
 					.replace(/\, (\d{2,3} мл)/,' ($1)')
 					.replace(/\, (\d{2,3} г)/,' ($1)')
@@ -103,7 +102,7 @@ $(document).on('paste',function(e){
 					.replace(/^(Метилсульфонилметан)$/,'$1 (Органическая сера)')
 					.replace(/^Чайханский чай. Черный с травами$/,'Чайханский черный чай с травами')
 					.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
-					.replace('. ',', ');console.log(sendData.name)
+					.replace('. ',', ');
 				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
 					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
 				}
@@ -335,7 +334,7 @@ $('#copy button').click(function(){
 	navigator.clipboard.writeText(
 		slogan
 		+bold
-			+$('#header').html().replace(/\<br\>|\<div\>|\<\/div\>/g,'').replace(/\&nbsp\;/g,' ').replace(/\s+/g,' ').trim()
+			+$('#header').html().replace(/\&amp\;/g,'&').replace(/\<br\>|\<div\>|\<\/div\>/g,'').replace(/\&nbsp\;/g,' ').replace(/\s+/g,' ').trim()
 			+' за '
 			+scratchPrice
 			+declension(price,new Array('рубль','рубля','рублей'))
@@ -392,4 +391,5 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
