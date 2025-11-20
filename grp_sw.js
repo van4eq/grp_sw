@@ -59,7 +59,7 @@ var stories; // Для корректного входа в режим реда�
 $(document).on('paste',function(e){
 	e.preventDefault();
 	navigator.clipboard.readText().then(text=>{ // Формирование рекламы при вставке ссылки на страницу с продуктом
-		if(text.trim().match(/^\d{6}$/)){
+		if(text.trim().match(/^\d{6}$/)&&!$('[contenteditable]:focus').length){
 			link='https://ru.siberianhealth.com/ru/shop/catalog/product/'+text.trim()+'/';
 			$.post(link,function(data){
 				stories=1;
@@ -196,10 +196,7 @@ $(document).on('paste',function(e){
 				$('#points').html(declension(points,new Array('балл','балла','баллов'))).slideDown(200);
 				$('#descr').html(sendData.description);
 			}).fail(function(){
-				var paste=confirm('Возможно, Вы хотели загрузить информацию о продукте, но продукта с таким кодом нет или сайт временно не работает. Если Вы хотите просто вставить текст, нажмите ОК');
-				if(paste){
-					document.execCommand('insertText',false,text.replace(/\&nbsp\;|\t/g,' ').replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').trim().replace(/\.$/gm,''));
-				}
+				alert('Возможно, продукта с таким кодом нет или сайт временно не работает');
 			});
 		}else{
 			document.execCommand('insertText',false,text.replace(/\&nbsp\;|\t/g,' ').replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').trim().replace(/\.$/gm,''));
@@ -209,8 +206,14 @@ $(document).on('paste',function(e){
 	});
 });
 
-$('#price').on('keypress',function(event){
-	if((event.which<48||event.which>57)){
+$('#price').on({
+	keypress:function(e){
+		if(e.which<48||e.which>57){
+			return false;
+		}
+	},
+	paste:function(e){
+		document.execCommand('insertText',false,e.originalEvent.clipboardData.getData('text').replace(/\D/g,''));
 		return false;
 	}
 });
