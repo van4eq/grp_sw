@@ -327,7 +327,7 @@ $('#copy button').click(function(){
 	}
 	var remain='';
 	if($('#remain+label').text().match(/\d+/)){
-		remain=bold+'Всего '+$('#remain+label').text().match(/\d+/)+bold+'\n\n';
+		remain=bold+'Всего '+declension($('#remain+label').text().match(/\d+/),new Array('штука','штуки','штук'))+bold+'\n\n';
 	}
 	var addLink='';
 	if($('#link').prop('checked')){
@@ -394,3 +394,4 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
