@@ -327,7 +327,7 @@ $('#copy button').click(function(){
 	}
 	var remain='';
 	if($('#remain+label').text().match(/\d+/)){
-		remain=bold+declension($('#remain+label').text().match(/\d+/),new Array('штука','штуки','штук'),new Array('Осталась','Осталось','Осталось'))+bold+'\n\n';
+		remain=bold+'Всего '+$('#remain+label').text().match(/\d+/)+bold+'\n\n';
 	}
 	var addLink='';
 	if($('#link').prop('checked')){
