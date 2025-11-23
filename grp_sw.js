@@ -30,7 +30,7 @@ function weeksMonths(type='month'){
 	const now=new Date();
 	let startDate,endDate;
 	if(type=='week'){
-		startDate=new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()+1);
+		startDate=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()||7)-1));
 		endDate=new Date(startDate);
 		endDate.setDate(endDate.getDate()+6);
 	}else if(type=='month'){
@@ -394,6 +394,7 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
 
