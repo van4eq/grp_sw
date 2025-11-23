@@ -129,7 +129,7 @@ $(document).on('paste',function(e){
 						$('.offer').prop('disabled',false);
 						$('#'+before).addClass('before');
 						$('.no_offer').prop({'disabled':true,'checked':false});
-					}console.log('Акция до: '+until+'\nСегодня: '+new Date().toLocaleDateString('ru-RU',options)+'\nКонец недели: '+weeksMonths('week').split('—')[1])+'\nКонец месяца: '+weeksMonths('month').split('—')[1])`);
+					}console.log('Акция до: '+until+'\nСегодня: '+new Date().toLocaleDateString('ru-RU',options)+'\nКонец недели: '+weeksMonths('week').split('—')[1])+'\nКонец месяца: '+weeksMonths('month').split('—')[1]));
 					if(weeksMonths('week').split('—')[1]!=weeksMonths('month').split('—')[1]){
 						if(until==new Date().toLocaleDateString('ru-RU',options)){
 							before='last_day';
@@ -394,6 +394,7 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
 
