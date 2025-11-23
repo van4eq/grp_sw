@@ -131,13 +131,13 @@ $(document).on('paste',function(e){
 						$('.no_offer').prop({'disabled':true,'checked':false});
 					}
 					if(weeksMonths('week').split('—')[1]!=weeksMonths('month').split('—')[1]){
-						if(until==weeksMonths('week').split('—')[1]){
+						if(until==new Date().toLocaleDateString('ru-RU',options)){
+							before='last_day';
+						}else if(until==weeksMonths('week').split('—')[1]){
 							before='week';
 						}else if(until==weeksMonths('month').split('—')[1]){
 							before='month';
-						}else if(until==new Date().toLocaleDateString('ru-RU',options)){
-							before='last_day';
-						}else if(until!=weeksMonths('week').split('—')[1]&&until!=weeksMonths('month').split('—')[1]){
+						}if(until!=weeksMonths('week').split('—')[1]&&until!=weeksMonths('month').split('—')[1]){
 							before='season';
 						}
 					}else{
@@ -394,4 +394,5 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
