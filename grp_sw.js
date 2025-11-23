@@ -1,4 +1,4 @@
-function declension(qty,titles,pretitles){
+efunction declension(qty,titles,pretitles){
 	let declension=new Array(2,0,1,1,1,2);
 	let declensionIndex=(qty%1!=0)?1:(qty%100>4&&qty%100<20)?2:declension[Math.min(qty%10,5)];
 	return (pretitles?pretitles[declensionIndex]+' ':'')+qty+' '+titles[declensionIndex];
@@ -137,7 +137,7 @@ $(document).on('paste',function(e){
 							before='month';
 						}else if(until==new Date().toLocaleDateString('ru-RU',options)){
 							before='last_day';
-						}if(until!=weeksMonths('week').split('—')[1]&&until!=weeksMonths('month').split('—')[1]){
+						}else if(until!=weeksMonths('week').split('—')[1]&&until!=weeksMonths('month').split('—')[1]){
 							before='season';
 						}
 					}else{
@@ -394,6 +394,7 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
 
