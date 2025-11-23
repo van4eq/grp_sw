@@ -129,11 +129,11 @@ $(document).on('paste',function(e){
 						$('.offer').prop('disabled',false);
 						$('#'+before).addClass('before');
 						$('.no_offer').prop({'disabled':true,'checked':false});
-					}
+					}console.log(until+', '+new Date().toLocaleDateString('ru-RU',options));console.log(until+', '+weeksMonths('week').split('—')[1])
 					if(weeksMonths('week').split('—')[1]!=weeksMonths('month').split('—')[1]){
-						if(until==new Date().toLocaleDateString('ru-RU',options)){console.log(until+', '+new Date().toLocaleDateString('ru-RU',options))
+						if(until==new Date().toLocaleDateString('ru-RU',options)){
 							before='last_day';
-						}else if(until==weeksMonths('week').split('—')[1]){console.log(until+', '+weeksMonths('week').split('—')[1])
+						}else if(until==weeksMonths('week').split('—')[1]){
 							before='week';
 						}else if(until==weeksMonths('month').split('—')[1]){
 							before='month';
@@ -394,6 +394,7 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
 
