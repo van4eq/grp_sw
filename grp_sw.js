@@ -1,4 +1,4 @@
-efunction declension(qty,titles,pretitles){
+function declension(qty,titles,pretitles){
 	let declension=new Array(2,0,1,1,1,2);
 	let declensionIndex=(qty%1!=0)?1:(qty%100>4&&qty%100<20)?2:declension[Math.min(qty%10,5)];
 	return (pretitles?pretitles[declensionIndex]+' ':'')+qty+' '+titles[declensionIndex];
@@ -394,6 +394,7 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
 
