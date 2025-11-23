@@ -131,12 +131,12 @@ $(document).on('paste',function(e){
 						$('.no_offer').prop({'disabled':true,'checked':false});
 					}console.log('Акция до: '+until+'\nСегодня: '+new Date().toLocaleDateString('ru-RU',options)+'\nКонец недели: '+weeksMonths('week').split('—')[1]+'\nКонец месяца: '+weeksMonths('month').split('—')[1]);
 					if(weeksMonths('week').split('—')[1]!=weeksMonths('month').split('—')[1]){
-						if(until==new Date().toLocaleDateString('ru-RU',options)){
-							before='last_day';
-						}else if(until==weeksMonths('week').split('—')[1]){
+						if(until==weeksMonths('week').split('—')[1]){
 							before='week';
 						}else if(until==weeksMonths('month').split('—')[1]){
 							before='month';
+						}else if(until==new Date().toLocaleDateString('ru-RU',options)){
+							before='last_day';
 						}if(until!=weeksMonths('week').split('—')[1]&&until!=weeksMonths('month').split('—')[1]){
 							before='season';
 						}
@@ -394,6 +394,7 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
 
