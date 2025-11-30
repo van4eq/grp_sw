@@ -133,7 +133,12 @@ $(document).on('paste',function(e){
 					if(until==new Date().toLocaleDateString('ru-RU',options)){
 						before='last_day';
 					}else{
-						before=$('.offer:first').attr('id');
+						before='until';
+						if(until!=null){
+							$('#until').text('Акция до '+until);
+						}else{
+							$('#until').text('Акция');
+						}
 					}
 					$('#'+before).prop('checked',true);
 					$('#specialPrice').prop({'disabled':true,'checked':false});
@@ -298,8 +303,8 @@ $('#copy button').click(function(){
 		if($('[name=period]:checked+label').text()=='Акция пятницы'){
 			slogan=$('[name=period]:checked+label').text()+' / '+friday()+'!\n';
 		}
-		if($('[name=period]:checked+label').text()=='Акция до'){
-			slogan=$('[name=period]:checked+label').text()+' '+until+'!\n';
+		if($('[name=period]:checked+label').attr('id')=='until'){
+			slogan=$('[name=period]:checked+label').text()+'!\n';
 		}
 	}
 	if($('#other').prop('checked')){
@@ -389,3 +394,4 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
