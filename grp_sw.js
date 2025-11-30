@@ -394,4 +394,3 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
-
