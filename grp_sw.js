@@ -133,7 +133,7 @@ $(document).on('paste',function(e){
 					if(until==new Date().toLocaleDateString('ru-RU',options)){
 						before='last_day';
 					}else if(weeksMonths('week').split('—')[1]!=weeksMonths('month').split('—')[1]){
-						else if(until==weeksMonths('week').split('—')[1]){
+						if(until==weeksMonths('week').split('—')[1]){
 							before='week';
 						}else if(until==weeksMonths('month').split('—')[1]){
 							before='month';
@@ -394,6 +394,7 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
 
 
