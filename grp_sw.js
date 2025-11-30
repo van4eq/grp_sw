@@ -135,9 +135,9 @@ $(document).on('paste',function(e){
 					}else{
 						before='until';
 						if(until!=null){
-							$('#until').text('Акция до '+until);
+							$('#until+label').text('Акция до '+until);
 						}else{
-							$('#until').text('Акция');
+							$('#until+label').text('Акция');
 						}
 					}
 					$('#'+before).prop('checked',true);
