@@ -132,14 +132,6 @@ $(document).on('paste',function(e){
 					}console.log('Акция до: '+until+'\nСегодня: '+new Date().toLocaleDateString('ru-RU',options)+'\nКонец недели: '+weeksMonths('week').split('—')[1]+'\nКонец месяца: '+weeksMonths('month').split('—')[1]);
 					if(until==new Date().toLocaleDateString('ru-RU',options)){
 						before='last_day';
-					}else if(weeksMonths('week').split('—')[1]!=weeksMonths('month').split('—')[1]){
-						if(until==weeksMonths('week').split('—')[1]){
-							before='week';
-						}else if(until==weeksMonths('month').split('—')[1]){
-							before='month';
-						}else if(until!=weeksMonths('week').split('—')[1]&&until!=weeksMonths('month').split('—')[1]){
-							before='season';
-						}
 					}else{
 						before=$('.offer:first').attr('id');
 					}
@@ -306,6 +298,9 @@ $('#copy button').click(function(){
 		if($('[name=period]:checked+label').text()=='Акция пятницы'){
 			slogan=$('[name=period]:checked+label').text()+' / '+friday()+'!\n';
 		}
+		if($('[name=period]:checked+label').text()=='Акция до'){
+			slogan=$('[name=period]:checked+label').text()+' '+until+'!\n';
+		}
 	}
 	if($('#other').prop('checked')){
 		$('#copy_slogan').html($('#slogan').html().replace(/\&nbsp\;|\t/g,' '));
@@ -394,21 +389,3 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
