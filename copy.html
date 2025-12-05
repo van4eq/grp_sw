@@ -53,8 +53,8 @@ $(document).on('paste',function(e){
 	navigator.clipboard.readText().then(text=>{
 		if(text.trim().replace(/\s+/g,'').match(/^\d+$/)){
 			$('#q div').html(new Date().toLocaleString('ru',{weekday:'long'})+' '+text.trim().replace(/\s+/g,'')+' ₽');
-			$('#w div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>В наличии. Заказ готов к выдаче');
-			$('#e div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ не готов к выдаче, поступит на следующей неделе. Мы сообщим, когда он будет готов');
+			$('#w div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>В наличии. Заказ готов к выдаче<br><br>Вы можете оплатить переводом по номеру 9030836525 (Игорь Викторович А.) на Сбер или Озон Банк (просьба прислать подтверждение оплаты)');
+			$('#e div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ не готов к выдаче, поступит на следующей неделе. Мы сообщим, когда он будет готов<br><br>Вы можете оплатить переводом по номеру 9030836525 (Игорь Викторович А.) на Сбер или Озон Банк (просьба прислать подтверждение оплаты)');
 		}else{
 			$('#q div').html(text.trim().split('\r\nСрок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('\r\nНомер QR-кода: ',' (#').replace('\r\n','<br>')+')');
 			$('#w div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>В наличии. Заказ готов к выдаче');
