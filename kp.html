@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
 <link rel="icon" href="https://ru.siberianhealth.com/shopen/public/icon.svg" type="image/svg+xml">
 <title>Клуб постоянства (6 месяцев)</title>
@@ -101,6 +102,12 @@ grid-template-columns:repeat(2,1fr);
 grid-template-columns:repeat(1,1fr);
 }
 }
+
+@media (hover:none) and (pointer:coarse){
+*:hover{
+background-color:inherit;
+}
+}
 </style>
 
 <h1>Клуб постоянства <span class="period" id="active">6&nbsp;месяцев</span><span class="period">3&nbsp;месяца</span></h1>
@@ -113,6 +120,14 @@ grid-template-columns:repeat(1,1fr);
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
+function prepositions(text){
+	var prepositions=['без','безо','в','во','для','до','за','из','изо','к','ко','на','над','надо','о','об','обо','от','ото','по','под','подо','перед','передо','после','при','про','с','со','у','через','из-за','из-под','а','но','не','ни', 'Без','Безо','В','Во','Для','До','За','Из','Изо','К','Ко','На','Над','Надо','О','Об','Обо','От','Ото','По','Под','Подо','Перед','Передо','После','При','Про','С','Со','У','Через','Из-за','Из-под','А','Но','Не','Ни'];
+	for(let prep of prepositions){
+		text=text.replace(new RegExp(` ${prep} `,'g'),` ${prep}&nbsp;`);
+	}
+	return text;
+}
+
 var categoryChains; //Технические данные для беспроблемной вставки с сайта SW
 var cityId; //Технические данные для беспроблемной вставки с сайта SW
 var params; //Технические данные для беспроблемной вставки с сайта SW
@@ -178,7 +193,7 @@ $('.period').click(function(){
 						amount='';
 					}
 
-					$('#items').append('<div class="item"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" width="100%"><div class="article">#'+items[i][0]+'</div><div class="name">'+sendData.name+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="more" itm-nmbr="'+items[i][0]+'">Читать<br>описание</div></div>');
+					$('#items').append('<div class="item"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" width="100%"><div class="article">#'+items[i][0]+'</div><div class="name">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="more" itm-nmbr="'+items[i][0]+'">Читать<br>описание</div></div>');
 				});
 			}
 		}
@@ -189,7 +204,7 @@ $(document).on('click','.more',function(){
 	var qq=$(this).attr('itm-nmbr');
 	$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+qq+'/',function(data){
 		let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
-		alert(sendData.description);
+		alert('ОПИСАНИЕ ПРОДУКТА:\n\n'+sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'\n$1').replace(/(\.|)(\•)/g,'\n$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1\n$2').trim().replace(/\.$/gm,''));
 	});
 });
 </script>
