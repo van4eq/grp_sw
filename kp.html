@@ -21,15 +21,17 @@ overflow-y:scroll;
 h1{
 margin:50px 0;
 color:#00b0f0;
+line-height:1.5em;
 }
-h1 span{
+.period{
 cursor:pointer;
 border:3px solid #333;
 border-radius:10em;
-padding:.25em .75em;
+padding:.15em .6em;
 color:#333;
+display:inline-block;
 }
-h1 span#active{
+.period#active{
 border:3px solid #00b0f0;
 color:#00b0f0;
 }
@@ -104,8 +106,8 @@ grid-template-columns:repeat(1,1fr);
 }
 
 @media (hover:none) and (pointer:coarse){
-*:hover{
-background-color:inherit;
+.period:hover{
+background:#fff;
 }
 }
 </style>
@@ -134,7 +136,7 @@ var params; //Технические данные для беспроблемн�
 var amount; // Фасовка продукта
 $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
-	$('.period').attr('id','');
+	$('.period').removeAttr('id');
 	$(this).attr('id','active')
 	$('#items').html('');
 	var period=$(this).text().replace(/\D+/g,'');
