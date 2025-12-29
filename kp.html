@@ -182,6 +182,7 @@ $('.period').click(function(){
 						.replace(/^(Метилсульфонилметан)$/,'$1 (Органическая сера)')
 						.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
 						.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
+						.replace(/витамином С/g,'витамином C') <!-- необязательно -->
 						.replace('. ',', ');
 					if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
 						sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
