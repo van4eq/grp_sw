@@ -83,6 +83,7 @@ $(document).on('paste',function(e){
 					.replace('Духи-концентрат,','Духи-концентрат')
 					.replace('Фиточай из диких трав № ','Чай №')
 					.replace(' Siberian Herbs','')
+					.replace(' GREENPIN','')
 					.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
 					.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
 					.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
