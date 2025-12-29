@@ -48,6 +48,11 @@ position:relative;
 padding-bottom:75px;
 }
 
+.item img{
+width:100%;
+border-radius:35px;
+}
+
 .article{
 color:#999;
 margin:10px;
@@ -116,7 +121,7 @@ background:#fff;
 
 Здесь указаны продукты, которые вы можете приобрести по сертификату Клуба постоянства
 <br>
-Нажмите на кнопку «6 месяцев» или «3 месяца», чтобы открылся нужный список продуктов
+Нажмите на кнопку «<span style="color:#00b0f0;">6 месяцев</span>» или «<span style="color:#00b0f0;">3 месяца</span>», чтобы открылся список продуктов по нужному сертификату
 <br>
 <span style="color:#999;"><span style="color:#f1574b;">ВАЖНО!</span> Информация на этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у продавца</span>
 
@@ -140,7 +145,7 @@ $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
 	$('.period').removeAttr('id');
 	$(this).attr('id','active')
-	$('#items').html('');
+	$('#items').empty();
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
 		var items=data.replace(/\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
@@ -157,6 +162,7 @@ $('.period').click(function(){
 						.replace('Духи-концентрат,','Духи-концентрат')
 						.replace('Фиточай из диких трав № ','Чай №')
 						.replace(' Siberian Herbs','')
+						.replace(' GREENPIN','')
 						.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
 						.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
 						.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
@@ -190,14 +196,15 @@ $('.period').click(function(){
 					if(sendData.name.match(measurements)){
 						sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
 					}
+					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода) /g,'$&<br>');
 
 					if(data.indexOf("params.amount = '")!=-1){
-						amount=data.split("params.amount = '")[1].split("';")[0].trim();
+						amount=data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\d)\s/g,'$1&nbsp;');
 					}else{
 						amount='';
 					}
 
-					$('#items').append('<div class="item"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" width="100%"><div class="article">#'+items[i][0]+'</div><div class="name">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="more" itm-nmbr="'+items[i][0]+'">Читать<br>описание</div></div>');
+					$('#items').append('<div class="item"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'"><div class="article">#'+items[i][0]+'</div><div class="name">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="more" itm-nmbr="'+items[i][0]+'">Читать<br>описание</div></div>');
 				});
 			}
 		}
