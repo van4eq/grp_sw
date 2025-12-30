@@ -74,6 +74,7 @@ margin:0 10px;
 position:absolute;
 bottom:10px;
 left:10px;
+font-size:1.2em;
 }
 .price s{
 color:#999;
@@ -81,17 +82,27 @@ font-weight:500;
 }
 .price span{
 color:#f1574b;
-font-size:1.5em;
 }
 
 .more{
-position:absolute;
-bottom:10px;
-right:10px;
-color:#00b0f0;
 cursor:pointer;
+}
+
+#up{
+border:1.5px solid #00b0f0;
+border-radius:30px;
+color:#00b0f0;
+font-size:1.25em;
 font-weight:500;
-text-align:right;
+position:fixed;
+background:#fff;
+bottom:30px;
+right:30px;
+padding:.5em 1em;
+cursor:pointer;
+}
+#up:after{
+content:'Наверх';
 }
 
 @media(max-width:1000px){
@@ -127,8 +138,14 @@ background:#fff;
 
 <div id="items"></div>
 
+<div id="up"></div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
+$('#up').click(function(){
+	$(window).scrollTop(0);
+});
+
 function prepositions(text){
 	var prepositions=['без','безо','в','во','для','до','за','из','изо','к','ко','на','над','надо','о','об','обо','от','ото','по','под','подо','перед','передо','после','при','про','с','со','у','через','из-за','из-под','а','но','не','ни', 'Без','Безо','В','Во','Для','До','За','Из','Изо','К','Ко','На','Над','Надо','О','Об','Обо','От','Ото','По','Под','Подо','Перед','Передо','После','При','Про','С','Со','У','Через','Из-за','Из-под','А','Но','Не','Ни'];
 	for(let prep of prepositions){
@@ -205,7 +222,7 @@ $('.period').click(function(){
 						amount='';
 					}
 
-					$('#items').append('<div class="item"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'"><div class="article">#'+items[i][0]+'</div><div class="name">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="more" itm-nmbr="'+items[i][0]+'">Читать<br>описание</div></div>');
+					$('#items').append('<div class="item"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more" itm-nmbr="'+items[i][0]+'"><div class="article">#'+items[i][0]+'</div><div class="name more" itm-nmbr="'+items[i][0]+'">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 руб.</span></div></div>');
 				});
 			}
 		}
