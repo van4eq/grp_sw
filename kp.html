@@ -31,7 +31,7 @@ padding:.15em .6em;
 color:#333;
 display:inline-block;
 }
-.period#active{
+.period.active{
 border:3px solid #00b0f0;
 color:#00b0f0;
 }
@@ -92,17 +92,27 @@ cursor:pointer;
 border:1.5px solid #00b0f0;
 border-radius:30px;
 color:#00b0f0;
-font-size:1.25em;
 font-weight:500;
 position:fixed;
 background:#fff;
-bottom:30px;
-right:30px;
-padding:.5em 1em;
+bottom:20px;
+right:20px;
+padding:.5em .75em;
 cursor:pointer;
 }
 #up:after{
 content:'Наверх';
+}
+
+#load{
+position:fixed;
+top:20px;
+right:20px;
+color:#f1574b;
+font-weight:500;
+}
+#load:after{
+content:'Загрузка...';
 }
 
 @media(max-width:1000px){
@@ -128,7 +138,7 @@ background:#fff;
 }
 </style>
 
-<h1>Клуб постоянства<br><span class="period" id="active">6&nbsp;месяцев</span><span class="period">3&nbsp;месяца</span></h1>
+<h1>Клуб постоянства<br><span class="period" id="6m">6&nbsp;месяцев</span><span class="period" id="3m">3&nbsp;месяца</span></h1>
 
 Здесь указаны продукты, которые вы можете приобрести по сертификату Клуба постоянства
 <br>
@@ -160,8 +170,8 @@ var params; //Технические данные для беспроблемн�
 var amount; // Фасовка продукта
 $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
-	$('.period').removeAttr('id');
-	$(this).attr('id','active')
+	$('.period').removeClass('active');
+	$(this).addClass('active')
 	$('#items').empty();
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
@@ -228,7 +238,11 @@ $('.period').click(function(){
 		}
 	});
 });
-$('.period#active').trigger('click');
+if(window.location.href.match(/\?kp3$/)){
+	$('#3m').trigger('click');
+}else{
+	$('#6m').trigger('click');
+}
 $(document).on('click','.more',function(){
 	var qq=$(this).attr('itm-nmbr');
 	$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+qq+'/',function(data){
@@ -237,4 +251,3 @@ $(document).on('click','.more',function(){
 	});
 });
 </script>
-
