@@ -104,17 +104,6 @@ cursor:pointer;
 content:'Наверх';
 }
 
-#load{
-position:fixed;
-top:20px;
-right:20px;
-color:#f1574b;
-font-weight:500;
-}
-#load:after{
-content:'Загрузка...';
-}
-
 @media(max-width:1000px){
 #items{
 grid-template-columns:repeat(3,1fr);
@@ -152,10 +141,6 @@ background:#fff;
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
-$('#up').click(function(){
-	$(window).scrollTop(0);
-});
-
 function prepositions(text){
 	var prepositions=['без','безо','в','во','для','до','за','из','изо','к','ко','на','над','надо','о','об','обо','от','ото','по','под','подо','перед','передо','после','при','про','с','со','у','через','из-за','из-под','а','но','не','ни', 'Без','Безо','В','Во','Для','До','За','Из','Изо','К','Ко','На','Над','Надо','О','Об','Обо','От','Ото','По','Под','Подо','Перед','Передо','После','При','Про','С','Со','У','Через','Из-за','Из-под','А','Но','Не','Ни'];
 	for(let prep of prepositions){
@@ -232,22 +217,36 @@ $('.period').click(function(){
 						amount='';
 					}
 
-					$('#items').append('<div class="item"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more" itm-nmbr="'+items[i][0]+'"><div class="article">#'+items[i][0]+'</div><div class="name more" itm-nmbr="'+items[i][0]+'">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 руб.</span></div></div>');
+					$('#items').append('<div class="item"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more" itm-nmbr="'+items[i][0]+'"><div class="article">#'+items[i][0]+'</div><div class="name more" itm-nmbr="'+items[i][0]+'">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div></div>');
 				});
 			}
 		}
 	});
 });
-if(window.location.href.match(/\?kp3$/)){
+
+if(window.location.href.match(/\?t=3m$/)){
 	$('#3m').trigger('click');
 }else{
 	$('#6m').trigger('click');
 }
+
+var baseUrl=location.origin+location.pathname;
+$('#3m').click(function(){
+	history.replaceState(null,null,baseUrl+'?t=3m');
+});
+$('#6m').click(function(){
+	history.replaceState(null,null,baseUrl);
+});
+
 $(document).on('click','.more',function(){
 	var qq=$(this).attr('itm-nmbr');
 	$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+qq+'/',function(data){
 		let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
 		alert('ОПИСАНИЕ ПРОДУКТА:\n\n'+sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'\n$1').replace(/(\.|)(\•)/g,'\n$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1\n$2').trim().replace(/\.$/gm,''));
 	});
+});
+
+$('#up').click(function(){
+	$(window).scrollTop(0);
 });
 </script>
