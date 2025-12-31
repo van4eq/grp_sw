@@ -70,7 +70,7 @@ $(document).on('paste',function(e){
 $('.qwer').click(function(){
 	var t=$(this).attr('id');
 	if($('#'+t+' div').text()!=''){
-		navigator.clipboard.writeText((t!='q'||'w'?'\n\n':'')+$('#'+t+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n').trim());
+		navigator.clipboard.writeText((t!='q'&&t!='w'?'\n\n':'')+$('#'+t+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n').trim());
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
