@@ -19,6 +19,10 @@ overflow-y:scroll;
 
 a{
 color:#00b0f0;
+outline:none;
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
 }
 
 header{
@@ -158,7 +162,7 @@ transform:rotate(-45deg);
 width:100%;
 }
 #item_body{
-max-width:400px;
+max-width:450px;
 margin:90px auto 30px;
 }
 #name{
@@ -248,7 +252,7 @@ $('.period').click(function(){
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
 		var items=data.replace(/\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
 		for(let i=0;i<items.length;i++){
-			if((items[i][1]||items[i][0]).trim().match(/^\d{6}$/)){
+			if((items[i][0]).trim().match(/^\d{6}$/)){
 				$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
 					let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
 
@@ -295,7 +299,7 @@ $('.period').click(function(){
 					if(sendData.name.match(measurements)){
 						sendData.name=sendData.name.replace(sendData.name.match(measurements),'');
 					}
-					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>');
+					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>'); <!-- необязательно -->
 
 					if(data.indexOf("params.amount = '")!=-1){
 						amount=data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\d)\s/g,'$1&nbsp;');
