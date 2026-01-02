@@ -124,6 +124,10 @@ height:100vh;
 background:#fff;
 overflow-y:scroll;
 overflow-x:hidden;
+outline:none;
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
 }
 
 #close{
@@ -152,6 +156,10 @@ transform:rotate(-45deg);
 
 #item img{
 width:100%;
+}
+#item_body{
+max-width:400px;
+margin:90px auto 30px;
 }
 #name{
 font-size:1.25em;
@@ -209,7 +217,7 @@ grid-template-columns:repeat(1,1fr);
 
 <div id="item">
 	<div id="close"><div class="close"></div></div>
-	<div style="max-width:400px;margin:90px auto 60px;">
+	<div id="item_body">
 		<img>
 		<div style="padding:30px;">
 			<div id="name"></div>
