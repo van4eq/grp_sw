@@ -27,7 +27,7 @@ padding:0 30px;
 }
 
 #logo{
-width:200px;
+width:190px;
 }
 
 h1{
@@ -37,7 +37,7 @@ line-height:1.5em;
 }
 .period{
 cursor:pointer;
-border:3px solid #333;
+border:3px solid transparent;
 border-radius:10em;
 padding:.1em .6em;
 display:inline-block;
@@ -126,19 +126,8 @@ overflow-y:scroll;
 overflow-x:hidden;
 }
 
-#item [type=text]{
-position:absolute;
-top:0;
-margin:0;
-padding:0;
-width:0;
-height:0;
-opacity:0;
-}
-
-/* Кнопка закрытия модального окна с формой входа */
 #close{
-position:fixed;
+position:absolute;
 top:30px;
 right:30px;
 width:38px;
@@ -148,10 +137,10 @@ cursor:pointer;
 .close:before,.close:after{
 content:'';
 position:absolute;
-top:18px;
-left:-6px;
+top:17px;
+left:-5.5px;
 width:50px;
-height:1.5px;
+height:3px;
 background:#333;
 }
 .close:before{
@@ -183,12 +172,21 @@ grid-template-columns:repeat(3,1fr);
 }
 }
 @media(max-width:700px){
+header{
+padding:0 15px;
+}
 #items{
+padding:0 15px;
 grid-template-columns:repeat(2,1fr);
+gap:15px;
 }
 }
 @media(max-width:400px){
+header{
+padding:0 20px;
+}
 #items{
+padding:0 20px;
 grid-template-columns:repeat(1,1fr);
 }
 }
@@ -198,11 +196,11 @@ grid-template-columns:repeat(1,1fr);
 <img id="logo" src="https://ru.siberianhealth.com/static/rebranding/img/5a5c906883b9701f898e2281/1160434/upload-046af4b0-b821-11e8-89d0-798fa202fe62.png">
 <h1>Клуб постоянства<br><span class="period" id="6m">6&nbsp;месяцев</span><span class="period" id="3m">3&nbsp;месяца</span></h1>
 
-Здесь указаны продукты, которые вы можете приобрести по сертификату Клуба постоянства
+Здесь указаны продукты, которые вы можете приобрести по&nbsp;сертификату Клуба постоянства
 <br>
-Нажмите на кнопку «<span style="color:#00b0f0;">6 месяцев</span>» или «<span style="color:#00b0f0;">3 месяца</span>», чтобы открылся список продуктов по нужному сертификату
+Нажмите на кнопку «<span style="color:#00b0f0;">6&nbsp;месяцев</span>» или «<span style="color:#00b0f0;">3&nbsp;месяца</span>», чтобы открылся список продуктов по&nbsp;нужному сертификату
 <br>
-<span style="color:#999;"><span style="color:#f1574b;">ВАЖНО!</span> Информация на этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у продавца</span>
+<span style="color:#999;"><span style="color:#f1574b;">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</span>
 </header>
 
 <div id="items"></div>
@@ -210,9 +208,8 @@ grid-template-columns:repeat(1,1fr);
 <div id="up"></div>
 
 <div id="item">
-	<input type="text">
 	<div id="close"><div class="close"></div></div>
-	<div style="max-width:400px;margin:60px auto 30px;">
+	<div style="max-width:400px;margin:90px auto 60px;">
 		<img>
 		<div style="padding:30px;">
 			<div id="name"></div>
@@ -336,9 +333,9 @@ $(document).on('click','.more',function(){
 		$('#descr').html(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,''));
 		$('#link').attr('href','https://ru.siberianhealth.com/ru/shop/catalog/product/'+qq+'/');
 
-		$('#item').show();
-		$('#item [type=text]').focus();
+		$('#item').show().focus();
 		$('body').css('overflow-y','hidden');
+		$('#item').scrollTop(0);
 	});
 });
 $('#close').click(function(){
