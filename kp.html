@@ -201,14 +201,11 @@ grid-template-columns:repeat(1,1fr);
 </style>
 
 <header>
-<img id="logo" src="https://ru.siberianhealth.com/static/rebranding/img/5a5c906883b9701f898e2281/1160434/upload-046af4b0-b821-11e8-89d0-798fa202fe62.png">
-<h1>Клуб постоянства<br><span class="period" id="6m">6&nbsp;месяцев</span><span class="period" id="3m">3&nbsp;месяца</span></h1>
-
-Здесь указаны продукты, которые вы можете приобрести по&nbsp;сертификату Клуба постоянства
-<br>
-Нажмите на кнопку «<span style="color:#00b0f0;">6&nbsp;месяцев</span>» или «<span style="color:#00b0f0;">3&nbsp;месяца</span>», чтобы открылся список продуктов по&nbsp;нужному сертификату
-<br>
-<span style="color:#999;"><span style="color:#f1574b;">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</span>
+	<img id="logo" src="https://ru.siberianhealth.com/static/rebranding/img/5a5c906883b9701f898e2281/1160434/upload-046af4b0-b821-11e8-89d0-798fa202fe62.png">
+	<h1>Клуб постоянства<br><span class="period" id="6m">6&nbsp;месяцев</span><span class="period" id="3m">3&nbsp;месяца</span></h1>
+	<p>Здесь указаны продукты, которые вы можете приобрести по&nbsp;сертификату Клуба постоянства</p>
+	<p>Нажмите на кнопку «<span style="color:#00b0f0;">6&nbsp;месяцев</span>» или «<span style="color:#00b0f0;">3&nbsp;месяца</span>», чтобы открылся список продуктов по&nbsp;нужному сертификату</p>
+	<p style="color:#999;"><span style="color:#f1574b;">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</p>
 </header>
 
 <div id="items"></div>
@@ -296,7 +293,7 @@ $('.period').click(function(){
 					}
 					var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
 					if(sendData.name.match(measurements)){
-						sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
+						sendData.name=sendData.name.replace(sendData.name.match(measurements),'');
 					}
 					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>');
 
