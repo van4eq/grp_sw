@@ -41,7 +41,7 @@ line-height:1.5em;
 }
 .period{
 cursor:pointer;
-border:3px dashed #999;
+border:3px dashed #bbb;
 border-radius:10em;
 padding:.05em .5em;
 display:inline-block;
@@ -52,11 +52,15 @@ color:#00b0f0;
 }
 
 #items{
+margin:30px auto;
+padding:0 30px;
+}
+
+.category{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:30px;
 margin:30px auto;
-padding:0 30px;
 }
 
 .item{
@@ -135,9 +139,12 @@ appearance:none;
 }
 
 #close{
-position:absolute;
-top:30px;
-right:30px;
+position:fixed;
+border:15px solid #fff;
+border-radius:50%;
+background:#fff;
+top:15px;
+right:25px;
 width:38px;
 height:38px;
 cursor:pointer;
@@ -145,8 +152,8 @@ cursor:pointer;
 .close:before,.close:after{
 content:'';
 position:absolute;
-top:17px;
-left:-5.5px;
+top:17.5px;
+left:-5px;
 width:50px;
 height:3px;
 background:#333;
@@ -179,7 +186,7 @@ font-weight:500;
 
 
 @media(max-width:1000px){
-#items{
+.category{
 grid-template-columns:repeat(3,1fr);
 }
 }
@@ -187,7 +194,7 @@ grid-template-columns:repeat(3,1fr);
 header{
 padding:0 15px;
 }
-#items{
+.category{
 padding:0 15px;
 grid-template-columns:repeat(2,1fr);
 gap:15px;
@@ -197,7 +204,7 @@ gap:15px;
 header{
 padding:0 20px;
 }
-#items{
+.category{
 padding:0 20px;
 grid-template-columns:repeat(1,1fr);
 }
@@ -243,11 +250,13 @@ var categoryChains; //Технические данные для беспроб�
 var cityId; //Технические данные для беспроблемной вставки с сайта SW
 var params; //Технические данные для беспроблемной вставки с сайта SW
 var amount; // Фасовка продукта
+var categories;
 $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
 	$('.period').removeClass('active');
 	$(this).addClass('active')
 	$('#items').empty();
+	categories=[];
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
 		var items=data.replace(/\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
@@ -297,7 +306,7 @@ $('.period').click(function(){
 					}
 					var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
 					if(sendData.name.match(measurements)){
-						sendData.name=sendData.name.replace(sendData.name.match(measurements),'');
+						sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
 					}
 					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>'); <!-- необязательно -->
 
@@ -307,7 +316,14 @@ $('.period').click(function(){
 						amount='';
 					}
 
-					$('#items').append('<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div></div>');
+					var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,''))+'</div></div>';
+
+					var category=sendData.vendor.trim().replace('&#039;','').replaceAll(' ','_').replace(/^$/g,'other');
+					if(!$('.'+category).length){
+						$('#items').append('<div class="category '+category+'">'+new_item+'</div>');
+					}else{
+						$('#items .'+category).append(new_item);
+					}
 				});
 			}
 		}
@@ -333,19 +349,16 @@ $('#up').click(function(){
 });
 
 $(document).on('click','.more',function(){
-	var qq=$(this).closest('.item').attr('class').replace('item _','');
-	$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+qq+'/',function(data){
-		let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
-		$('#item img').attr('src',$('._'+qq+' img').attr('src'));
-		$('#name').html($('._'+qq+' .name').html());
-		$('#amount').html($('._'+qq+' .amount').html());
-		$('#descr').html(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,''));
-		$('#link').attr('href','https://ru.siberianhealth.com/ru/shop/catalog/product/'+qq+'/');
+	var item=$(this).closest('.item').attr('class').replace('item _','');
+	$('#item img').attr('src',$('._'+item+' img').attr('src'));
+	$('#name').html($('._'+item+' .name').html());
+	$('#amount').html($('._'+item+' .amount').html());
+	$('#descr').html($('._'+item+' .descr').html());
+	$('#link').attr('href','https://ru.siberianhealth.com/ru/shop/catalog/product/'+item+'/');
 
-		$('#item').show().focus();
-		$('body').css('overflow-y','hidden');
-		$('#item').scrollTop(0);
-	});
+	$('#item').show().focus();
+	$('body').css('overflow-y','hidden');
+	$('#item').scrollTop(0);
 });
 $('#close').click(function(){
 	$('#item').hide();
