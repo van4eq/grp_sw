@@ -365,13 +365,20 @@ $(document).on('click','.more',function(){
 	$('#item').show().focus();
 	$('body').css('overflow-y','hidden');
 	$('#item').scrollTop(0);
+	history.pushState({itemMore:true},'','');
 });
 $('#close').click(function(){
 	$('#item').hide();
 	$('body').css('overflow-y','scroll');
+	history.replaceState({},'','');
 });
 $(document).keydown(function(esc){
 	if(esc.which==27){
+		$('#close').trigger('click');
+	}
+});
+$(window).on('popstate',function(e){
+	if(!e.state||!e.state.itemMore){
 		$('#close').trigger('click');
 	}
 });
