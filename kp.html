@@ -297,7 +297,6 @@ $('.period').click(function(){
 						.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
 						.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
 						.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
-						.replace(/витамином С/g,'витамином C') <!-- необязательно -->
 						.replace('. ',', ');
 					if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
 						sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
@@ -312,10 +311,10 @@ $('.period').click(function(){
 					if(sendData.name.match(measurements)){
 						sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
 					}
-					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>'); <!-- необязательно -->
+					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином C'); <!-- необязательно -->
 
 					if(data.indexOf("params.amount = '")!=-1){
-						amount=data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\d)\s/g,'$1&nbsp;');
+						amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
 					}else{
 						amount='';
 					}
@@ -323,6 +322,9 @@ $('.period').click(function(){
 					var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,''))+'</div></div>';
 
 					var category=sendData.vendor.trim().replace('&#039;','').replaceAll(' ','_').replace(/^$/g,'other');
+					if(sendData.vendor.trim().match(/парфюм|аромат|aroma|perfum|nordic/i)){
+						category='perfumes';
+					}
 					if(!$('.'+category).length){
 						$('#items').append('<div class="category '+category+'">'+new_item+'</div>');
 					}else{
