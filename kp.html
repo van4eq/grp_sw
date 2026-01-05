@@ -169,10 +169,12 @@ cursor:pointer;
 .close:before,.close:after{
 content:'';
 position:absolute;
-width:42px;
-height:3px;
-top:calc((35px - 3px) / 2);
-left:calc((35px - 42px) / 2);
+--closeWidth:45px;
+--closeHeight:3px;
+width:var(--closeWidth);
+height:var(--closeHeight);
+top:calc((100% - var(--closeHeight)) / 2);
+left:calc((100% - var(--closeWidth)) / 2);
 background:#333;
 }
 .close:before{
