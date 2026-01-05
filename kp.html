@@ -333,7 +333,7 @@ $('.period').click(function(){
 	});
 });
 
-if(window.location.href.match(/\?t=3m$/)){
+if(location.href.match(/\?t=3m$/)){
 	$('#3m').trigger('click');
 }else{
 	$('#6m').trigger('click');
@@ -363,6 +363,15 @@ $(document).on('click','.more',function(){
 	$('body').css('overflow-y','hidden');
 	$('#item').scrollTop(0);
 	history.pushState({itemMore:true},'','');
+
+	navigator.share({
+		title:'Клуб постоянства ('+$('.period').text()+')',
+		text:$('#name').text()+` (${item})`
+	}).then(()=>
+		console.log('Удалось поделиться')
+	).catch((error)=>
+		console.log('Не удалось поделиться',error)
+	);
 });
 $('#close').click(function(){
 	$('#item').hide();
@@ -374,7 +383,7 @@ $(document).keydown(function(esc){
 		$('#close').trigger('click');
 	}
 });
-$(window).on('popstate',function(e){
+$(window).on('popstate',function(e){ //При нажатии кнопки Назад в браузере или операционной системе происходит закрытие модального окна
 	if(!e.state||!e.state.itemMore){
 		$('#close').trigger('click');
 	}
