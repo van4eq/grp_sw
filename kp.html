@@ -141,7 +141,7 @@ appearance:none;
 #share{
 color:#00b0f0;
 font-size:1.25em;
-line-height:38px;
+line-height:35px;
 padding:15px 25px;
 border-radius:50px;
 font-weight:500;
@@ -162,17 +162,17 @@ border-radius:50%;
 background:#fff;
 top:15px;
 right:25px;
-width:38px;
-height:38px;
+width:35px;
+height:35px;
 cursor:pointer;
 }
 .close:before,.close:after{
 content:'';
 position:absolute;
-top:17.5px;
-left:-5px;
-width:50px;
+width:42px;
 height:3px;
+top:calc((35px - 3px) / 2);
+left:calc((35px - 42px) / 2);
 background:#333;
 }
 .close:before{
@@ -326,15 +326,17 @@ $('.period').click(function(){
 					if(sendData.name.match(measurements)){
 						sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
 					}
-					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином C'); <!-- необязательно -->
+					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином&nbsp;C'); <!-- необязательно -->
 
 					if(data.indexOf("params.amount = '")!=-1){
 						amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
 					}else{
 						amount='';
 					}
+					
+					sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').trim().replace(/\.$/gm,'');
 
-					var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,''))+'</div></div>';
+					var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s> <span>1 ₽</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
 
 					var category=sendData.vendor.trim().replace('&#039;','').replaceAll(' ','_').replace(/^$/g,'other');
 					if(sendData.vendor.trim().match(/парфюм|аромат|aroma|perfum|nordic/i)){
