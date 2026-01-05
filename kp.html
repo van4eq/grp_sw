@@ -375,7 +375,7 @@ $('#up').click(function(){
 
 $('#share').click(function(){
 	navigator.share({
-		text:`Пожалуйста, оформите по Клубу постоянства (${$('.period.active').text()}):\n${$('#name').text()} (#${$('#share').attr('item')})`
+		text:`Пожалуйста, оформите по Клубу постоянства за ${$('.period.active').text()}:\n#${$('#share').attr('item')} / ${$('#name').text()}`
 	}).catch((err)=>{
 		console.log('Опять чё-то не так',err);
 	});
