@@ -371,7 +371,7 @@ $('#up').click(function(){
 
 $('#share').click(function(){
 	navigator.share({
-		text:`Пожалуйста, оформите по Клубу постоянства (${$('.period.active').text()}):\n${$('#name').text()} (\#${item})`
+		text:`Пожалуйста, оформите по Клубу постоянства (${$('.period.active').text()}):\n${$('#name').text()} (#${$('#share').attr('item')})`
 	}).catch((err)=>{
 		console.log('Опять чё-то не так',err);
 	});
@@ -379,20 +379,21 @@ $('#share').click(function(){
 
 $(document).on('click','.more',function(){
 	var item=$(this).closest('.item').attr('class').replace('item _','');
+	$('#share').attr('item',item);
 	$('#item img').attr('src',$('._'+item+' img').attr('src'));
 	$('#name').html($('._'+item+' .name').html());
 	$('#amount').html($('._'+item+' .amount').html());
 	$('#descr').html($('._'+item+' .descr').html());
 	$('#link').attr('href','https://ru.siberianhealth.com/ru/shop/catalog/product/'+item+'/');
 
-	$('#item').show().focus();
+	$('#item').show().focus().scrollTop(0);
 	$('body').css('overflow-y','hidden');
-	$('#item').scrollTop(0);
 	history.pushState({itemMore:true},'','');
 });
 $('#close').click(function(){
 	$('#item').hide();
 	$('body').css('overflow-y','scroll');
+	$('#share').attr('item','');
 	history.replaceState({},'','');
 });
 $(document).keydown(function(esc){
