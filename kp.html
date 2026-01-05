@@ -365,7 +365,7 @@ $(document).on('click','.more',function(){
 	history.pushState({itemMore:true},'','');
 
 	navigator.share({
-		text:`Пожалуйста, оформите по Клубу постоянства (${$('.period').text()}) ${$('#name').text()} (${item})`
+		text:`Пожалуйста, оформите по Клубу постоянства (${$('.period.active').text()}) ${$('#name').text()} (${item})`
 	}).then(()=>
 		console.log('Удалось поделиться')
 	).catch((error)=>
