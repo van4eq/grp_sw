@@ -104,14 +104,14 @@ cursor:pointer;
 }
 
 #up{
-border:1.5px solid #00b0f0;
+background:rgba(255,255,255,.75);
+backdrop-filter:blur(15px);
 border-radius:50px;
 color:#00b0f0;
 font-weight:500;
 position:fixed;
-background:#fff;
-bottom:20px;
-right:20px;
+bottom:15px;
+right:25px;
 padding:.75em 1em;
 cursor:pointer;
 }
@@ -146,7 +146,8 @@ padding:15px 25px;
 border-radius:50px;
 font-weight:500;
 position:fixed;
-background:#fff;
+background:rgba(255,255,255,.75);
+backdrop-filter:blur(15px);
 top:15px;
 right:100px;
 cursor:pointer;
@@ -157,13 +158,13 @@ content:'Поделиться';
 
 #close{
 position:fixed;
-border:15px solid #fff;
 border-radius:50%;
-background:#fff;
+background:rgba(255,255,255,.75);
+backdrop-filter:blur(15px);
 top:15px;
-right:25px;
-width:35px;
-height:35px;
+right:30px;
+width:65px;
+height:65px;
 cursor:pointer;
 }
 .close:before,.close:after{
@@ -216,6 +217,9 @@ padding:0 15px;
 #items{
 padding:0 15px;
 }
+#close,#up{
+right:15px;
+}
 .category{
 grid-template-columns:repeat(2,1fr);
 gap:15px;
@@ -224,6 +228,9 @@ gap:15px;
 @media(max-width:400px){
 #items{
 padding:0 30px;
+}
+#close,#up{
+right:30px;
 }
 .category{
 grid-template-columns:repeat(1,1fr);
