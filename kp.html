@@ -285,7 +285,8 @@ $('.period').click(function(){
 	categories=[];
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
-		var items=data.replace(/\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
+		var items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
+		items=items.sort((a,b)=>a-b);
 		for(let i=0;i<items.length;i++){
 			if((items[i][0]).trim().match(/^\d{6}$/)){
 				$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
