@@ -81,7 +81,7 @@ $(document).on('paste',function(e){
 					.replace(/\, (\d{2,3} г)/,' ($1)')
 					.replace(/\, (объем \d{2,3} мл)/,' ($1)')
 					.replace('Духи-концентрат,','Духи-концентрат')
-					.replace('Фиточай из диких трав № ','Чай №')
+					.replace(/Фиточай из диких трав №( |)/g,'Чай №')
 					.replace(' Siberian Herbs','')
 					.replace(' GREENPIN','')
 					.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
@@ -395,4 +395,5 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
+
 
