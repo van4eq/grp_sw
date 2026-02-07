@@ -381,7 +381,7 @@ $('#up').click(function(){
 
 $('#share').click(function(){
 	navigator.share({
-		text:`Пожалуйста, оформите по Клубу постоянства за ${$('.period.active').text()}:\n#${$('#share').attr('item')} / ${$('#name').text()\nhttps://ru.siberianhealth.com/ru/shop/catalog/product/${$('#share').attr('item')}/}`
+		text:`Пожалуйста, оформите по Клубу постоянства за ${$('.period.active').text()}:\n#${$('#share').attr('item')} / ${$('#name').text()}\nhttps://ru.siberianhealth.com/ru/shop/catalog/product/${$('#share').attr('item')}/`
 	}).catch((err)=>{
 		console.log('Опять чё-то не так',err);
 	});
@@ -417,6 +417,7 @@ $(window).on('popstate',function(e){ //При нажатии кнопки Наз
 	}
 });
 </script>
+
 
 
 
