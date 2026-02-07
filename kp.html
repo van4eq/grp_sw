@@ -361,7 +361,7 @@ $('.period').click(function(){
 	});
 });
 
-if(location.href.match(/\?t=3m$/)){
+if(location.href.match('kp?t=3m')){
 	$('#3m').trigger('click');
 }else{
 	$('#6m').trigger('click');
@@ -417,3 +417,4 @@ $(window).on('popstate',function(e){ //При нажатии кнопки Наз
 	}
 });
 </script>
+
