@@ -74,10 +74,10 @@ $(document).on('paste',function(e){
 			$('#t div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
 		}else{ //А это если стараешься код на оплату скинуть
 			$('#q div').html(text.trim().split('\r\nСрок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('\r\nНомер QR-кода: ',' (#').replace('\r\n','<br>')+')');
-			$('#w div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br><br>В наличии. Заказ готов к выдаче');
+			$('#w div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>В наличии. Заказ готов к выдаче');
 			$('#e div').html(text.trim().split('\r\nСрок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('\r\nНомер QR-кода: ',' (#').replace('\r\n','<br>')+') ОТДАНО');
 			$('#r div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ отдан');
-			$('#t div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br>&nbsp;<br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов');
+			$('#t div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов');
 		}
 	}).catch(err=>{
 		console.log('Опять чё-то не так',err);
@@ -86,7 +86,7 @@ $(document).on('paste',function(e){
 $('.qwerty').click(function(){
 	var t=$(this).attr('id');
 	if($('#'+t+' div').text()!=''){
-		navigator.clipboard.writeText(((t!='q'&&t!='e')?'\n\n':'')+$('#'+t+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\n').trim());
+		navigator.clipboard.writeText(((t!='q'&&t!='e')?'\n\n':'')+$('#'+t+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\r\n').trim());
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
