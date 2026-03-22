@@ -86,7 +86,7 @@ $(document).on('paste',function(e){
 $('.qwerty').click(function(){
 	var t=$(this).attr('id');
 	if($('#'+t+' div').text()!=''){
-		navigator.clipboard.writeText(((t!='q'&&t!='e')?'\n\n':'')+$('#'+t+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\r\n\r\n').trim());
+		navigator.clipboard.writeText(((t!='q'&&t!='e')?'\n\n':'')+$('#'+t+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\r\r\n\n').trim());
 		$('#copied').fadeIn(100).fadeOut(1000);
 	}
 });
