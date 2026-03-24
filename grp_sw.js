@@ -136,7 +136,7 @@ $(document).on('paste',function(e){
 					}else{
 						before='until';
 						if(until!=null){
-							$('#until+label').text('Акция до '+until);
+							$('#until+label').text('Акция по '+until);
 						}else{
 							$('#until+label').text('Акция');
 						}
