@@ -73,9 +73,9 @@ $(document).on('paste',function(e){
 			$('#r div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ отдан<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
 			$('#t div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
 		}else{ //А это если стараешься код на оплату скинуть
-			$('#q div').html(text.trim().split('Срок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('Номер QR-кода: ',' (#')+')');
+			$('#q div').html(text.trim().split('Срок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('Номер QR-кода: ',' (#').replace('\r\n','')+')');
 			$('#w div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>В наличии. Заказ готов к выдаче');
-			$('#e div').html(text.trim().split('Срок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('Номер QR-кода: ',' (#')+') ОТДАНО');
+			$('#e div').html(text.trim().split('Срок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('Номер QR-кода: ',' (#').replace('\r\n','')+') ОТДАНО');
 			$('#r div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ отдан');
 			$('#t div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов');
 		}
