@@ -345,42 +345,29 @@ $('#copy button').click(function(){
 		addLink='\n\nПодробнее о продукте: '+link;
 	}
 	$('#copy_descr').html($('#descr').html().replace(/\&nbsp\;|\t/g,' '));
-
+	var clipboard=slogan
+		+bold
+			+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
+			+' за '
+			+scratchPrice
+			+declension(price,new Array('рубль','рубля','рублей'))
+		+boldx
+		+points
+		+'\n\n'
+		+remain
+		+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()
+		+addLink;
 	if($(this).attr('id')=='wa'||$(this).attr('id')=='tg'){
-		navigator.clipboard.writeText(
-			slogan
-			+bold
-				+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
-				+' за '
-				+scratchPrice
-				+declension(price,new Array('рубль','рубля','рублей'))
-			+boldx
-			+points
-			+'\n\n'
-			+remain
-			+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()
-			+addLink
-		);
+		navigator.clipboard.writeText(clipboard);
 	}
 	if($(this).attr('id')=='max'){
-		var max=slogan
-			+'<br>'
-			+bold
-				+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
-				+' за '
-				+scratchPrice
-				+declension(price,new Array('рубль','рубля','рублей'))
-			+boldx
-			+'<br>'
-			+points
-			+'<br><br>'
-			+remain
-			+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'<br><br>').trim()
-			+'<br><br>'
-			+addLink;
-		navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([max], { type: 'text/html' }) })]);
+		navigator.clipboard.write([
+			new ClipboardItem({
+				'text/html':new Blob([clipboard.replaceAll('\n','<br>')],
+				{type:'text/html'})
+			})
+		]);
 	}
-
 	$('#copied').fadeIn(100).fadeOut(1000);
 });
 
