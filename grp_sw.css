@@ -59,16 +59,8 @@ margin-right:5px;
 }
 #max{
 color:#93d;
-border: none; 
-  
-  /* 2. Задаем градиент как фон */
-  background: linear-gradient(135deg, #4cf, #93d); 
-  
-  /* 3. Обрезаем фон по внутреннему краю рамки (padding-box) */
-  background-clip: padding-box; 
-  
-  /* 4. Делаем фон прозрачным, чтобы был виден текст */
-  background-color: transparent; 
+background:linear-gradient(135deg,#4cf,#93d) border-box; 
+border:1px solid transparent;
 }
 #copied{
 color:#F2685c;
