@@ -57,10 +57,9 @@ color:#179CDE;
 border:1px solid;
 margin-right:5px;
 }
-button#max{
-background:linear-gradient(135deg,#4cf,#93d) border-box,linear-gradient(135deg,transparent,transparent) text;
-color:transparent;
-border:1px solid transparent;
+#max{
+color:#4cf;
+border:1px solid;
 }
 #copied{
 color:#F2685c;
