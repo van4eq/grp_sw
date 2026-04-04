@@ -58,12 +58,9 @@ border:1px solid;
 margin-right:5px;
 }
 #max{
-background: 
-linear-gradient(45deg, #4cf, #93d) border-box,linear-gradient(45deg, transparent, transparent) content-box;
-  background-clip: content-box, border-box;
-  -webkit-background-clip: text, border-box;
-  color: transparent;
-  border: 1px solid transparent;
+background:linear-gradient(135deg,#4cf,#93d) border-box,linear-gradient(135deg,transparent,transparent) text;
+color:transparent;
+border:1px solid transparent;
 }
 #copied{
 color:#F2685c;
