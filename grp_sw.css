@@ -58,19 +58,11 @@ border:1px solid #179CDE;
 margin-right:5px;
 }
 #max{
-color:#179CDE;
-border:1px solid #179CDE;
-
-background-clip:padding-box;
-border-image:linear-gradient(to right,#4cf,#93d) 1;
-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
-mask-composite:exclude;
-
-background:linear-gradient(to right,#4cf,#93d);
+border:1px solid transparent;
+background:linear-gradient(135deg,#4cf,#93d);
 -webkit-background-clip:text;
-background-clip:text;
 -webkit-text-fill-color:transparent;
-color:transparent;
+border-image:linear-gradient(135deg,#4cf,#93d) 1;
 }
 #copied{
 color:#F2685c;
