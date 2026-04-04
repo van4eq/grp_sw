@@ -58,11 +58,15 @@ border:1px solid #179CDE;
 margin-right:5px;
 }
 #max{
+color:#93d;
 border:1px solid transparent;
-background:linear-gradient(135deg,#4cf,#93d);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-border-image:linear-gradient(135deg,#4cf,#93d) 1;
+
+  /* Градиентный фон, который будет виден сквозь прозрачную рамку */
+  background: linear-gradient(135deg, #4cf, #93d);
+
+  /* Обрезаем фон по краю рамки, чтобы углы были скруглёнными */
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
 }
 #copied{
 color:#F2685c;
