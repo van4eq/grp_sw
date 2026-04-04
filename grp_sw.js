@@ -301,9 +301,9 @@ $('#copy button').click(function(){
 	}
 	if($(this).attr('id')=='max'){
 		var bold='<b>';
-		var boldх='</b>';
+		var boldx='</b>';
 		var scratch='<s>';
-		var scratchх='</s>';
+		var scratchx='</s>';
 	}
 	var slogan='';
 	if($('[name=period]:checked').prop('checked')&&!$('#nope').prop('checked')){
@@ -376,6 +376,7 @@ $('#copy button').click(function(){
 			+'<br><br>'
 			+remain
 			+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'<br><br>').trim()
+			+'<br><br>'
 			+addLink;
 		navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([max], { type: 'text/html' }) })]);
 	}
