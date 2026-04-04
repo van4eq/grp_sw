@@ -289,11 +289,21 @@ $('#other').click(function(){
 $('#copy button').click(function(){
 	if($(this).attr('id')=='wa'){
 		var bold='*';
+		var boldx='*';
 		var scratch='~';
+		var scratchx='~';
 	}
 	if($(this).attr('id')=='tg'){
 		var bold='**';
+		var boldx='**';
 		var scratch='~~';
+		var scratchx='~~';
+	}
+	if($(this).attr('id')=='max'){
+		var bold='<b>';
+		var boldх='</b>';
+		var scratch='<s>';
+		var scratchх='</s>';
 	}
 	var slogan='';
 	if($('[name=period]:checked').prop('checked')&&!$('#nope').prop('checked')){
@@ -320,7 +330,7 @@ $('#copy button').click(function(){
 	}
 	var scratchPrice='';
 	if($('#price span.del').text()!=''){
-		scratchPrice=scratch+$('#price span.del').text().replace(/\D/g,'')+scratch+' ';
+		scratchPrice=scratch+$('#price span.del').text().replace(/\D/g,'')+scratchx+' ';
 	}
 	var price=$('#price span:not(.del)').text().replace(/\D/g,'');
 	if($('#specialPrice+label').text().match(/\d+/)){
@@ -328,27 +338,48 @@ $('#copy button').click(function(){
 	}
 	var remain='';
 	if($('#remain+label').text().match(/\d+/)){
-		remain=bold+'Всего '+declension($('#remain+label').text().match(/\d+/),new Array('штука','штуки','штук'))+bold+'\n\n';
+		remain=bold+'Всего '+declension($('#remain+label').text().match(/\d+/),new Array('штука','штуки','штук'))+boldx+'\n\n';
 	}
 	var addLink='';
 	if($('#link').prop('checked')){
 		addLink='\n\nПодробнее о продукте: '+link;
 	}
 	$('#copy_descr').html($('#descr').html().replace(/\&nbsp\;|\t/g,' '));
-	navigator.clipboard.writeText(
-		slogan
-		+bold
-			+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
-			+' за '
-			+scratchPrice
-			+declension(price,new Array('рубль','рубля','рублей'))
-		+bold
-		+points
-		+'\n\n'
-		+remain
-		+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()
-		+addLink
-	);
+
+	if($(this).attr('id')=='wa'||$(this).attr('id')=='tg'){
+		navigator.clipboard.writeText(
+			slogan
+			+bold
+				+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
+				+' за '
+				+scratchPrice
+				+declension(price,new Array('рубль','рубля','рублей'))
+			+boldx
+			+points
+			+'\n\n'
+			+remain
+			+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()
+			+addLink
+		);
+	}
+	if($(this).attr('id')=='max'){
+		var max=slogan
+			+'<br>'
+			+bold
+				+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
+				+' за '
+				+scratchPrice
+				+declension(price,new Array('рубль','рубля','рублей'))
+			+boldx
+			+'<br>'
+			+points
+			+'<br><br>'
+			+remain
+			+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'<br><br>').trim()
+			+addLink;
+		navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([max], { type: 'text/html' }) })]);
+	}
+
 	$('#copied').fadeIn(100).fadeOut(1000);
 });
 
