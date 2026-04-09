@@ -468,7 +468,7 @@ $('#wa,#tg').click(function(){
 $('#link').click(function(){
 	var link;
 	for(i=0;i<$('p').length;i++){
-		link=$('p').eq(i).attr('id_')+'&';
+		link+=$('p').eq(i).attr('id_')+'&';
 	}
 	navigator.clipboard.writeText('https://van4eq.github.io/grp_sw/select?disc='+discount+'?id='+link);
 	$('#copied').fadeIn(100).fadeOut(1000);
