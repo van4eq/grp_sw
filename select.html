@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+<link rel="icon" href="https://ru.siberianhealth.com/shopen/public/icon.svg" type="image/svg+xml">
+<title>Варианты продуктов с дополнительной скидкой</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
+body{
+margin:auto;
+max-width:1300px;
+font-family:Google Sans;
+font-weight:600;
+color:#333;
+overflow-y:scroll;
+}
+
+:root{
+--indent:30px;
+}
+
+a{
+color:#00b0f0;
+outline:none;
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+}
+
+header{
+margin:30px auto;
+padding:0 var(--indent);
+}
+
+#logo{
+width:190px;
+}
+
+h1{
+margin:30px 0;
+color:#00b0f0;
+line-height:1.5em;
+}
+.period{
+cursor:pointer;
+border:3px dashed #bbb;
+border-radius:10em;
+padding:.05em .5em;
+display:inline-block;
+}
+.period.active{
+border:3px solid #00b0f0;
+color:#00b0f0;
+}
+
+#items{
+margin:30px auto;
+padding:0 var(--indent);
+}
+
+.category{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:var(--indent);
+margin:30px auto;
+}
+
+.item{
+position:relative;
+padding-bottom:4em;
+}
+
+.item img{
+width:100%;
+border-radius:30px;
+}
+
+.article{
+color:#999;
+font-weight:500;
+font-size:.85em;
+margin:1em 0 .5em;
+}
+
+.amount{
+color:#999;
+font-weight:500;
+}
+
+.price{
+position:absolute;
+bottom:0;
+left:0;
+font-size:1.6em;
+font-weight:500;
+}
+.price s{
+color:#999;
+font-size:.75em;
+}
+.price s:after,.price span:after{
+content:'₽';
+margin-left:.2em;
+}
+.price span{
+color:#f1574b;
+margin-left:.5em;
+}
+
+.more{
+cursor:pointer;
+}
+
+#up{
+background:rgba(255,255,255,.75);
+backdrop-filter:blur(15px);
+border-radius:50px;
+color:#00b0f0;
+font-weight:500;
+position:fixed;
+bottom:20px;
+right:calc(var(--indent) - 1em);
+line-height:1.25em;
+padding:.75em 1em;
+cursor:pointer;
+}
+#up:after{
+content:'Наверх';
+}
+
+
+/* Модальное окно с формой входа */
+#item{
+display:none;
+position:fixed;
+top:0;
+left:0;
+z-index:1000;
+width:100%;
+height:100vh;
+background:#fff;
+overflow-y:scroll;
+overflow-x:hidden;
+outline:none;
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+}
+
+#share{
+color:#00b0f0;
+font-size:1.25em;
+line-height:35px;
+padding:15px 25px;
+border-radius:50px;
+font-weight:500;
+position:fixed;
+background:rgba(255,255,255,.75);
+backdrop-filter:blur(15px);
+top:15px;
+right:calc(70px + var(--indent));
+cursor:pointer;
+}
+#share:after{
+content:'Поделиться';
+}
+
+#close{
+position:fixed;
+border-radius:50%;
+background:rgba(255,255,255,.75);
+backdrop-filter:blur(15px);
+top:15px;
+right:var(--indent);
+width:65px;
+height:65px;
+cursor:pointer;
+}
+.close:before,.close:after{
+content:'';
+position:absolute;
+--closeWidth:45px;
+--closeHeight:3px;
+width:var(--closeWidth);
+height:var(--closeHeight);
+top:calc((100% - var(--closeHeight)) / 2);
+left:calc((100% - var(--closeWidth)) / 2);
+background:#333;
+}
+.close:before{
+transform:rotate(45deg);
+}
+.close:after{
+transform:rotate(-45deg);
+}
+
+#item img{
+width:100%;
+}
+#item_body{
+max-width:450px;
+margin:90px auto 60px;
+}
+#name{
+font-size:1.25em;
+}
+#amount{
+color:#999;
+font-weight:500;
+}
+#descr{
+margin:1em 0;
+font-weight:500;
+}
+
+
+@media(max-width:1000px){
+.category{
+grid-template-columns:repeat(3,1fr);
+}
+}
+@media(max-width:700px){
+:root{
+--indent:15px;
+}
+#up{
+right:var(--indent);
+}
+.category{
+grid-template-columns:repeat(2,1fr);
+}
+}
+@media(max-width:375px){
+#items{
+padding:0 30px;
+}
+.category{
+grid-template-columns:repeat(1,1fr);
+}
+}
+</style>
+
+<header>
+	<img id="logo" src="https://ru.siberianhealth.com/static/rebranding/img/5a5c906883b9701f898e2281/1160434/upload-046af4b0-b821-11e8-89d0-798fa202fe62.png">
+	<h1>Варианты продуктов со скидкой</h1>
+	<p>Здесь указаны продукты, которые вы можете приобрести со скидкой (предоставляется при покупке от определённой суммы)</p>
+</header>
+
+<div id="items"></div>
+
+<div id="up"></div>
+
+<div id="item">
+	<div id="share"></div>
+	<div id="close"><div class="close"></div></div>
+	<div id="item_body">
+		<img>
+		<div style="padding:30px;">
+			<div id="name"></div>
+			<div id="amount"></div>
+			<div id="descr"></div>
+			<a id="link" target="_blank">Подробнее о&nbsp;продукте (перейти&nbsp;на&nbsp;сайт)</a>
+		</div>
+	</div>
+</div>
+
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script>
+function prepositions(text){
+	var prepositions=['без','безо','в','во','для','до','за','из','изо','к','ко','на','над','надо','о','об','обо','от','ото','по','под','подо','перед','передо','после','при','про','с','со','у','через','из-за','из-под','а','но','не','ни', 'Без','Безо','В','Во','Для','До','За','Из','Изо','К','Ко','На','Над','Надо','О','Об','Обо','От','Ото','По','Под','Подо','Перед','Передо','После','При','Про','С','Со','У','Через','Из-за','Из-под','А','Но','Не','Ни'];
+	for(let prep of prepositions){
+		text=text.replace(new RegExp(` ${prep} `,'g'),` ${prep}&nbsp;`);
+	}
+	return text;
+}
+
+var categoryChains; //Технические данные для беспроблемной вставки с сайта SW
+var cityId; //Технические данные для беспроблемной вставки с сайта SW
+var params; //Технические данные для беспроблемной вставки с сайта SW
+var amount; // Фасовка продукта
+var items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
+items=items.sort((a,b)=>a-b);
+for(let i=0;i<items.length;i++){
+	if((items[i][0]).trim().match(/^\d{6}$/)){
+		$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
+			let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
+
+			sendData.name=sendData.name
+				.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
+				.replace(/\, (\d{2,3} мл)/,' ($1)')
+				.replace(/\, (\d{2,3} г)/,' ($1)')
+				.replace(/\, (объем \d{2,3} мл)/,' ($1)')
+				.replace('Духи-концентрат,','Духи-концентрат')
+				.replace('Фиточай из диких трав № ','Чай №')
+				.replace(' Siberian Herbs','')
+				.replace(' GREENPIN','')
+				.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
+				.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
+				.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
+				.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
+				.replace(/^Истоки чистоты. Формула 3$/,'Формула 3')
+				.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
+				.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
+				.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
+				.replace(/^«Живокост», восстанавливающий бальзам форте$/,'Бальзам Живокост форте')
+				.replace(/^\«Уян Номо\»\, бальзам для тела$/,'Бальзам Уян Номо (Гибкий лук)')
+				.replace(/^(Бальзам широкого спектра действия)$/,'$1 Корень (без камфоры)')
+				.replace(/^(Бальзам широкого спектра действия) «Корень»$/,'$1 Корень (с камфорой)')
+				.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов)$/,'$1 '+sendData.vendor+' ($2)')
+				.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов) (Горная лаванда)/,'$1 $3 ($2)')
+				.replace('Сибирская чага, природная профилактическая зубная паста','Природная профилактическая зубная паста Сибирская чага')
+				.replace(/^Хронобиологическая защита клеток мозга$|^Хронобиологическая защита сердца$|^Хронобиологическая защита печени$|^Хронобиологическая защита суставов$|^Хронобиологическая защита зрения$/,sendData.vendor+' ('+sendData.name+')')
+				.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
+				.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
+				.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
+				.replace('. ',', ');
+			if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
+				sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
+			}
+			if(sendData.name.trim().match('парфюмиров')){
+				sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
+			}
+			if(sendData.name.match(' / ')){
+				sendData.name=sendData.name.trim().replace(' / ',' (')+')';
+			}
+			var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
+			if(sendData.name.match(measurements)){
+				sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
+			}
+			sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином&nbsp;C').replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
+
+			if(data.indexOf("params.amount = '")!=-1){
+				amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
+			}else{
+				amount='';
+			}
+			
+			sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').trim().replace(/\.$/gm,'');
+
+			var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>'+Math.ceil((1-location.href.split(/\?disc=/)[1].split(/\?id=/)[0]/100)*sendData.oldPrice)+'</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
+
+			$('#items .'+category).append(new_item);
+
+			var category='all';
+			if(!$('.'+category).length){
+				$('#items').append('<div class="category '+category+'">'+new_item+'</div>');
+			}else{
+				$('#items .category').append(new_item);
+			}
+		});
+	}
+}
+
+$('#up').click(function(){
+	$(window).scrollTop(0);
+});
+
+$('#share').click(function(){
+	navigator.share({
+		text:`Пожалуйста, оформите по бомба-офферу:\n#${$('#share').attr('item')} / ${$('#name').text()}`
+	}).catch((err)=>{
+		console.log('Опять чё-то не так',err);
+	});
+});
+
+$(document).on('click','.more',function(){
+	var item=$(this).closest('.item').attr('class').replace('item _','');
+	$('#share').attr('item',item);
+	$('#item img').attr('src',$('._'+item+' img').attr('src'));
+	$('#name').html($('._'+item+' .name').html());
+	$('#amount').html($('._'+item+' .amount').html());
+	$('#descr').html($('._'+item+' .descr').html());
+	$('#link').attr('href','https://ru.siberianhealth.com/ru/shop/catalog/product/'+item+'/');
+
+	$('#item').show().focus().scrollTop(0);
+	$('body').css('overflow-y','hidden');
+	history.pushState({itemMore:true},'','');
+});
+$('#close').click(function(){
+	$('#item').hide();
+	$('body').css('overflow-y','scroll');
+	$('#share').attr('item','');
+	history.replaceState({},'','');
+});
+$(document).keydown(function(esc){
+	if(esc.which==27){
+		$('#close').trigger('click');
+	}
+});
+$(window).on('popstate',function(e){ //При нажатии кнопки Назад в браузере или операционной системе происходит закрытие модального окна
+	if(!e.state||!e.state.itemMore){
+		$('#close').trigger('click');
+	}
+});
+</script>
