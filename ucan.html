@@ -317,7 +317,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 
 						var oldPrice=(excel[i][5].match('-'))?declension(excel[i][3].replace(/\D/g,''),new Array('рубль','рубля','рублей')):excel[i][3].replace(/\D/g,'');
 
-						var price=(excel[i][5].match('-'))?'в подарок':(excel[i][5].trim()=='')?declension(excel[i][3]*(1-+excel[i][4].replace(',','.')),new Array('рубль','рубля','рублей')):declension(excel[i][5].replace(/\D/g,''),new Array('рубль','рубля','рублей'));
+						var price=(excel[i][5].match('-'))?'в подарок':(excel[i][5].trim()=='')?declension(Math.round(excel[i][3]*(1-+excel[i][4].replace(',','.'))),new Array('рубль','рубля','рублей')):declension(excel[i][5].replace(/\D/g,''),new Array('рубль','рубля','рублей'));
 
 						var points=(excel[i][6].match('-'))?excel[i][6]='':(excel[i][6].trim()=='')?'':'/'+declension(excel[i][6].trim().replace(',0',''),new Array('балл','балла','баллов'));
 
