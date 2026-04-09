@@ -210,10 +210,10 @@ $('[contenteditable]').on('paste keyup',function(){
 	$('#text_length').text($('[contenteditable]').html().length);
 	if($('[contenteditable]').html().length>1024){
 		$('#text_length').addClass('overlimit');
-		$('#copy button').prop('disabled',true);
+		$('#wa,#tg').prop('disabled',true);
 	}else{
 		$('#text_length').removeClass('overlimit');
-		$('#copy button').prop('disabled',false);
+		$('#wa,#tg').prop('disabled',false);
 	}
 });
 
@@ -399,10 +399,10 @@ $('#step_text').click(function(){
 	$('#text_length').text($('[contenteditable]').html().length);
 	if($('[contenteditable]').html().length>1024){
 		$('#text_length').addClass('overlimit');
-		$('#copy button').prop('disabled',true);
+		$('#wa,#tg').prop('disabled',true);
 	}else{
 		$('#text_length').removeClass('overlimit');
-		$('#copy button').prop('disabled',false);
+		$('#wa,#tg').prop('disabled',false);
 	}
 
 	var prod_disc=$('[contenteditable]').text().match(/за \d+ \d+ (рубль|рубля|рублей)/g)?'1 продукт со скидкой '+discount+'%':'';
