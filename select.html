@@ -245,13 +245,10 @@ grid-template-columns:repeat(1,1fr);
 
 <header>
 	<img id="logo" src="https://ru.siberianhealth.com/static/rebranding/img/5a5c906883b9701f898e2281/1160434/upload-046af4b0-b821-11e8-89d0-798fa202fe62.png">
-	<h1>Варианты продуктов со скидкой</h1>
-	<p>Здесь указаны продукты, которые вы можете приобрести со скидкой (предоставляется при покупке от определённой суммы)</p>
+	<h1>Варианты продуктов со скидкой </h1>
 </header>
 
 <div id="items"></div>
-
-<div id="up"></div>
 
 <div id="item">
 	<div id="share"></div>
@@ -353,6 +350,8 @@ for(let i=0;i<items.length;i++){
 		});
 	}
 }
+
+$('h1').append(location.href.split(/\?disc=/)[1].match(/^\d+/)+'%');
 
 $('#up').click(function(){
 	$(window).scrollTop(0);
