@@ -357,18 +357,20 @@ $('#copy button').click(function(){
 		+remain
 		+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()
 		+addLink;
-	if($(this).attr('id')=='wa'||$(this).attr('id')=='tg'){
-		navigator.clipboard.writeText(clipboard);
-	}
-	if($(this).attr('id')=='max'){
-		navigator.clipboard.write([
-			new ClipboardItem({
-				'text/html':new Blob([clipboard.replaceAll('\n','<br>')],
-				{type:'text/html'})
-			})
-		]);
-	}
-	$('#copied').fadeIn(100).fadeOut(1000);
+	try{
+		if($(this).attr('id')=='wa'||$(this).attr('id')=='tg'){
+			navigator.clipboard.writeText(clipboard);
+		}
+		if($(this).attr('id')=='max'){
+			navigator.clipboard.write([
+				new ClipboardItem({
+					'text/html':new Blob([clipboard.replaceAll('\n','<br>')],
+					{type:'text/html'})
+				})
+			]);
+		}
+		$('#copied').fadeIn(100).fadeOut(1000);
+	}catch{}
 });
 
 $(document).on('click','#img img',function(){
@@ -378,8 +380,10 @@ $(document).on('click','#img img',function(){
 	canvas.width=img.width;
 	canvas.height=img.height;
 	context.drawImage(img,0,0,img.width,img.height);
-	canvas.toBlob(blob=>navigator.clipboard.write([new ClipboardItem({'image/png':blob})]));
-	$('#copied').fadeIn(100).fadeOut(1000);
+	try{
+		canvas.toBlob(blob=>navigator.clipboard.write([new ClipboardItem({'image/png':blob})]));
+		$('#copied').fadeIn(100).fadeOut(1000);
+	}catch{}
 });
 
 //Тёмная тема
@@ -414,5 +418,3 @@ $('#link').click(function(){
 		localStorage['link']=0;
 	}
 });
-
-
