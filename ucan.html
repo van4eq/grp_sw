@@ -261,7 +261,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 						$('#step_text').text('Готово! Редактировать текст').prop('disabled',false);
 						if(excel[0][0].match('ПМГ')){
 							$('[contenteditable]').prepend('Акция «Счастливая среда» / '+wednesday()+'!<br>');
-							$('#link').prop('disabled',false);
+							$('#link').prop('disabled',true);
 						}
 						<!-- else if(excel[0][0].match('Бомба оффер')){ -->
 							<!-- $('[contenteditable]').prepend(excel[0][0].replaceAll('"','').replace('Бомба оффер ','Акция недели!<br>')+'<br>'); -->
