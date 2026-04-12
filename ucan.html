@@ -259,9 +259,10 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 						alert('Что-то пошло не так. Возможно, артикулы некорректны, сайт недоступен или вставлены некорректные данные');
 					}else{
 						$('#step_text').text('Готово! Редактировать текст').prop('disabled',false);
-						<!-- if(excel[0][0]=='ПМГ'){ -->
-							<!-- $('[contenteditable]').prepend('Акция «Счастливая среда» / '+wednesday()+'!<br>'); -->
-						<!-- } -->
+						if(excel[0][0].match('ПМГ')){
+							$('[contenteditable]').prepend('Акция «Счастливая среда» / '+wednesday()+'!<br>');
+							$('#link').prop('disabled',false);
+						}
 						<!-- else if(excel[0][0].match('Бомба оффер')){ -->
 							<!-- $('[contenteditable]').prepend(excel[0][0].replaceAll('"','').replace('Бомба оффер ','Акция недели!<br>')+'<br>'); -->
 						<!-- } -->
@@ -410,7 +411,7 @@ $('#step_text').click(function(){
 	var prod_gift=$('[contenteditable]').text().match(/за \d+ (рубль|рубля|рублей) в подарок/g)?'1 продукт в подарок':'';
 
 	$('[contenteditable]').prepend(
-		'Акция «Счастливая среда» / '+wednesday()+'!<br>'
+		// 'Акция «Счастливая среда» / '+wednesday()+'!<br>'
 		// +prod_disc
 		// +and
 		// +prod_gift
