@@ -350,7 +350,7 @@ $('.period').click(function(){
 					
 					sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').trim().replace(/\.$/gm,'');
 
-					var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>1</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
+					var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount more">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>1</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
 
 					var category=sendData.vendor.trim().replace('&#039;','').replaceAll(' ','_').replace(/^$/g,'other');
 					if(sendData.vendor.trim().match(/парфюм|аромат|aroma|perfum|nordic/i)){
