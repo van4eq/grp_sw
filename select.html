@@ -277,10 +277,13 @@ var categoryChains; //Технические данные для беспроб�
 var cityId; //Технические данные для беспроблемной вставки с сайта SW
 var params; //Технические данные для беспроблемной вставки с сайта SW
 var amount; // Фасовка продукта
+var items; // ID продуктов
 if(location.href.match(/\?id=/)){
-	var items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
-}else if(location.href.match(/\?select/)){
-	var items='';
+	items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
+}else if(location.href.match(/\?selection/)){
+	$.get('https://van4eq.github.io/grp_sw/selection'+'?'+Date.now(),function(data){
+		items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
+	}
 }
 items=items.sort((a,b)=>a-b);
 for(let i=0;i<items.length;i++){
