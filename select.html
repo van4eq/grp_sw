@@ -278,86 +278,84 @@ var cityId; //Технические данные для беспроблемн�
 var params; //Технические данные для беспроблемной вставки с сайта SW
 var amount; // Фасовка продукта
 var items; // ID продуктов
-if(location.href.match(/\?id=/)){
-	items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
-}else if(location.href.match(/\?selection/)){
-	$.get('https://van4eq.github.io/grp_sw/selection'+'?'+Date.now(),function(data){
-		items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
-	});
-}
-items=items.sort((a,b)=>a-b);
-for(let i=0;i<items.length;i++){
-	if((items[i][0]).trim().match(/^\d{6}$/)){
-		$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
-			let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
-
-			sendData.name=sendData.name
-				.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
-				.replace(/\, (\d{2,3} мл)/,' ($1)')
-				.replace(/\, (\d{2,3} г)/,' ($1)')
-				.replace(/\, (объем \d{2,3} мл)/,' ($1)')
-				.replace('Духи-концентрат,','Духи-концентрат')
-				.replace('Фиточай из диких трав № ','Чай №')
-				.replace(' Siberian Herbs','')
-				.replace(' GREENPIN','')
-				.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
-				.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
-				.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
-				.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
-				.replace(/^Истоки чистоты. Формула 3$/,'Формула 3')
-				.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
-				.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
-				.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
-				.replace(/^«Живокост», восстанавливающий бальзам форте$/,'Бальзам Живокост форте')
-				.replace(/^\«Уян Номо\»\, бальзам для тела$/,'Бальзам Уян Номо (Гибкий лук)')
-				.replace(/^(Бальзам широкого спектра действия)$/,'$1 Корень (без камфоры)')
-				.replace(/^(Бальзам широкого спектра действия) «Корень»$/,'$1 Корень (с камфорой)')
-				.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов)$/,'$1 '+sendData.vendor+' ($2)')
-				.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов) (Горная лаванда)/,'$1 $3 ($2)')
-				.replace('Сибирская чага, природная профилактическая зубная паста','Природная профилактическая зубная паста Сибирская чага')
-				.replace(/^Хронобиологическая защита клеток мозга$|^Хронобиологическая защита сердца$|^Хронобиологическая защита печени$|^Хронобиологическая защита суставов$|^Хронобиологическая защита зрения$/,sendData.vendor+' ('+sendData.name+')')
-				.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
-				.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
-				.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
-				.replace('. ',', ');
-			if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
-				sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
-			}
-			if(sendData.name.trim().match('парфюмиров')){
-				sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
-			}
-			if(sendData.name.match(' / ')){
-				sendData.name=sendData.name.trim().replace(' / ',' (')+')';
-			}
-			var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
-			if(sendData.name.match(measurements)){
-				sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
-			}
-			sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином&nbsp;C').replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
-
-			if(data.indexOf("params.amount = '")!=-1){
-				amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
-			}else{
-				amount='';
-			}
-			
-			sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').trim().replace(/\.$/gm,'');
-
-			var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount more">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>'+Math.ceil((1-location.href.split(/\?disc=/)[1].split(/\?id=/)[0]/100)*sendData.oldPrice)+'</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
-
-			$('#items .'+category).append(new_item);
-
-			var category='all';
-			if(!$('.'+category).length){
-				$('#items').append('<div class="category '+category+'">'+new_item+'</div>');
-			}else{
-				$('#items .category').append(new_item);
-			}
-		});
+$.get('https://van4eq.github.io/grp_sw/selection'+'?'+Date.now(),function(data){
+	items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
+	$('h1').append(items[0][0].trim());
+	if(location.href.match(/\?id=/)){
+		items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
+		$('h1').append(location.href.split(/\?disc=/)[1].match(/^\d+/)+'%');
 	}
-}
-
-$('h1').append(location.href.split(/\?disc=/)[1].match(/^\d+/)+'%');
+	for(let i=1;i<items.length;i++){
+		if(items[i][0].trim().match(/^\d{6}$/)){
+			$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
+				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
+	
+				sendData.name=sendData.name
+					.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
+					.replace(/\, (\d{2,3} мл)/,' ($1)')
+					.replace(/\, (\d{2,3} г)/,' ($1)')
+					.replace(/\, (объем \d{2,3} мл)/,' ($1)')
+					.replace('Духи-концентрат,','Духи-концентрат')
+					.replace('Фиточай из диких трав № ','Чай №')
+					.replace(' Siberian Herbs','')
+					.replace(' GREENPIN','')
+					.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
+					.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
+					.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
+					.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
+					.replace(/^Истоки чистоты. Формула 3$/,'Формула 3')
+					.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
+					.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
+					.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
+					.replace(/^«Живокост», восстанавливающий бальзам форте$/,'Бальзам Живокост форте')
+					.replace(/^\«Уян Номо\»\, бальзам для тела$/,'Бальзам Уян Номо (Гибкий лук)')
+					.replace(/^(Бальзам широкого спектра действия)$/,'$1 Корень (без камфоры)')
+					.replace(/^(Бальзам широкого спектра действия) «Корень»$/,'$1 Корень (с камфорой)')
+					.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов)$/,'$1 '+sendData.vendor+' ($2)')
+					.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов) (Горная лаванда)/,'$1 $3 ($2)')
+					.replace('Сибирская чага, природная профилактическая зубная паста','Природная профилактическая зубная паста Сибирская чага')
+					.replace(/^Хронобиологическая защита клеток мозга$|^Хронобиологическая защита сердца$|^Хронобиологическая защита печени$|^Хронобиологическая защита суставов$|^Хронобиологическая защита зрения$/,sendData.vendor+' ('+sendData.name+')')
+					.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
+					.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
+					.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
+					.replace('. ',', ');
+				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
+					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
+				}
+				if(sendData.name.trim().match('парфюмиров')){
+					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
+				}
+				if(sendData.name.match(' / ')){
+					sendData.name=sendData.name.trim().replace(' / ',' (')+')';
+				}
+				var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
+				if(sendData.name.match(measurements)){
+					sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
+				}
+				sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином&nbsp;C').replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
+	
+				if(data.indexOf("params.amount = '")!=-1){
+					amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
+				}else{
+					amount='';
+				}
+				
+				sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').trim().replace(/\.$/gm,'');
+	
+				var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount more">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>'+Math.ceil((1-location.href.split(/\?disc=/)[1].split(/\?id=/)[0]/100)*sendData.oldPrice)+'</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
+	
+				$('#items .'+category).append(new_item);
+	
+				var category='all';
+				if(!$('.'+category).length){
+					$('#items').append('<div class="category '+category+'">'+new_item+'</div>');
+				}else{
+					$('#items .category').append(new_item);
+				}
+			});
+		}
+	}
+});
 
 $('#up').click(function(){
 	$(window).scrollTop(0);
