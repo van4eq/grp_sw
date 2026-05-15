@@ -286,6 +286,7 @@ $.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 		items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
 		discount=location.href.split(/\?disc=/)[1].match(/^\d+/);
 	}
+	$('h1').append(discount+'%');
 	for(let i=1;i<items.length;i++){
 		if(items[i][0].trim().match(/^\d{6}$/)){
 			$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
@@ -357,8 +358,6 @@ $.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 		}
 	}
 });
-
-$('h1').append(discount+'%');
 
 $('#up').click(function(){
 	$(window).scrollTop(0);
