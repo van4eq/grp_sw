@@ -166,10 +166,14 @@ $(document).on('paste',function(e){
 				}
 
 				sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,'');
-				if(sendData.description.length<100){
-					var extend=confirm('Загружено слишком короткое описание (менее 100 символов). Если Вы хотите открыть страницу продукта и вручную дополнить описание, нажмите ОК');
-					if(extend){
-						window.open(link);
+				if(sendData.description.length<100){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
+					var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
+					var descrId=Object.keys(descr)[0];
+					var $descr=$(descr[descrId].description);
+					sendData.description=$descr.html();
+					sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,'');
+					if(sendData.description.length<100){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
+						sendData.description=$descr;
 					}
 				}
 
