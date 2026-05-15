@@ -287,7 +287,7 @@ $.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 		discount=location.href.split(/\?disc=/)[1].match(/^\d+/);
 	}
 	$('h1').append(discount+'%');
-	for(let i=1;i<items.length;i++){
+	for(let i=0;i<items.length;i++){
 		if(items[i][0].trim().match(/^\d{6}$/)){
 			$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
 				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
