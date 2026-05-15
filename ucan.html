@@ -270,7 +270,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 							<!-- $('[contenteditable]').prepend(excel[0][0]+'<br>'); -->
 						<!-- } -->
 						<!-- console.log(excel.some(row=>row[4]==='1,00')) // это проверка, есть ли в нужном столбце нужное значение -->
-						discount=excel[1][4].replace('0,','');
+						discount=excel[1][4].replace('0,','').replace('%','');
 					}
 					return;
 				}
