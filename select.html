@@ -278,10 +278,10 @@ var cityId; //Технические данные для беспроблемн�
 var params; //Технические данные для беспроблемной вставки с сайта SW
 var amount; // Фасовка продукта
 var items; // ID продуктов
-var disc;
+var discount;
 $.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 	items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
-	disc=items[0][0];
+	discount=items[0][0];
 	if(location.href.match(/\?id=/)){
 		items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
 		discount=location.href.split(/\?disc=/)[1].match(/^\d+/);
@@ -358,7 +358,7 @@ $.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 	}
 });
 
-$('h1').append(disc+'%');
+$('h1').append(discount+'%');
 
 $('#up').click(function(){
 	$(window).scrollTop(0);
