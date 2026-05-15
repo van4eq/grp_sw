@@ -278,12 +278,13 @@ var cityId; //Технические данные для беспроблемн�
 var params; //Технические данные для беспроблемной вставки с сайта SW
 var amount; // Фасовка продукта
 var items; // ID продуктов
-$.get('https://van4eq.github.io/grp_sw/selection'+'?'+Date.now(),function(data){
+var disc;
+$.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 	items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
-	$('h1').append(items[0][0].trim());
+	disc=items[0][0];
 	if(location.href.match(/\?id=/)){
 		items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
-		$('h1').append(location.href.split(/\?disc=/)[1].match(/^\d+/)+'%');
+		discount=location.href.split(/\?disc=/)[1].match(/^\d+/);
 	}
 	for(let i=1;i<items.length;i++){
 		if(items[i][0].trim().match(/^\d{6}$/)){
@@ -342,7 +343,7 @@ $.get('https://van4eq.github.io/grp_sw/selection'+'?'+Date.now(),function(data){
 				
 				sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').trim().replace(/\.$/gm,'');
 	
-				var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount more">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>'+Math.ceil((1-location.href.split(/\?disc=/)[1].split(/\?id=/)[0]/100)*sendData.oldPrice)+'</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
+				var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount more">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>'+Math.ceil((1-discount/100)*sendData.oldPrice)+'</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
 	
 				$('#items .'+category).append(new_item);
 	
@@ -356,6 +357,8 @@ $.get('https://van4eq.github.io/grp_sw/selection'+'?'+Date.now(),function(data){
 		}
 	}
 });
+
+$('h1').append(disc+'%');
 
 $('#up').click(function(){
 	$(window).scrollTop(0);
