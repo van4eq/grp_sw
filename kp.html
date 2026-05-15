@@ -282,13 +282,11 @@ var categoryChains; //Технические данные для беспроб�
 var cityId; //Технические данные для беспроблемной вставки с сайта SW
 var params; //Технические данные для беспроблемной вставки с сайта SW
 var amount; // Фасовка продукта
-var categories;
 $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
 	$('.period').removeClass('active');
 	$(this).addClass('active')
 	$('#items').empty();
-	categories=[];
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
 		var items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
