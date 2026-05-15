@@ -278,7 +278,7 @@ var cityId; //Технические данные для беспроблемн�
 var params; //Технические данные для беспроблемной вставки с сайта SW
 var amount; // Фасовка продукта
 var items; // ID продуктов
-var discount;
+var discount; // Скидка
 $.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 	items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
 	discount=items[0][0];
