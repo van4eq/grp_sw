@@ -272,9 +272,9 @@ font-weight:500;
 <script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
 <script>
 function prepositions(text){
-	var prepositions=['без','безо','в','во','для','до','за','из','изо','к','ко','на','над','надо','о','об','обо','от','ото','по','под','подо','перед','передо','после','при','про','с','со','у','через','из-за','из-под','а','но','не','ни', 'Без','Безо','В','Во','Для','До','За','Из','Изо','К','Ко','На','Над','Надо','О','Об','Обо','От','Ото','По','Под','Подо','Перед','Передо','После','При','Про','С','Со','У','Через','Из-за','Из-под','А','Но','Не','Ни'];
+	var prepositions=['без','безо','в','во','для','до','за','из','изо','к','ко','на','над','надо','о','об','обо','от','ото','по','под','подо','перед','передо','после','при','про','с','со','у','через','из-за','из-под','а','но','не','ни'];
 	for(let prep of prepositions){
-		text=text.replace(new RegExp(` ${prep} `,'g'),` ${prep}&nbsp;`);
+		text=text.replace(new RegExp(`(| |&nbsp;)(${prep})( |&nbsp;)`,'gi'),`$1$2&nbsp;`);
 	}
 	return text;
 }
@@ -347,14 +347,16 @@ $('.period').click(function(){
 						amount='';
 					}
 					
-					sendData.description=prepositions(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').trim().replace(/\.$/gm,''));
+					sendData.description=prepositions(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.$/gm,''));
 					if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
 						var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
 						var descrId=Object.keys(descr)[0];
 						var $descr=$(descr[descrId].description);
 						sendData.description=$descr.html();
+						sendData.description=prepositions(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.$/gm,''));
 						if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
 							sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
+							sendData.description=prepositions(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.(\ |)(?=$|<)/gm,''));
 						}
 					}
 
