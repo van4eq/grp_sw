@@ -50,6 +50,9 @@
 
 <input type="checkbox" id="theme"><label for="theme"></label>
 
+<div id="draft_header" class="draft">Сохранить заголовок</div>
+<div id="draft_descr" class="draft">Сохранить описание</div>
+
 <script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
 <script src="grp_sw.js"></script>
 
@@ -67,11 +70,14 @@ cursor:pointer;
 position:fixed;
 bottom:35.5px;
 right:20px;
-border:1px solid yellow;
+border:1px solid;
 color:yellow;
 font-size:.9em;
 padding:4.5px 13.5px;
 border-radius:18px;
+}
+#stories:hover{
+border:1px solid transparent;
 }
 
 #wrap_story{
