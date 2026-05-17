@@ -282,3 +282,23 @@ color:#887FD0;
 #theme:checked:hover+label:before{
 color:#AEA5F6;
 }
+
+
+
+.draft{
+cursor:pointer;
+position:fixed;
+bottom:80px;
+right:20px;
+border:1px solid;
+color:orange;
+font-size:.9em;
+padding:4.5px 13.5px;
+border-radius:18px;
+}
+.draft:hover{
+border:1px solid transparent;
+}
+#draft_header{
+bottom:125px;
+}
