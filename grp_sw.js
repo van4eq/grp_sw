@@ -62,6 +62,7 @@ $(document).on('paste',function(e){
 		if(text.trim().match(/^\d{6}$/)&&!$('[contenteditable]:focus').length){
 			link='https://ru.siberianhealth.com/ru/shop/catalog/product/'+text.trim()+'/';
 			$.post(link,function(data){
+				$('#draft_header,#draft_descr').attr('productID',text);
 				stories=1;
 				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
 
@@ -88,7 +89,7 @@ $(document).on('paste',function(e){
 					.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
 					.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
 					.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
-					.replace(/^Истоки чистоты. Формула 3$/,'Формула 3')
+					.replace(/^Истоки чистоты. Формула 3$/,'Формула 3 (антиоксидантный комплекс)')
 					.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
 					.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
 					.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
@@ -116,6 +117,11 @@ $(document).on('paste',function(e){
 				var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
 				if(sendData.name.match(measurements)){
 					sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
+				}
+				if(localStorage[`h${text}`]){
+					if(confirm('Использовать существующий черновик заголовка по этому продукту?')){
+						sendData.name=localStorage[`h${text}`];
+					}
 				}
 
 				if($('#other').prop('checked')){
@@ -165,18 +171,21 @@ $(document).on('paste',function(e){
 					amount='';
 				}
 
-				sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.$/gm,'');
 				if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
 					var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
 					var descrId=Object.keys(descr)[0];
 					var $descr=$(descr[descrId].description);
 					sendData.description=$descr.html();
-					sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.$/gm,'');
 					if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
 						sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
-						sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 					}
 				}
+				if(localStorage[`d${text}`]){
+					if(confirm('Использовать существующий черновик описания по этому продукту?')){
+						sendData.description=localStorage[`d${text}`];
+					}
+				}
+				sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 
 				$('#remain').prop({'disabled':false,'checked':false});
 				$('#other').prop('disabled',false);
@@ -391,7 +400,7 @@ $(document).on('click','#img img',function(){
 	}catch{}
 });
 
-//Тёмная тема
+// Тёмная тема
 if(window.matchMedia('(prefers-color-scheme:dark)').matches){
 	if(localStorage['dark']!=0){
 		localStorage['dark']=1;
@@ -415,11 +424,20 @@ $('#theme').click(function(){
 	}
 });
 
-//Запомнить состояние отметки "Ссылка на продукт"
+// Запомнить состояние отметки "Ссылка на продукт"
 $('#link').click(function(){
 	if($(this).prop('checked')){
 		localStorage['link']=1;
 	}else{
 		localStorage['link']=0;
 	}
+});
+
+// Добавить в черновики заголовок
+$('#draft_header').click(function(){
+	localStorage[`h${$(this).attr('productID')}`]=$('#header').html();
+});
+// Добавить в черновики описание
+$('#draft_descr').click(function(){
+	localStorage[`d${$(this).attr('productID')}`]=$('#descr').html();
 });
