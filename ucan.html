@@ -291,7 +291,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 						.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
 						.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
 						.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
-						.replace(/^Истоки чистоты. Формула 3$/,'Формула 3')
+						.replace(/^Истоки чистоты. Формула 3$/,'Формула 3 (антиоксидантный комплекс)')
 						.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
 						.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
 						.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
@@ -320,14 +320,33 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 					if(sendData.name.match(measurements)){
 						sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
 					}
+					if(localStorage[`h${excel[i][1]}`]){
+						if(confirm('Использовать существующий черновик заголовка по этому продукту?')){
+							sendData.name=localStorage[`h${excel[i][1]}`];
+						}
+					}
 
-						var oldPrice=(excel[i][5].match('-'))?declension(excel[i][3].replace(/\D/g,''),new Array('рубль','рубля','рублей')):excel[i][3].replace(/\D/g,'');
+					var oldPrice=(excel[i][5].match('-'))?declension(excel[i][3].replace(/\D/g,''),new Array('рубль','рубля','рублей')):excel[i][3].replace(/\D/g,'');
 
-						var price=(excel[i][5].match('-'))?'в подарок':(excel[i][5].trim()=='')?declension(Math.round(excel[i][3]*(1-+excel[i][4].replace(',','.'))),new Array('рубль','рубля','рублей')):declension(excel[i][5].replace(/\D/g,''),new Array('рубль','рубля','рублей'));
+					var price=(excel[i][5].match('-'))?'в подарок':(excel[i][5].trim()=='')?declension(Math.round(excel[i][3]*(1-+excel[i][4].replace(',','.'))),new Array('рубль','рубля','рублей')):declension(excel[i][5].replace(/\D/g,''),new Array('рубль','рубля','рублей'));
 
-						var points=(excel[i][6].match('-'))?excel[i][6]='':(excel[i][6].trim()=='')?'':'/'+declension(excel[i][6].trim().replace(',0',''),new Array('балл','балла','баллов'));
+					var points=(excel[i][6].match('-'))?excel[i][6]='':(excel[i][6].trim()=='')?'':'/'+declension(excel[i][6].trim().replace(',0',''),new Array('балл','балла','баллов'));
 
-						sendData.description=sendData.description.replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/\.\«/g,'<br>\«').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.$/gm,'');
+					if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
+						var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
+						var descrId=Object.keys(descr)[0];
+						var $descr=$(descr[descrId].description);
+						sendData.description=$descr.html();
+						if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
+							sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
+						}
+					}
+					if(localStorage[`d${excel[i][1]}`]){
+						if(confirm('Использовать существующий черновик описания по этому продукту?')){
+							sendData.description=localStorage[`d${excel[i][1]}`];
+						}
+					}
+					sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 
 						$('#pics').append('<input type="checkbox" id="p_'+successfulPaste+'"><label for="p_'+successfulPaste+'"><img crossorigin id="pic_'+successfulPaste+'" class="pic" src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'"><div class="checked"></div></label>');
 
