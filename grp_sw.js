@@ -82,7 +82,7 @@ $(document).on('paste',function(e){
 					.replace(/\, (\d{2,3} г)/,' ($1)')
 					.replace(/\, (объем \d{2,3} мл)/,' ($1)')
 					.replace('Духи-концентрат,','Духи-концентрат')
-					.replace(/Фиточай из диких трав №( |)/g,'Чай №')
+					.replace(/Фиточай из диких трав №( |)/,'Чай №')
 					.replace(' Siberian Herbs','')
 					.replace(' GREENPIN','')
 					.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
@@ -119,7 +119,7 @@ $(document).on('paste',function(e){
 					sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
 				}
 				if(localStorage[`h${text}`]){
-					if(confirm('Использовать существующий черновик заголовка по этому продукту?')){
+					if(confirm('Использовать сохранённый заголовок по этому продукту?')){
 						sendData.name=localStorage[`h${text}`];
 					}
 				}
@@ -142,7 +142,7 @@ $(document).on('paste',function(e){
 					}else{
 						before='until';
 						if(until!=null){
-							$('#until+label').text('Акция по '+until);
+							$('#until+label').text('Акция до '+until);
 						}else{
 							$('#until+label').text('Акция');
 						}
@@ -171,6 +171,7 @@ $(document).on('paste',function(e){
 					amount='';
 				}
 
+				
 				if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
 					var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
 					var descrId=Object.keys(descr)[0];
@@ -181,7 +182,7 @@ $(document).on('paste',function(e){
 					}
 				}
 				if(localStorage[`d${text}`]){
-					if(confirm('Использовать существующий черновик описания по этому продукту?')){
+					if(confirm('Использовать сохранённое описание по этому продукту?')){
 						sendData.description=localStorage[`d${text}`];
 					}
 				}
@@ -213,7 +214,7 @@ $(document).on('paste',function(e){
 		}else{
 			document.execCommand('insertText',false,text.replace(/\&nbsp\;|\t/g,' ').replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').trim().replace(/\.$/gm,''));
 		}
-	}).catch(err=>{
+	}).catch((err)=>{
 		console.log('Опять чё-то не так',err);
 	});
 });
@@ -435,9 +436,19 @@ $('#link').click(function(){
 
 // Добавить в черновики заголовок
 $('#draft_header').click(function(){
-	localStorage[`h${$(this).attr('productID')}`]=$('#header').html();
+	if($('#header').text().trim()!=''&&$('#descr').text().trim()!=''){
+		try{
+			localStorage[`h${$(this).attr('productID')}`]=$('#header').html();
+			$('#draft_saved').fadeIn(100).fadeOut(1000);
+		}catch{}
+	}
 });
 // Добавить в черновики описание
 $('#draft_descr').click(function(){
-	localStorage[`d${$(this).attr('productID')}`]=$('#descr').html();
+	if($('#header').text().trim()!=''&&$('#descr').text().trim()!=''){
+		try{
+			localStorage[`d${$(this).attr('productID')}`]=$('#descr').html();
+			$('#draft_saved').fadeIn(100).fadeOut(1000);
+		}catch{}
+	}
 });
