@@ -302,3 +302,10 @@ border:1px solid transparent;
 #draft_header{
 bottom:125px;
 }
+#draft_saved{
+bottom:170px;
+cursor:default;
+border:none;
+color:#F2685c;
+display:none;
+}
