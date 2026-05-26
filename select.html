@@ -270,7 +270,7 @@ font-weight:500;
 function prepositions(text){
 	var prepositions=['без','безо','в','во','для','до','за','из','изо','к','ко','на','над','надо','о','об','обо','от','ото','по','под','подо','перед','передо','после','при','про','с','со','у','через','из-за','из-под','а','но','не','ни'];
 	for(let prep of prepositions){
-		text=text.replace(new RegExp(`(| |&nbsp;)(${prep})( |&nbsp;)`,'gi'),`$1$2&nbsp;`);
+		text=text.replace(new RegExp(`( )(${prep})( )`,'gi'),`$1$2&nbsp;`);
 	}
 	return text;
 }
