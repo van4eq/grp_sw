@@ -357,11 +357,6 @@ $('.period').click(function(){
 							sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
 						}
 					}
-					if(localStorage[`d${text}`]){
-						if(confirm('Использовать сохранённое описание по этому продукту?')){
-							sendData.description=localStorage[`d${text}`];
-						}
-					}
 					//sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 					sendData.description=sendData.description.replaceAll('• ','- ').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 
