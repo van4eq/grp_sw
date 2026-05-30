@@ -186,7 +186,8 @@ $(document).on('paste',function(e){
 						sendData.description=localStorage[`d${text}`];
 					}
 				}
-				sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
+				//sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
+				sendData.description=sendData.description.replaceAll('• ','- ').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 
 				$('#remain').prop({'disabled':false,'checked':false});
 				$('#other').prop('disabled',false);
