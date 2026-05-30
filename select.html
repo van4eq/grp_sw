@@ -343,7 +343,8 @@ $.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 				}else{
 					amount='';
 				}
-				
+
+				sendData.description=$(data).find('div[itemprop="description"]').html();
 				sendData.description=prepositions(sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').replace(/(\b\d+\b)\s/g,'$1&nbsp;').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.$/gm,''));
 				if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
 					var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
