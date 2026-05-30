@@ -171,7 +171,7 @@ $(document).on('paste',function(e){
 					amount='';
 				}
 
-				
+				sendData.description=$(data).find('div[itemprop="description"]').html();
 				if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
 					var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
 					var descrId=Object.keys(descr)[0];
