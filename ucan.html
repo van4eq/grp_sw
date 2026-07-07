@@ -260,7 +260,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 					}else{
 						$('#step_text').text('Готово! Редактировать текст').prop('disabled',false);
 						if(excel[0][0].match('ПМГ')){
-							$('[contenteditable]').prepend('Акция «Счастливая среда» / '+wednesday()+'!');
+							$('[contenteditable]').prepend('<p>Акция «Счастливая среда» / '+wednesday()+'!</p>');
 							$('#link').prop('disabled',true);
 						}
 						<!-- else if(excel[0][0].match('Бомба оффер')){ -->
