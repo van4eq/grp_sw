@@ -352,7 +352,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 						$('#pics').append('<input type="checkbox" id="p_'+successfulPaste+'"><label for="p_'+successfulPaste+'"><img crossorigin id="pic_'+successfulPaste+'" class="pic" src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'"><div class="checked"></div></label>');
 
 						$('[contenteditable]').append(
-							'<p id="par_'+successfulPaste+'" id_="'+excel[i][1].trim()+'"><b>- '
+							'<br><p id="par_'+successfulPaste+'" id_="'+excel[i][1].trim()+'"><b>- '
 							+sendData.name
 							+' за <s>'
 							+oldPrice
