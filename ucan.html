@@ -260,14 +260,14 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 					}else{
 						$('#step_text').text('Готово! Редактировать текст').prop('disabled',false);
 						if(excel[0][0].match('ПМГ')){
-							$('[contenteditable]').prepend('Акция «Счастливая среда» / '+wednesday()+'!<br>');
+							$('[contenteditable]').prepend('Акция «Счастливая среда» / '+wednesday()+'!');
 							$('#link').prop('disabled',true);
 						}
 						<!-- else if(excel[0][0].match('Бомба оффер')){ -->
-							<!-- $('[contenteditable]').prepend(excel[0][0].replaceAll('"','').replace('Бомба оффер ','Акция недели!<br>')+'<br>'); -->
+							<!-- $('[contenteditable]').prepend(excel[0][0].replaceAll('"','').replace('Бомба оффер ','Акция недели!')); -->
 						<!-- } -->
 						<!-- else{ -->
-							<!-- $('[contenteditable]').prepend(excel[0][0]+'<br>'); -->
+							<!-- $('[contenteditable]').prepend(excel[0][0]); -->
 						<!-- } -->
 						<!-- console.log(excel.some(row=>row[4]==='1,00')) // это проверка, есть ли в нужном столбце нужное значение -->
 						discount=excel[1][4].replace('0,','').replace('%','');
@@ -352,7 +352,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 						$('#pics').append('<input type="checkbox" id="p_'+successfulPaste+'"><label for="p_'+successfulPaste+'"><img crossorigin id="pic_'+successfulPaste+'" class="pic" src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'"><div class="checked"></div></label>');
 
 						$('[contenteditable]').append(
-							'<br><p id="par_'+successfulPaste+'" id_="'+excel[i][1].trim()+'"><b>- '
+							'<br><br><p id="par_'+successfulPaste+'" id_="'+excel[i][1].trim()+'"><b>- '
 							+sendData.name
 							+' за <s>'
 							+oldPrice
