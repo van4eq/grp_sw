@@ -363,7 +363,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 							+'. '
 							+sendData.description
 							+'</p>'
-						).html($('[contenteditable]').html().replace(/^(?:<br>){2}/,''));
+						);
 
 						successfulPaste++;
 						paste(i+1);
