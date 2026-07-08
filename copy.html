@@ -89,13 +89,13 @@ $('.qwerty').click(function(e){
 		if($('#'+t+' div').text()!=''){
 			try{
 				if(t=='q'||t=='e'){
-					navigator.clipboard.writeText(((t!='q'&&t!='e')?'\n\n':'')+$('#'+t+' div').html().replace(/\&amp\;/g,'&').replace(/\<br\>/g,'\r\n').trim()); //Это текст копируем
+					navigator.clipboard.writeText($('#'+t+' div').text().replace(/\<br\>/g,'\r\n').trim()); //Это текст копируем
 				}else{
+					txt='<br><br>'+$('#'+t+' div').html().trim();
 					if(e.ctrlKey){
-						navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([((t!='q'&&t!='e')?text+'<br><br>':'')+$('#'+t+' div').html().trim()],{type:'text/html'})})]);
-					}else{
-						navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([((t!='q'&&t!='e')?'<br><br>':'')+$('#'+t+' div').html().trim()],{type:'text/html'})})]); //Это html копируем
+						txt=text+txt;
 					}
+					navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([txt],{type:'text/html'})})]); //Это html копируем
 				}
 				$('#copied').fadeIn(100).fadeOut(1000);
 			}catch{}
