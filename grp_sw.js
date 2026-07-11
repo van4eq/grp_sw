@@ -68,7 +68,7 @@ $(document).on('paste',function(e){
 
 				try{
 					until=data.split('finish&quot;:&quot;')[1].split('T23:59:59')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
-				}
+				}catch{}
 				if(until!=null){
 					until=new Date(until).toLocaleDateString('ru-RU',options);
 				}
