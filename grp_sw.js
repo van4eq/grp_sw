@@ -342,7 +342,7 @@ $('#copy button').click(function(){
 			slogan=document.querySelector('#copy_slogan').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()+'\n';
 		}
 	}
-	var points='\n'+$('#points').text();
+	var points='\n'+$('#points').text();alert($('#points').is(':visible'))
 	if($('#specialPrice+label').text().match(/\d+/)){
 		points='';
 	}
