@@ -250,7 +250,7 @@ $('#specialPrice').click(function(){
 				if(specialPrice.replace(/\s/g,'').match(/^\d+$/)){
 					$('#specialPrice+label').append(': '+specialPrice.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
 					$('#price span').addClass('del');
-					if($('#reduced').prop('checked')){
+					if($('#reduced').prop('disabled',false)){
 						$('#points').slideUp(200);
 					}
 				}else{
