@@ -242,6 +242,15 @@ $('[name=period]').click(function(){
 	}
 });
 
+$('#reduced').click(function(){
+	$('#specialPrice').prop('checked',true);
+	$('#specialPrice+label').append(': '+$('#price span').text().replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
+	$('#price span').addClass('del');
+	$('#price').focus(function(){
+    	$('#price').select();
+	});
+});
+
 $('#specialPrice').click(function(){
 	if($(this).prop('checked')){
 		function specialPrice_1(){
@@ -250,9 +259,7 @@ $('#specialPrice').click(function(){
 				if(specialPrice.replace(/\s/g,'').match(/^\d+$/)){
 					$('#specialPrice+label').append(': '+specialPrice.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
 					$('#price span').addClass('del');
-					if(!$('#reduced').prop('checked')){
-						$('#points').slideUp(200);
-					}
+					$('#points').slideUp(200);
 				}else{
 					specialPrice_1();
 				}
