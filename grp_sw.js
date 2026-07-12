@@ -245,16 +245,7 @@ $('[name=period]').click(function(){
 $('#reduced').click(function(){
 	$('#specialPrice').prop('checked',true);
 	$('#specialPrice+label').text('Своя цена: '+$('#price span').text().replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
-	$('#price span').addClass('del').focus(function(){
-		var element=$(this)[0];
-		element.focus();
-		var range=document.createRange();
-		var selection=window.getSelection();
-		range.selectNodeContents(element);
-		range.collapse(false);
-		selection.removeAllRanges();
-		selection.addRange(range);
-	});
+	$('#price span').addClass('del').focus();
 });
 
 $('#specialPrice').click(function(){
