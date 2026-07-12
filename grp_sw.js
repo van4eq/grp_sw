@@ -106,6 +106,7 @@ $(document).on('paste',function(e){
 					.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
 					.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
 					.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
+					.replace(/^Комплекс растительных горечей\, 30 капсул$/,'Комплекс растительных горечей')
 					.replace('. ',', ');
 				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
 					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
@@ -249,7 +250,9 @@ $('#specialPrice').click(function(){
 				if(specialPrice.replace(/\s/g,'').match(/^\d+$/)){
 					$('#specialPrice+label').append(': '+specialPrice.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
 					$('#price span').addClass('del');
-					$('#points').slideUp(200);
+					if($('#reduced').prop('checked')){
+						$('#points').slideUp(200);
+					}
 				}else{
 					specialPrice_1();
 				}
@@ -342,9 +345,9 @@ $('#copy button').click(function(){
 			slogan=document.querySelector('#copy_slogan').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()+'\n';
 		}
 	}
-	var points='\n'+$('#points').text();alert($('#points').is(':visible'))
-	if($('#specialPrice+label').text().match(/\d+/)){
-		points='';
+	var points='';
+	if($('#points').is(':visible')){
+		points='\n'+$('#points').text();
 	}
 	var scratchPrice='';
 	if($('#price span.del').text()!=''){
