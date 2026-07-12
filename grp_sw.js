@@ -245,9 +245,7 @@ $('[name=period]').click(function(){
 $('#reduced').click(function(){
 	$('#specialPrice').prop('checked',true);
 	$('#specialPrice+label').text('Своя цена: '+$('#price span').text().replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
-	$('#price span').addClass('del').focus(function(){
-		$('#price span').select();
-	});
+	$('#price span').addClass('del').select();
 });
 
 $('#specialPrice').click(function(){
