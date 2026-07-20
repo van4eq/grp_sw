@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Chiron+Sung+HK:ital,wght@0,200..900;1,200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Liter&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap');
 body{
 margin:0;
 padding:0;
@@ -58,6 +59,7 @@ border:1px solid;
 margin-right:5px;
 }
 #max{
+//background:radial-gradient(circle at left bottom,#4cf,#a4e) text;
 color:#ac5ce1;
 border:1px solid;
 }
@@ -165,6 +167,9 @@ content:'× ';
 }
 #wrap [type=checkbox]:checked+label:hover{
 border:1px solid transparent;
+}
+#wrap [type=checkbox]:checked+label span:before{
+content:': ';
 }
 
 
