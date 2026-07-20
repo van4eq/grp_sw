@@ -83,6 +83,7 @@ $(document).on('paste',function(e){
 					.replace(/\, (\d{2,3} мл)/,' ($1)')
 					.replace(/\, (\d{2,3} г)/,' ($1)')
 					.replace(/\, (объем \d{2,3} мл)/,' ($1)')
+					.replace(/\, (\d+ капсул)/,' ($1)')
 					.replace('Духи-концентрат,','Духи-концентрат')
 					.replace(/Фиточай из диких трав №( |)/,'Чай №')
 					.replace(' Siberian Herbs','')
@@ -106,18 +107,17 @@ $(document).on('paste',function(e){
 					.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
 					.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
 					.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
-					.replace(/^Комплекс растительных горечей\, 30 капсул$/,'Комплекс растительных горечей')
 					.replace('. ',', ');
 				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
 					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
 				}
-				if(sendData.name.trim().match('парфюмиров')){
+				if(sendData.name.trim().match(/парфюмиров|маска/)){
 					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
 				}
 				if(sendData.name.match(' / ')){
 					sendData.name=sendData.name.trim().replace(' / ',' (')+')';
 				}
-				var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
+				var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)| \(\d+ капсул\)/;
 				if(sendData.name.match(measurements)){
 					sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
 				}
@@ -151,7 +151,7 @@ $(document).on('paste',function(e){
 						}
 					}
 					$('#'+before).prop('checked',true);
-					$('#specialPrice').prop({'disabled':true,'checked':false});
+					$('#specialPrice,#oldPrice').prop({'disabled':true,'checked':false});
 					$('#price span').removeClass('del');
 				}
 				if(sendData.price==sendData.oldPrice){ // При загрузке продукта без акции
@@ -163,7 +163,7 @@ $(document).on('paste',function(e){
 						$('.offer').prop({'disabled':true,'checked':false});
 					}
 					$('#'+before).prop('checked',true);
-					$('#specialPrice').prop({'disabled':false,'checked':false});
+					$('#specialPrice,#oldPrice').prop({'disabled':false,'checked':false});
 					$('#price span').removeClass('del');
 				}
 
@@ -205,8 +205,7 @@ $(document).on('paste',function(e){
 				}else{
 					$('#link').prop('checked',false);
 				}
-				$('#remain+label').text('Осталось');
-				$('#specialPrice+label').text('Своя цена');
+				$('#remain+label span,#specialPrice+label span,#oldPrice+label s').text('');
 
 				$('#header').html(sendData.name);
 				$('#price').html(oldPrice+'<span contenteditable>'+sendData.price+'</span> ₽');
@@ -242,21 +241,41 @@ $('[name=period]').click(function(){
 	}
 });
 
-$('#reduced').click(function(){
-	$('#specialPrice').prop('checked',true);
-	$('#specialPrice+label').text('Своя цена: '+$('#price span').text().replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
-	$('#price span').addClass('del').focus().select();
+$('#oldPrice').click(function(){
+	if($(this).prop('checked')){
+		function reduced_1(){
+			var reduced=prompt('Введите старую цену (только цифрами)');
+			if(reduced!=null){
+				if(reduced.replace(/\s/g,'').match(/^\d+$/)){
+					$('#oldPrice+label s').text(reduced.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
+					if($('#specialPrice').prop('checked')){
+						$('#specialPrice').trigger('click');
+					}
+				}else{
+					reduced_1();
+				}
+			}else{
+				$('#oldPrice').prop('checked',false);
+			}
+		}
+		reduced_1();
+	}else{
+		$('#oldPrice+label s').text('');
+	}
 });
 
 $('#specialPrice').click(function(){
 	if($(this).prop('checked')){
 		function specialPrice_1(){
-			var specialPrice=prompt('Введите специальную цену (только цифрами от 0)');
+			var specialPrice=prompt('Введите специальную цену (только цифрами)');
 			if(specialPrice!=null){
 				if(specialPrice.replace(/\s/g,'').match(/^\d+$/)){
-					$('#specialPrice+label').append(': '+specialPrice.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
+					$('#specialPrice+label span').text(specialPrice.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
 					$('#price span').addClass('del');
 					$('#points').slideUp(200);
+					if($('#oldPrice').prop('checked')){
+						$('#oldPrice').trigger('click');
+					}
 				}else{
 					specialPrice_1();
 				}
@@ -266,7 +285,7 @@ $('#specialPrice').click(function(){
 		}
 		specialPrice_1();
 	}else{
-		$('#specialPrice+label').text('Своя цена');
+		$('#specialPrice+label span').text('');
 		$('#price span').removeClass('del');
 		$('#points').slideDown(200);
 	}
@@ -278,7 +297,7 @@ $('#remain').click(function(){
 			var remain=prompt('Введите остатки продукта (только цифрами от 1)');
 			if(remain!=null){
 				if(remain.replace(/\s/g,'').match(/^\d+$/)>0){
-					$('#remain+label').append(': '+remain.replace(/\s/g,'').replace(/^[0]+([1-9])/g,'$1'));
+					$('#remain+label span').text(remain.replace(/\s/g,'').replace(/^[0]+([1-9])/g,'$1'));
 				}else{
 					remain_1();
 				}
@@ -288,7 +307,7 @@ $('#remain').click(function(){
 		}
 		remain_1();
 	}else{
-		$('#remain+label').text('Осталось');
+		$('#remain+label span').text('');
 	}
 });
 
@@ -355,15 +374,18 @@ $('#copy button').click(function(){
 	}
 	var scratchPrice='';
 	if($('#price span.del').text()!=''){
-		scratchPrice=scratch+$('#price span.del').text().replace(/\D/g,'')+scratchx+' ';
+		scratchPrice=scratch+$('#price span.del').text()+scratchx+' ';
 	}
-	var price=$('#price span:not(.del)').text().replace(/\D/g,'');
-	if($('#specialPrice+label').text().match(/\d+/)){
-		price=$('#specialPrice+label').text().match(/\d+/);
+	if($('#oldPrice').prop('checked')){
+		scratchPrice=scratch+$('#oldPrice+label s').text()+scratchx+' ';
+	}
+	var price=$('#price span:not(.del)').text();
+	if($('#specialPrice').prop('checked')){
+		price=$('#specialPrice+label span').text();
 	}
 	var remain='';
-	if($('#remain+label').text().match(/\d+/)){
-		remain=bold+'Всего '+declension($('#remain+label').text().match(/\d+/),new Array('штука','штуки','штук'))+boldx+'\n\n';
+	if($('#remain').prop('checked')){
+		remain=bold+'Всего '+declension($('#remain+label span').text(),new Array('штука','штуки','штук'))+boldx+'\n\n';
 	}
 	var addLink='';
 	if($('#link').prop('checked')){
