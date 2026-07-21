@@ -37,7 +37,7 @@ function weeksMonths(type='month'){
 		startDate=new Date(now.getFullYear(),now.getMonth(),1);
 		endDate=new Date(now.getFullYear(),now.getMonth()+1,0);
 	}
-//	else if(type=='sinceUntil'){ // Эта настройка на случай, если бы указывались даты начала и конца акции
+//	else if(type=='sinceUntil'){ // Это настройка на случай, если бы указывались даты начала и конца акции
 //		startDate=since;
 //		endDate=until;
 //		var from=(startDate.getDate()=='2')?'со':'с';
