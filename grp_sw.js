@@ -36,6 +36,9 @@ function weeksMonths(type='month'){
 	}else if(type=='month'){
 		startDate=new Date(now.getFullYear(),now.getMonth(),1);
 		endDate=new Date(now.getFullYear(),now.getMonth()+1,0);
+	}else if(type=='sinceUntil'){
+		startDate=since;
+		endDate=until;
 	}
 	if(startDate.getDate()>endDate.getDate()){
 		return `${startDate.getDate()} ${getMonthName(startDate)}—${endDate.getDate()} ${getMonthName(endDate)}`;
@@ -71,13 +74,13 @@ $(document).on('paste',function(e){
 					since=data.split('{&quot;start&quot;:&quot;')[1].split('T')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
 				}catch{}
 				if(since!=null){
-					since=new Date(since).toLocaleDateString('ru-RU',options);
+					since=new Date(since) //.toLocaleDateString('ru-RU',options);
 				}
 				try{
 					until=data.split('finish&quot;:&quot;')[1].split('T23:59:59')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
 				}catch{}
 				if(until!=null){
-					until=new Date(until).toLocaleDateString('ru-RU',options);
+					until=new Date(until) //.toLocaleDateString('ru-RU',options);
 				}
 
 				$('#copy button').prop('disabled',false);
@@ -152,9 +155,9 @@ $(document).on('paste',function(e){
 					}else{
 						before='until';
 						if(until!=null){
-							$('#until+label').text('Акция до '+until);
+							$('#until+label').text('Акция до '+until.toLocaleDateString('ru-RU',options));
 							if(since!=null){
-								$('#until+label').text('Акция с '+since+' по '+until);
+								$('#until+label').text('Акция '+weeksMonths('sinceUntil'));
 							}
 						}else{
 							$('#until+label').text('Акция');
