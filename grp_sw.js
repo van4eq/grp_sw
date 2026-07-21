@@ -51,6 +51,7 @@ function getMonthName(date){
 var categoryChains; // Технические данные для беспроблемной вставки с сайта SW
 var cityId; // Технические данные для беспроблемной вставки с сайта SW
 var params; // Технические данные для беспроблемной вставки с сайта SW
+var since; // Дата начала акции
 var until; // Дата завершения акции
 var amount; // Фасовка продукта
 var before; // Предыдущий выбор заголовка
@@ -66,6 +67,12 @@ $(document).on('paste',function(e){
 				stories=1;
 				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
 
+				try{
+					since=data.split('{&quot;start&quot;:&quot;')[1].split('T')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
+				}catch{}
+				if(since!=null){
+					since=new Date(since).toLocaleDateString('ru-RU',options);
+				}
 				try{
 					until=data.split('finish&quot;:&quot;')[1].split('T23:59:59')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
 				}catch{}
@@ -146,6 +153,9 @@ $(document).on('paste',function(e){
 						before='until';
 						if(until!=null){
 							$('#until+label').text('Акция до '+until);
+							if(since!=null){
+								$('#until+label').text('Акция с '+since+' по '+until);
+							}
 						}else{
 							$('#until+label').text('Акция');
 						}
