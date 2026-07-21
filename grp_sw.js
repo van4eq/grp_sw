@@ -39,8 +39,11 @@ function weeksMonths(type='month'){
 	}else if(type=='sinceUntil'){
 		startDate=since;
 		endDate=until;
+		var from=(startDate.getDate()=='2')?'со':'с';
+		var to=(startDate.getMonth()==endDate.getMonth())?'по':getMonthName(startDate)+' по';
+		return `${from} ${startDate.getDate()} ${to} ${endDate.getDate()} ${getMonthName(endDate)}`;
 	}
-	if(startDate.getDate()>endDate.getDate()){
+	if((type=='week'||type=='month')&&startDate.getDate()>endDate.getDate()){
 		return `${startDate.getDate()} ${getMonthName(startDate)}—${endDate.getDate()} ${getMonthName(endDate)}`;
 	}else{
 		return `${startDate.getDate()}—${endDate.getDate()} ${getMonthName(endDate)}`;
