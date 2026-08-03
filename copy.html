@@ -15,6 +15,7 @@ cursor:pointer;
 float:left;
 width:50%;
 height:50vh;
+overflow:hidden;
 }
 #e,#r{
 width:100%;
@@ -68,16 +69,16 @@ $(document).on('paste',function(e){
 			//$('#r div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ отдан<br><br>Вы можете оплатить переводом по номеру 9030836525 (Игорь Викторович А.) на Сбер или Озон Банк (просьба прислать подтверждение оплаты)');
 			//$('#t div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов<br><br>Вы можете оплатить переводом по номеру 9030836525 (Игорь Викторович А.) на Сбер или Озон Банк (просьба прислать подтверждение оплаты)');
 			$('#q div').html(new Date().toLocaleString('ru',{weekday:'long'})+' '+text.trim().replace(/\s+/g,'')+' ₽');
-			$('#w div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>В наличии. Заказ готов к выдаче<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
+			$('#w div').html('<span></span><br><br>'+'К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>В наличии. Заказ готов к выдаче<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
 			$('#e div').html(new Date().toLocaleString('ru',{weekday:'long'})+' '+text.trim().replace(/\s+/g,'')+' ₽ ОТДАНО');
-			$('#r div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ отдан<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
-			$('#t div').html('К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
+			$('#r div').html('<span></span><br><br>'+'К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ отдан<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
+			$('#t div').html('<span></span><br><br>'+'К оплате '+text.trim().replace(/\s+/g,'')+' ₽<br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов<br><br>Ссылка на оплату (сумму нужно указать вручную): https://qr.nspk.ru/AS1A006S1ICL8NGU85F97EQAILNFTFPH?type=01&bank=100000000284&crc=BE94<br>Просьба прислать подтверждение оплаты');
 		}else{ //А это если стараешься код на оплату скинуть
 			$('#q div').html(text.trim().split('Срок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('Номер QR-кода: ',' (#').replace(/\s+/g,' ').trim()+')');
-			$('#w div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>В наличии. Заказ готов к выдаче');
+			$('#w div').html('<span></span><br><br>'+text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>В наличии. Заказ готов к выдаче');
 			$('#e div').html(text.trim().split('Срок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('Номер QR-кода: ',' (#').replace(/\s+/g,' ').trim()+') ОТДАНО');
-			$('#r div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ отдан');
-			$('#t div').html(text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов');
+			$('#r div').html('<span></span><br><br>'+text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ отдан');
+			$('#t div').html('<span></span><br><br>'+text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов');
 		}
 	}).catch(err=>{
 		console.log('Опять чё-то не так',err);
@@ -91,10 +92,10 @@ $('.qwerty').click(function(e){
 				if(t=='q'||t=='e'){
 					navigator.clipboard.writeText($('#'+t+' div').text().replace(/\<br\>/g,'\r\n').trim()); //Это текст копируем
 				}else{
-					txt='<br><br>'+$('#'+t+' div').html().trim();
 					if(e.ctrlKey){
-						txt=text+txt;
+						$('.qwerty span').text(text.trim());
 					}
+					txt=$('#'+t+' div').html().trim();
 					navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([txt],{type:'text/html'})})]); //Это html копируем
 				}
 				$('#copied').fadeIn(100).fadeOut(1000);
