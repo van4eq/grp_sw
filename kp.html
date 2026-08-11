@@ -60,6 +60,10 @@ margin:30px auto;
 padding:0 var(--indent);
 }
 
+section{
+margin-top:100px;
+}
+
 .category{
 display:grid;
 grid-template-columns:repeat(4,1fr);
@@ -293,7 +297,7 @@ $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
 	$('.period').removeClass('active');
 	$(this).addClass('active')
-	$('#items section').empty();
+	$('section').empty();
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
 		var items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
