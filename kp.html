@@ -251,7 +251,13 @@ font-weight:500;
 	<p style="color:#999;"><span style="color:#f1574b;">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</p>
 </header>
 
-<div id="items"></div>
+<div id="items">
+	<section id="perfumes"></section>
+	<section id="supplements"></section>
+	<section id="cosmetics"></section>
+	<section id="sport"></section>
+	<section id="other"></section>
+</div>
 
 <div id="up"></div>
 
@@ -350,8 +356,7 @@ $('.period').click(function(){
 					sendData.description=$(data).find('div[itemprop="description"]').html();
 					if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
 						var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
-						var descrId=Object.keys(descr)[0];
-						var $descr=$(descr[descrId].description);
+						var $descr=$(descr[Object.keys(descr)[0]].description);
 						sendData.description=$descr.html();
 						if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
 							sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
@@ -362,14 +367,25 @@ $('.period').click(function(){
 
 					var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount more">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>1</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
 
-					var category=sendData.vendor.trim().replace('&#039;','').replaceAll(' ','_').replace(/^$/g,'other');
-					if(sendData.vendor.trim().match(/парфюм|аромат|aroma|perfum|nordic/i)){
-						category='perfumes';
-					}
+					var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim().replace(/\(|\)|\'/g,'').replaceAll(' ','_');
 					if(!$('.'+category).length){
-						$('#items').append('<div class="category '+category+'">'+new_item+'</div>');
+						if(category.match(/парфюм|аромат|aroma|perfum|роза|чайные/i)){
+							$('#perfumes').append('<div class="category '+category+'">'+new_item+'</div>');
+						}
+						else if(category.match(/vitamama|essential|daily|health/i)){
+							$('#supplements').append('<div class="category '+category+'">'+new_item+'</div>');
+						}
+						else if(category.match(/experalta/i)){
+							$('#cosmetics').append('<div class="category '+category+'">'+new_item+'</div>');
+						}
+						else if(category.match(/fitness/i)){
+							$('#sport').append('<div class="category '+category+'">'+new_item+'</div>');
+						}
+						else{
+							$('#other').append('<div class="category '+category+'">'+new_item+'</div>');
+						}
 					}else{
-						$('#items .'+category).append(new_item);
+						$('.'+category).append(new_item);
 					}
 				});
 			}
