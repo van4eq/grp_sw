@@ -49,10 +49,15 @@ background:var(--logo) no-repeat;
 background-size:100%;
 }
 
-h1{
+h1,h2{
 margin:30px 0;
 color:var(--headers);
 line-height:1.5em;
+}
+h2{
+text-transform:uppercase;
+display:none;
+margin-top:100px;
 }
 .period{
 cursor:pointer;
@@ -77,9 +82,6 @@ grid-template-columns:repeat(4,1fr);
 gap:var(--indent);
 margin:50px auto;
 }
-.category:first-child{
-margin-top:100px;
-}
 
 .item{
 position:relative;
@@ -89,6 +91,7 @@ padding-bottom:4em;
 .item img{
 width:100%;
 border-radius:30px;
+background:#fff;
 }
 
 .article{
@@ -212,6 +215,7 @@ transform:rotate(-45deg);
 
 #item img{
 width:100%;
+border-radius:30px;
 }
 #item_body{
 max-width:450px;
@@ -266,11 +270,11 @@ font-weight:500;
 </header>
 
 <div id="items">
-	<section id="perfumes"></section>
-	<section id="supplements"></section>
-	<section id="cosmetics"></section>
-	<section id="sport"></section>
-	<section id="other"></section>
+	<section id="supplements"><h2>Витамины и минералы</h2></section>
+	<section id="perfumes"><h2>Парфюмерия</h2></section>
+	<section id="cosmetics"><h2>Косметика</h2></section>
+	<section id="sport"><h2>Для спорта</h2></section>
+	<section id="other"><h2>Прочее</h2></section>
 </div>
 
 <div id="up"></div>
@@ -307,7 +311,8 @@ $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
 	$('.period').removeClass('active');
 	$(this).addClass('active')
-	$('section').empty();
+	$('section .category').remove();
+	$('section h2').hide();
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
 		var items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
@@ -385,18 +390,23 @@ $('.period').click(function(){
 					if(!$('.'+category).length){
 						if(category.match(/парфюм|аромат|aroma|perfum|роза|чайные/i)){
 							$('#perfumes').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#perfumes h2').show();
 						}
 						else if(category.match(/vitamama|essential|daily|health/i)){
 							$('#supplements').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#supplements h2').show();
 						}
 						else if(category.match(/experalta/i)){
 							$('#cosmetics').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#cosmetics h2').show();
 						}
 						else if(category.match(/fitness/i)){
 							$('#sport').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#sport h2').show();
 						}
 						else{
 							$('#other').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#other h2').show();
 						}
 					}else{
 						$('.'+category).append(new_item);
