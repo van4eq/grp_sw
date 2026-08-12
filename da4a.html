@@ -8,21 +8,29 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
+
+:root{
+--indent:30px;
+--logo:url(https://van4eq.github.io/grp_sw/logo.svg);
+--bg:#fff;
+--headers:#00AEEF;
+--text:#333;
+--subtext:#999;
+--important:#f1574b;
+--button:rgba(255,255,255,.75);
+}
+
 body{
 margin:auto;
 max-width:1300px;
 font-family:Google Sans;
 font-weight:600;
-color:#333;
+color:var(--text);
 overflow-y:scroll;
 }
 
-:root{
---indent:30px;
-}
-
 a{
-color:#00b0f0;
+color:var(--headers);
 outline:none;
 appearance:none;
 -webkit-appearance:none;
@@ -36,11 +44,14 @@ padding:0 var(--indent);
 
 #logo{
 width:190px;
+height:70px;
+background:var(--logo) no-repeat;
+background-size:100%;
 }
 
 h1{
 margin:30px 0;
-color:#00b0f0;
+color:var(--headers);
 line-height:1.25em;
 }
 .period{
@@ -51,8 +62,8 @@ padding:.05em .5em;
 display:inline-block;
 }
 .period.active{
-border:3px solid #00b0f0;
-color:#00b0f0;
+border:3px solid var(--headers);
+color:var(--headers);
 }
 
 #items{
@@ -78,14 +89,14 @@ border-radius:30px;
 }
 
 .article{
-color:#999;
+color:var(--subtext);
 font-weight:500;
 font-size:.85em;
 margin:1em 0 .5em;
 }
 
 .amount{
-color:#999;
+color:var(--subtext);
 font-weight:500;
 }
 
@@ -97,7 +108,7 @@ font-size:1.6em;
 font-weight:500;
 }
 .price s{
-color:#999;
+color:var(--subtext);
 font-size:.75em;
 }
 .price s:after,.price span:after{
@@ -105,7 +116,7 @@ content:'₽';
 margin-left:.2em;
 }
 .price span{
-color:#f1574b;
+color:var(--important);
 margin-left:.5em;
 }
 
@@ -113,22 +124,6 @@ margin-left:.5em;
 cursor:pointer;
 }
 
-#up{
-background:rgba(255,255,255,.75);
-backdrop-filter:blur(15px);
-border-radius:50px;
-color:#00b0f0;
-font-weight:500;
-position:fixed;
-bottom:20px;
-right:calc(var(--indent) - 1em);
-line-height:1.25em;
-padding:.75em 1em;
-cursor:pointer;
-}
-#up:after{
-content:'Наверх';
-}
 
 
 /* Модальное окно с формой входа */
@@ -140,7 +135,7 @@ left:0;
 z-index:1000;
 width:100%;
 height:100vh;
-background:#fff;
+background:var(--bg);
 overflow-y:scroll;
 overflow-x:hidden;
 outline:none;
@@ -150,14 +145,14 @@ appearance:none;
 }
 
 #share{
-color:#00b0f0;
+color:var(--headers);
 font-size:1.25em;
 line-height:35px;
 padding:15px 25px;
 border-radius:50px;
 font-weight:500;
 position:fixed;
-background:rgba(255,255,255,.75);
+background:var(--button);
 backdrop-filter:blur(15px);
 top:15px;
 right:calc(70px + var(--indent));
@@ -170,7 +165,7 @@ content:'Поделиться';
 #close{
 position:fixed;
 border-radius:50%;
-background:rgba(255,255,255,.75);
+background:var(--button);
 backdrop-filter:blur(15px);
 top:15px;
 right:var(--indent);
@@ -187,7 +182,7 @@ width:var(--closeWidth);
 height:var(--closeHeight);
 top:calc((100% - var(--closeHeight)) / 2);
 left:calc((100% - var(--closeWidth)) / 2);
-background:#333;
+background:var(--text);
 }
 .close:before{
 transform:rotate(45deg);
@@ -207,7 +202,7 @@ margin:90px auto 60px;
 font-size:1.25em;
 }
 #amount{
-color:#999;
+color:var(--subtext);
 font-weight:500;
 }
 #descr{
@@ -243,10 +238,10 @@ font-weight:500;
 </style>
 
 <header>
-	<img id="logo" src="https://ru.siberianhealth.com/static/rebranding/img/5a5c906883b9701f898e2281/1160434/upload-046af4b0-b821-11e8-89d0-798fa202fe62.png">
+	<div id="logo"></div>
 	<h1>Любые 2 продукта со скидкой </h1>
 	<p>Нажав на картинку или название продукта, вы можете посмотреть описание к нему и поделиться вашим выбором с наставником/продавцом (справа вверху будет кнопка «Поделиться»)</p>
-	<p style="color:#999;"><span style="color:#f1574b;">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</p>
+	<p style="color:var(--subtext);"><span style="color:var(--important);">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</p>
 </header>
 
 <div id="items"></div>
