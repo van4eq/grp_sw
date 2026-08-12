@@ -54,10 +54,21 @@ margin:30px 0;
 color:var(--headers);
 line-height:1.5em;
 }
+h1,h2{
+margin:30px 0;
+color:var(--headers);
+line-height:1.5em;
+}
 h2{
+position:sticky;
+z-index:10;
+top:0;
+padding:1em var(--indent);
 text-transform:uppercase;
 display:none;
-margin-top:100px;
+background:var(--button);
+backdrop-filter:blur(15px);
+text-align:center;
 }
 .period{
 cursor:pointer;
@@ -73,13 +84,13 @@ color:var(--headers);
 
 #items{
 margin:30px auto;
-padding:0 var(--indent);
 }
 
 .category{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:var(--indent);
+padding:0 var(--indent);
 margin:50px auto;
 }
 
