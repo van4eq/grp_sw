@@ -335,8 +335,7 @@ $(document).on('paste',function(e){ //Добавить картинку чере
 					sendData.description=$(data).find('div[itemprop="description"]').html();
 					if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
 						var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
-						var descrId=Object.keys(descr)[0];
-						var $descr=$(descr[descrId].description);
+						var $descr=$(descr[Object.keys(descr)[0]].description);
 						sendData.description=$descr.html();
 						if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
 							sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
