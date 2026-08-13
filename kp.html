@@ -66,6 +66,9 @@ backdrop-filter:blur(15px);
 text-align:center;
 margin:100px 0 -20px;
 }
+h2:first-child{
+margin:30px 0 -20px;
+}
 .period{
 cursor:pointer;
 border:3px dashed #bbb;
@@ -79,7 +82,7 @@ color:var(--headers);
 }
 
 #items{
-margin:30px auto;
+margin:30px auto calc(50px - 150vh);
 }
 
 .category{
@@ -138,22 +141,30 @@ cursor:pointer;
 }
 
 #up{
+display:none;
+position:sticky;
+margin-top:150vh;
+bottom:0;
+z-index:100;
+}
+#up:after{
+content:'Наверх';
 background:var(--button);
 backdrop-filter:blur(15px);
 border-radius:50px;
 color:var(--headers);
 font-weight:500;
-position:fixed;
+position:absolute;
 bottom:20px;
-z-index:100;
+			
 right:calc(var(--indent) - 1em);
 line-height:1.25em;
 padding:.75em 1em;
 cursor:pointer;
 }
-#up:after{
-content:'Наверх';
-}
+		  
+					   
+ 
 
 
 /* Модальное окно с формой входа */
@@ -321,6 +332,7 @@ $('.period').click(function(){
 	$(this).addClass('active')
 	$('section .category').remove();
 	$('section h2').hide();
+	$('#up').hide();
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
 		var items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
@@ -418,6 +430,7 @@ $('.period').click(function(){
 						}
 					}else{
 						$('.'+category).append(new_item);
+						$('#up').show();
 					}
 				});
 			}
