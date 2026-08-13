@@ -96,7 +96,7 @@ margin:50px auto;
 
 .item{
 position:relative;
-padding-bottom:4em;
+padding-bottom:calc(var(--indent) * 2);
 }
 
 .item img{
@@ -264,6 +264,9 @@ font-weight:500;
 	}
 	#up:after{
 	right:1em;
+	}
+	.item{
+	padding-bottom:calc(var(--indent) * 2.5);
 	}
 	.category{
 	grid-template-columns:repeat(2,1fr);
