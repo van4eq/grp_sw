@@ -18,6 +18,7 @@
 --subtext:#999;
 --important:#f1574b;
 --button:rgba(255,255,255,.75);
+--up:175vh;
 }
 	
 body{
@@ -79,7 +80,7 @@ color:var(--headers);
 }
 
 #items{
-margin:30px auto calc(50px - 150vh);
+margin:30px auto calc(50px - var(--up));
 }
 
 section:first-child h2{
@@ -144,7 +145,7 @@ cursor:pointer;
 #up{
 display:none;
 position:sticky;
-margin-top:150vh;
+margin-top:var(--up);
 bottom:0;
 z-index:100;
 }
