@@ -20,12 +20,24 @@
 --button:rgba(255,255,255,.75);
 --up:175vh;
 }
+@media(prefers-color-scheme:dark){
+:root{
+--logo:url(https://van4eq.github.io/grp_sw/logo_dark.svg);
+--bg:#444;
+--headers:#1BC9FF;
+--text:#fff;
+--subtext:#bfbfbf;
+--important:#FF6E60;
+--button:rgba(68,68,68,.75);
+}
+}
 	
 body{
 margin:auto;
 max-width:1300px;
 font-family:Google Sans;
 font-weight:600;
+background:var(--bg);
 color:var(--text);
 overflow-y:scroll;
 }
@@ -162,9 +174,7 @@ right:calc(var(--indent) - 1em);
 line-height:1.25em;
 padding:.75em 1em;
 cursor:pointer;
-}
-		  
-					   
+} 
  
 
 
@@ -272,14 +282,6 @@ font-weight:500;
 	.category{
 	grid-template-columns:repeat(2,1fr);
 	}
-}
-@media(max-width:375px){
-	#items{
-	padding:0 30px;
-	}
-	/* .category{
-	grid-template-columns:repeat(1,1fr);
-	} */
 }
 </style>
 
