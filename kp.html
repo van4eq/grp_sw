@@ -11,13 +11,14 @@
 
 :root{
 --indent:30px;
+--closeDiameter:65px;
 --logo:url(https://van4eq.github.io/grp_sw/logo.svg);
 --bg:#fff;
 --headers:#00AEEF;
 --text:#333;
 --subtext:#999;
 --important:#f1574b;
---button:rgba(255,255,255,.75);
+--button:#fffb;
 --up:175vh;
 }
 @media(prefers-color-scheme:dark){
@@ -28,7 +29,7 @@
 	--text:#fff;
 	--subtext:#bfbfbf;
 	--important:#FF6E60;
-	--button:rgba(68,68,68,.75);
+	--button:#444b;
 	}
 }
 	
@@ -114,7 +115,7 @@ padding-bottom:calc(var(--indent) * 1.75);
 
 .item img{
 width:100%;
-border-radius:32.5px;
+border-radius:calc(var(--closeDiameter) / 2);
 background:#fff;
 }
 
@@ -221,8 +222,8 @@ background:var(--button);
 backdrop-filter:blur(15px);
 top:15px;
 right:var(--indent);
-width:65px;
-height:65px;
+width:var(--closeDiameter);
+height:var(--closeDiameter);
 cursor:pointer;
 }
 .close:before,.close:after{
@@ -250,7 +251,7 @@ padding:0 var(--indent);
 }
 #item img{
 width:100%;
-border-radius:32.5px;
+border-radius:calc(var(--closeDiameter) / 2);
 }
 #name{
 font-size:1.25em;
@@ -443,26 +444,24 @@ $('.period').click(function(){
 
 					var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim();
 					if(!$('.category[category-name="'+category+'"]').length){
+						var section;
 						if(category.match(/парфюм|аромат|aroma|perfum|роза|чайные/i)){
-							$('#perfumes').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
-							$('#perfumes h2').show();
+							section='perfumes';
 						}
 						else if(category.match(/vitamama|essential|daily|health/i)){
-							$('#supplements').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
-							$('#supplements h2').show();
+							section='supplements';
 						}
 						else if(category.match(/experalta/i)){
-							$('#cosmetics').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
-							$('#cosmetics h2').show();
+							section='cosmetics';
 						}
 						else if(category.match(/fitness/i)){
-							$('#sport').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
-							$('#sport h2').show();
+							section='sport';
 						}
 						else{
-							$('#other').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
-							$('#other h2').show();
+							section='other';
 						}
+						$('#'+section).append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
+						$('#'+section).find('h2').show();
 					}else{
 						$('.category[category-name="'+category+'"]').append(new_item);
 						$('#up').show();
