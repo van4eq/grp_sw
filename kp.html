@@ -109,7 +109,7 @@ margin:50px auto;
 
 .item{
 position:relative;
-padding-bottom:calc(var(--indent) * 2);
+padding-bottom:calc(var(--indent) * 1.75);
 }
 
 .item img{
@@ -328,10 +328,30 @@ function prepositions(text){
 	}
 	return text;
 }
-
-var categoryChains; //Технические данные для беспроблемной вставки с сайта SW
-var cityId; //Технические данные для беспроблемной вставки с сайта SW
-var params; //Технические данные для беспроблемной вставки с сайта SW
+function sortAlphabet(){ //Сортировка по алфавиту 
+	$('.category').each(function(){ //Для продуктов
+		var $category=$(this);
+		var items=$category.find('.item').get();
+		items.sort(function(a,b){
+			var nameA=$(a).find('.name').text().trim().toLowerCase();
+			var nameB=$(b).find('.name').text().trim().toLowerCase();
+			return nameA.localeCompare(nameB,'ru');
+		});
+		$category.empty().append(items);
+	});
+	<!-- $('section').each(function(){ //Для категорий -->
+		<!-- var $section=$(this); -->
+		<!-- var category=$section.find('.category').get(); -->
+		<!-- category.sort(function(a,b){ -->
+			<!-- var nameA=$(a).attr('category-name').trim().toLowerCase(); -->
+			<!-- var nameB=$(b).attr('category-name').trim().toLowerCase(); -->
+			<!-- return nameA.localeCompare(nameB,'ru'); -->
+		<!-- }); -->
+		<!-- $section.find('.category').remove(); -->
+		<!-- $section.append(category); -->
+	<!-- }); -->
+}
+var categoryChains,cityId,params; //Технические данные для беспроблемной вставки с сайта SW
 var amount; // Фасовка продукта
 $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
@@ -411,33 +431,46 @@ $('.period').click(function(){
 					//sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 					sendData.description=sendData.description.replaceAll('• ','- ').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 
-					var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount more">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>1</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
+					var new_item=
+					'<div class="item _'+items[i][0]+'">\
+						<img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more">\
+						<div class="article">#'+items[i][0]+'</div>\
+						<div class="name more">'+prepositions(sendData.name)+'</div>\
+						<div class="amount more">'+amount+'</div>\
+						<div class="price"><s>'+sendData.oldPrice+'</s><span>1</span></div>\
+						<div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div>\
+					</div>';
 
-					var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim().replace(/\(|\)|\'/g,'').replaceAll(' ','_');
-					if(!$('.'+category).length){
+					var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim();
+					if(!$('.category[category-name="'+category+'"]').length){
 						if(category.match(/парфюм|аромат|aroma|perfum|роза|чайные/i)){
-							$('#perfumes').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#perfumes').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
 							$('#perfumes h2').show();
 						}
 						else if(category.match(/vitamama|essential|daily|health/i)){
-							$('#supplements').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#supplements').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
 							$('#supplements h2').show();
 						}
 						else if(category.match(/experalta/i)){
-							$('#cosmetics').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#cosmetics').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
 							$('#cosmetics h2').show();
 						}
 						else if(category.match(/fitness/i)){
-							$('#sport').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#sport').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
 							$('#sport h2').show();
 						}
 						else{
-							$('#other').append('<div class="category '+category+'">'+new_item+'</div>');
+							$('#other').append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
 							$('#other h2').show();
 						}
 					}else{
-						$('.'+category).append(new_item);
+						$('.category[category-name="'+category+'"]').append(new_item);
 						$('#up').show();
+					}
+
+					if(i==items.length-1){
+						console.log(items.length);
+						sortAlphabet();
 					}
 				});
 			}
