@@ -444,22 +444,12 @@ $('.period').click(function(){
 
 					var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim();
 					if(!$('.category[category-name="'+category+'"]').length){
-						var section;
-						if(category.match(/парфюм|аромат|aroma|perfum|роза|чайные/i)){
-							section='perfumes';
-						}
-						else if(category.match(/vitamama|essential|daily|health/i)){
-							section='supplements';
-						}
-						else if(category.match(/experalta/i)){
-							section='cosmetics';
-						}
-						else if(category.match(/fitness/i)){
-							section='sport';
-						}
-						else{
-							section='other';
-						}
+						var section=
+							category.match(/парфюм|аромат|aroma|perfum|роза|чайные/i)?'perfumes':
+							category.match(/vitamama|essential|daily|health/i)?'supplements':
+							category.match(/experalta/i)?'cosmetics':
+							category.match(/fitness/i)?'sport':
+							'other';
 						$('#'+section).append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
 						$('#'+section).find('h2').show();
 					}else{
