@@ -89,7 +89,7 @@ overflow-x:scroll;
 overflow-y:hidden;
 background:var(--bg);
 scrollbar-width:none;
-height:3.75em;
+height:4.5em;
 display:flex;
 align-items:center;
 }
@@ -114,7 +114,7 @@ margin:0 auto calc(50px - var(--up));
 h2{
 position:sticky;
 z-index:10;
-top:2.5em;
+top:3em;
 padding:.75em var(--indent);
 text-transform:uppercase;
 display:none;
@@ -389,7 +389,8 @@ var amount; // Фасовка продукта
 $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
 	$('.period').removeClass('active');
-	$(this).addClass('active')
+	$(this).addClass('active');
+	$('.headers').empty();
 	$('section .category').remove();
 	$('section h2').hide();
 	$('#up').hide();
@@ -498,7 +499,6 @@ $('.period').click(function(){
 						if($('.item').length==items.length){
 							console.log(items.length);
 							sortAlphabet();
-							$('.headers').empty();
 							$('h2:visible').each(function(){
 								$('.headers').append('<a href="#'+$(this).closest('section').attr('id')+'">'+$(this).text()+'</a>');
 							});
@@ -531,8 +531,10 @@ $(window).on('scroll',function(){
 
 $('#headers').on('click','a',function(){
 	setTimeout(()=>{
-		$(window).scrollTop($(window).scrollTop()-$('h2').height());
-	},)
+		if(Math.round($($(this).attr('href')).offset().top-$(window).scrollTop())<1){
+			$(window).scrollTop($(window).scrollTop()-$('#headers').height());
+		}
+	});
 });
 
 $('#up').click(function(){
