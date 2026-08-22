@@ -55,9 +55,7 @@ function getMonthName(date){
 	return months[date.getMonth()];
 }
 
-var categoryChains; // Технические данные для беспроблемной вставки с сайта SW
-var cityId; // Технические данные для беспроблемной вставки с сайта SW
-var params; // Технические данные для беспроблемной вставки с сайта SW
+var categoryChains,cityId,params; //Технические данные для беспроблемной вставки с сайта SW
 var since; // Дата начала акции
 var until; // Дата завершения акции
 var amount; // Фасовка продукта
@@ -72,7 +70,7 @@ $(document).on('paste',function(e){
 			$.post(link,function(data){
 				$('#draft_header,#draft_descr').attr('productID',text);
 				stories=1;
-				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
+				let sendData=eval('({'+data.split(/sendData\s*=\s*\{\n/g)[1].split('};')[0]+'})');
 
 				//try{ // Это настройка на случай, если бы указывалась дата начала акции
 				//	since=data.split('{&quot;start&quot;:&quot;')[1].split('T')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
