@@ -526,7 +526,11 @@ $('#6m').click(function(){
 });
 
 $(window).on('scroll',function(){
-	$('#headers').scrollLeft($('#headers').width()*(($('#headers').offset().top-$('#items').offset().top)/($('#items').height()-$(window).height())));
+	$('#headers').scrollLeft(
+		($('.headers').innerWidth()-$('#headers').innerWidth())
+		*
+		(($('#headers').offset().top-$('#items').offset().top) / ($('#items').height()-$(window).height()))
+	);
 });
 
 $('#headers').on('click','a',function(){
