@@ -81,6 +81,7 @@ color:var(--headers);
 }
 
 #headers{
+display:none;
 position:sticky;
 top:0;
 z-index:100;
@@ -390,6 +391,7 @@ $('.period').click(function(){
 	$('title').text('Клуб постоянства ('+$(this).text()+')');
 	$('.period').removeClass('active');
 	$(this).addClass('active');
+	$('#headers').hide();
 	$('.headers').empty();
 	$('section .category').remove();
 	$('section h2').hide();
@@ -490,7 +492,7 @@ $('.period').click(function(){
 								category.match(/fitness/i)?'sport':
 								'other';
 							$('#'+section).append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
-							$('#'+section).find('h2').show();
+							$('#'+section).find('h2').slideDown(300);
 						}else{
 							$('.category[category-name="'+category+'"]').append(new_item);
 							$('#up').show();
@@ -501,6 +503,7 @@ $('.period').click(function(){
 							sortAlphabet();
 							$('h2:visible').each(function(){
 								$('.headers').append('<a href="#'+$(this).closest('section').attr('id')+'">'+$(this).text()+'</a>');
+								$('#headers').slideDown(300);
 							});
 						}
 					});
