@@ -68,18 +68,6 @@ margin:30px 0;
 color:var(--headers);
 line-height:1.5em;
 }
-h2{
-position:sticky;
-z-index:10;
-top:0;
-padding:.75em var(--indent);
-text-transform:uppercase;
-display:none;
-background:var(--button);
-backdrop-filter:blur(15px);
-text-align:center;
-margin:100px 0 -20px;
-}
 .period{
 cursor:pointer;
 border:3px dashed #bbb;
@@ -92,12 +80,52 @@ border:3px solid var(--headers);
 color:var(--headers);
 }
 
+#headers{
+position:sticky;
+top:0;
+z-index:100;
+max-width:100%;
+overflow-x:scroll;
+overflow-y:hidden;
+background:var(--bg);
+scrollbar-width:none;
+height:3.75em;
+display:flex;
+align-items:center;
+}
+.headers{
+padding:0 var(--indent);
+white-space:nowrap;
+}
+.headers a{
+font-size:.85em;
+text-transform:uppercase;
+display:inline-block;
+border-radius:50px;
+border:2px solid var(--headers);
+padding:.75em 1em;
+text-decoration:none;
+}
+
 #items{
-margin:30px auto calc(50px - var(--up));
+margin:0 auto calc(50px - var(--up));
+}
+
+h2{
+position:sticky;
+z-index:10;
+top:2.5em;
+padding:.75em var(--indent);
+text-transform:uppercase;
+display:none;
+background:var(--button);
+backdrop-filter:blur(15px);
+text-align:center;
+margin:100px 0 -20px;
 }
 
 section:first-child h2{
-margin:30px 0 -20px;
+margin:0 0 -20px;
 }
 
 .category{
@@ -296,6 +324,10 @@ font-weight:500;
 	<p style="color:var(--subtext);"><span style="color:var(--important);">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</p>
 </header>
 
+<div id="headers">
+	<div class="headers"></div>
+</div>
+
 <div id="items">
 	<section id="supplements"><h2>Витамины и минералы</h2></section>
 	<section id="perfumes"><h2>Парфюмерия</h2></section>
@@ -363,105 +395,117 @@ $('.period').click(function(){
 	$('#up').hide();
 	var period=$(this).text().replace(/\D+/g,'');
 	$.get('https://van4eq.github.io/grp_sw/kp'+period+'?'+Date.now(),function(data){
-		var items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
+		var items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.trim().split('\t'));
 		items=items.sort((a,b)=>a-b);
 		for(let i=0;i<items.length;i++){
-			if((items[i][0]).trim().match(/^\d{6}$/)){
-				$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
-					let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
-
-					sendData.name=sendData.name
-						.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
-						.replace(/\, (\d{2,3} мл)/,' ($1)')
-						.replace(/\, (\d{2,3} г)/,' ($1)')
-						.replace(/\, (объем \d{2,3} мл)/,' ($1)')
-						.replace('Духи-концентрат,','Духи-концентрат')
-						.replace('Фиточай из диких трав № ','Чай №')
-						.replace(' Siberian Herbs','')
-						.replace(' GREENPIN','')
-						.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
-						.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
-						.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
-						.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
-						.replace(/^Истоки чистоты. Формула 3$/,'Формула 3')
-						.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
-						.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
-						.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
-						.replace(/^«Живокост», восстанавливающий бальзам форте$/,'Бальзам Живокост форте')
-						.replace(/^\«Уян Номо\»\, бальзам для тела$/,'Бальзам Уян Номо (Гибкий лук)')
-						.replace(/^(Бальзам широкого спектра действия)$/,'$1 Корень (без камфоры)')
-						.replace(/^(Бальзам широкого спектра действия) «Корень»$/,'$1 Корень (с камфорой)')
-						.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов)$/,'$1 '+sendData.vendor+' ($2)')
-						.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов) (Горная лаванда)/,'$1 $3 ($2)')
-						.replace('Сибирская чага, природная профилактическая зубная паста','Природная профилактическая зубная паста Сибирская чага')
-						.replace(/^Хронобиологическая защита клеток мозга$|^Хронобиологическая защита сердца$|^Хронобиологическая защита печени$|^Хронобиологическая защита суставов$|^Хронобиологическая защита зрения$/,sendData.vendor+' ('+sendData.name+')')
-						.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
-						.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
-						.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
-						.replace('. ',', ');
-					if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
-						sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
-					}
-					if(sendData.name.trim().match('парфюмиров')){
-						sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
-					}
-					if(sendData.name.match(' / ')){
-						sendData.name=sendData.name.trim().replace(' / ',' (')+')';
-					}
-					var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
-					if(sendData.name.match(measurements)){
-						sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
-					}
-					sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином&nbsp;C').replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
-
-					if(data.indexOf("params.amount = '")!=-1){
-						amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
-					}else{
-						amount='';
-					}
-
-					sendData.description=$(data).find('div[itemprop="description"]').html();
-					if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
-						var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
-						var $descr=$(descr[Object.keys(descr)[0]].description);
-						sendData.description=$descr.html();
-						if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
-							sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
+			if(items[i][0].match(/^\d{6}$/)){
+				function post(index=items[i][0]){
+					$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+index+'/',function(data){
+						let sendData;
+						try{
+							sendData=eval('({'+data.split(/sendData\s*=\s*\{\n/g)[1].split('};')[0]+'})');
+						}catch{
+							post();
 						}
-					}
-					//sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
-					sendData.description=sendData.description.replaceAll('• ','- ').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.(\ |)(?=$|<)/gm,'');
 
-					var new_item=
-					'<div class="item _'+items[i][0]+'">\
-						<img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more">\
-						<div class="article">#'+items[i][0]+'</div>\
-						<div class="name more">'+prepositions(sendData.name)+'</div>\
-						<div class="amount more">'+amount+'</div>\
-						<div class="price"><s>'+sendData.oldPrice+'</s><span>1</span></div>\
-						<div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div>\
-					</div>';
+						sendData.name=sendData.name
+							.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
+							.replace(/\, (\d{2,3} мл)/,' ($1)')
+							.replace(/\, (\d{2,3} г)/,' ($1)')
+							.replace(/\, (объем \d{2,3} мл)/,' ($1)')
+							.replace('Духи-концентрат,','Духи-концентрат')
+							.replace('Фиточай из диких трав № ','Чай №')
+							.replace(' Siberian Herbs','')
+							.replace(' GREENPIN','')
+							.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
+							.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
+							.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
+							.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
+							.replace(/^Истоки чистоты. Формула 3$/,'Формула 3')
+							.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
+							.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
+							.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
+							.replace(/^«Живокост», восстанавливающий бальзам форте$/,'Бальзам Живокост форте')
+							.replace(/^\«Уян Номо\»\, бальзам для тела$/,'Бальзам Уян Номо (Гибкий лук)')
+							.replace(/^(Бальзам широкого спектра действия)$/,'$1 Корень (без камфоры)')
+							.replace(/^(Бальзам широкого спектра действия) «Корень»$/,'$1 Корень (с камфорой)')
+							.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов)$/,'$1 '+sendData.vendor+' ($2)')
+							.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов) (Горная лаванда)/,'$1 $3 ($2)')
+							.replace('Сибирская чага, природная профилактическая зубная паста','Природная профилактическая зубная паста Сибирская чага')
+							.replace(/^Хронобиологическая защита клеток мозга$|^Хронобиологическая защита сердца$|^Хронобиологическая защита печени$|^Хронобиологическая защита суставов$|^Хронобиологическая защита зрения$/,sendData.vendor+' ('+sendData.name+')')
+							.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
+							.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
+							.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
+							.replace('. ',', ');
+						if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
+							sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
+						}
+						if(sendData.name.trim().match('парфюмиров')){
+							sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
+						}
+						if(sendData.name.match(' / ')){
+							sendData.name=sendData.name.trim().replace(' / ',' (')+')';
+						}
+						var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)/;
+						if(sendData.name.match(measurements)){
+							sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
+						}
+						sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином&nbsp;C').replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
 
-					var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim();
-					if(!$('.category[category-name="'+category+'"]').length){
-						var section=
-							category.match(/парфюм|аромат|aroma|perfum|роза|чайные/i)?'perfumes':
-							category.match(/vitamama|essential|daily|health/i)?'supplements':
-							category.match(/experalta/i)?'cosmetics':
-							category.match(/fitness/i)?'sport':
-							'other';
-						$('#'+section).append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
-						$('#'+section).find('h2').show();
-					}else{
-						$('.category[category-name="'+category+'"]').append(new_item);
-						$('#up').show();
-					}
+						if(data.indexOf("params.amount = '")!=-1){
+							amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
+						}else{
+							amount='';
+						}
 
-					if(i==items.length-1){
-						console.log(items.length);
-						sortAlphabet();
-					}
-				});
+						sendData.description=$(data).find('div[itemprop="description"]').html();
+						if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
+							var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
+							var $descr=$(descr[Object.keys(descr)[0]].description);
+							sendData.description=$descr.html();
+							if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
+								sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
+							}
+						}
+						//sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
+						sendData.description=sendData.description.replaceAll('• ','- ').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.(\ |)(?=$|<)/gm,'');
+
+						var new_item=
+						'<div class="item _'+sendData.id+'">\
+							<img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more">\
+							<div class="article">#'+sendData.id+'</div>\
+							<div class="name more">'+prepositions(sendData.name)+'</div>\
+							<div class="amount more">'+amount+'</div>\
+							<div class="price"><s>'+sendData.oldPrice+'</s><span>1</span></div>\
+							<div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div>\
+						</div>';
+
+						var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim();
+						if(!$('.category[category-name="'+category+'"]').length){
+							var section=
+								category.match(/парфюм|аромат|aroma|perfum|роза|чайные/i)?'perfumes':
+								category.match(/vitamama|essential|daily|health/i)?'supplements':
+								category.match(/experalta/i)?'cosmetics':
+								category.match(/fitness/i)?'sport':
+								'other';
+							$('#'+section).append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
+							$('#'+section).find('h2').show();
+						}else{
+							$('.category[category-name="'+category+'"]').append(new_item);
+							$('#up').show();
+						}
+						
+						if($('.item').length==items.length){
+							console.log(items.length);
+							sortAlphabet();
+							$('.headers').empty();
+							$('h2:visible').each(function(){
+								$('.headers').append('<a href="#'+$(this).closest('section').attr('id')+'">'+$(this).text()+'</a>');
+							});
+						}
+					});
+				}
+				post();
 			}
 		}
 	});
@@ -479,6 +523,16 @@ $('#3m').click(function(){
 });
 $('#6m').click(function(){
 	history.replaceState(null,null,baseUrl);
+});
+
+$(window).on('scroll',function(){
+	$('#headers').scrollLeft($('#headers').width()*(($('#headers').offset().top-$('#items').offset().top)/($('#items').height()-$(window).height())));
+});
+
+$('#headers').on('click','a',function(){
+	setTimeout(()=>{
+		$(window).scrollTop($(window).scrollTop()-$('h2').height());
+	},)
 });
 
 $('#up').click(function(){
