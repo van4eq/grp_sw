@@ -20,6 +20,7 @@
 --important:#f1574b;
 --button:#fffb;
 --up:175vh;
+--blur:blur(10px);
 }
 @media(prefers-color-scheme:dark){
 	:root{
@@ -119,7 +120,7 @@ padding:.75em var(--indent);
 text-transform:uppercase;
 display:none;
 background:var(--button);
-backdrop-filter:blur(15px);
+backdrop-filter:var(--blur);
 text-align:center;
 margin:100px 0 -20px;
 }
@@ -193,7 +194,7 @@ z-index:100;
 #up:after{
 content:'Наверх';
 background:var(--button);
-backdrop-filter:blur(15px);
+backdrop-filter:var(--blur);
 border-radius:50px;
 color:var(--headers);
 font-weight:500;
@@ -234,7 +235,7 @@ border-radius:50px;
 font-weight:500;
 position:fixed;
 background:var(--button);
-backdrop-filter:blur(15px);
+backdrop-filter:var(--blur);
 top:15px;
 right:calc(70px + var(--indent));
 cursor:pointer;
@@ -247,7 +248,7 @@ content:'Поделиться';
 position:fixed;
 border-radius:50px;
 background:var(--button);
-backdrop-filter:blur(15px);
+backdrop-filter:var(--blur);
 top:15px;
 right:var(--indent);
 width:var(--closeDiameter);
@@ -392,8 +393,8 @@ $('.period').click(function(){
 	$(this).addClass('active');
 	$('#headers').hide();
 	$('.headers').empty();
-	$('section .category').remove();
-	$('section h2').hide().animate({top:0},0);
+	$('.category').remove();
+	$('h2').hide().animate({top:0},0);
 	$('#up').hide();
 	var time=300;
 	var period=$(this).text().replace(/\D+/g,'');
@@ -504,7 +505,7 @@ $('.period').click(function(){
 							$('h2:visible').each(function(){
 								$('.headers').append('<a href="#'+$(this).closest('section').attr('id')+'">'+$(this).text()+'</a>');
 								$('#headers').slideDown(time);
-								$('h2').animate({top:$('#headers').innerHeight()},time);
+								$('h2').animate({top:'3em'},time);
 							});
 						}
 					});
