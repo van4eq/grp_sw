@@ -48,6 +48,7 @@ padding:0 var(--indent);
 
 #logo{
 width:190px;
+display:block;
 }
 
 h1,h2{
