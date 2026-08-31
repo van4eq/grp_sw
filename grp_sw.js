@@ -83,7 +83,7 @@ $(document).on('paste',function(e){
 					console.log(until)
 				}catch{}
 				if(until!=null){
-					until=new Date(until);
+					until=new Date(until).toLocaleDateString('ru-RU',options);
 					console.log(until)
 				}
 
