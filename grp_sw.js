@@ -1,67 +1,3 @@
-function declension(qty,titles,pretitles){
-	let declension=new Array(2,0,1,1,1,2);
-	let declensionIndex=(qty%1!=0)?1:(qty%100>4&&qty%100<20)?2:declension[Math.min(qty%10,5)];
-	return (pretitles?pretitles[declensionIndex]+' ':'')+qty+' '+titles[declensionIndex];
-}
-
-function prepositions(text){
-	var prepositions=['без','безо','в','во','вокруг','для','до','за','из','изо','к','ко','на','над','надо','о','об','обо','около','от','ото','по','под','подо','перед','передо','после','при','про','с','со','у','через','из-за','из-под','а','но','не','ни'];
-	for(let prep of prepositions){
-		text=text.replace(new RegExp(`( )(${prep})( )`,'gi'),`$1$2&nbsp;`);
-	}
-	return text;
-}
-
-var options={day:'numeric',month:'long'};
-function wednesday(date=new Date()){
-	var day=date.getDay();
-	var diff=(day<=3)?3-day:10-day;
-	date.setDate(date.getDate()+diff);
-	return date.toLocaleDateString('ru-RU',options);
-}
-function friday(date=new Date()){
-	var day=date.getDay();
-	var diff=(day<=5)?5-day:10-day;
-	date.setDate(date.getDate()+diff);
-	return date.toLocaleDateString('ru-RU',options);
-}
-
-function weeksMonths(type='month'){
-	const now=new Date();
-	let startDate,endDate;
-	if(type=='week'){
-		startDate=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()||7)-1));
-		endDate=new Date(startDate);
-		endDate.setDate(endDate.getDate()+6);
-	}else if(type=='month'){
-		startDate=new Date(now.getFullYear(),now.getMonth(),1);
-		endDate=new Date(now.getFullYear(),now.getMonth()+1,0);
-	}
-//	else if(type=='sinceUntil'){ // Это настройка на случай, если бы указывались даты начала и конца акции
-//		startDate=since;
-//		endDate=until;
-//		var from=(startDate.getDate()=='2')?'со':'с';
-//		var to=(startDate.getMonth()==endDate.getMonth())?'по':getMonthName(startDate)+' по';
-//		return `${from} ${startDate.getDate()} ${to} ${endDate.getDate()} ${getMonthName(endDate)}`;
-//	}
-	if((type=='week'||type=='month')&&startDate.getDate()>endDate.getDate()){
-		return `${startDate.getDate()} ${getMonthName(startDate)}—${endDate.getDate()} ${getMonthName(endDate)}`;
-	}else{
-		return `${startDate.getDate()}—${endDate.getDate()} ${getMonthName(endDate)}`;
-	}
-}
-function getMonthName(date){
-	const months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-	return months[date.getMonth()];
-}
-
-var categoryChains,cityId,params; //Технические данные для беспроблемной вставки с сайта SW
-var since; // Дата начала акции
-var until; // Дата завершения акции
-var amount; // Фасовка продукта
-var before; // Предыдущий выбор заголовка
-var link; // Ссылка на продукт
-var stories; // Для корректного входа в режим редактирования сторис/статуса
 $(document).on('paste',function(e){
 	e.preventDefault();
 	navigator.clipboard.readText().then(text=>{ // Формирование рекламы при вставке ссылки на страницу с продуктом
@@ -72,7 +8,7 @@ $(document).on('paste',function(e){
 				stories=1;
 				let sendData=eval('({'+data.split(/sendData\s*=\s*\{\n/g)[1].split('};')[0]+'})');
 
-				//try{ // Это настройка на случай, если бы указывалась дата начала акции
+				//try{ //Это настройка на случай, если бы указывалась дата начала акции
 				//	since=data.split('{&quot;start&quot;:&quot;')[1].split('T')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
 				//}catch{}
 				//if(since!=null){
@@ -90,46 +26,7 @@ $(document).on('paste',function(e){
 				$('#img').html('<img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'">').css('background','none');
 				$('#pic').attr('src',$('#img img').attr('src'));
 
-				sendData.name=sendData.name
-					.replace(/\, 1\.5 мл|\, 1\,5 мл/,' (1,5 мл)')
-					.replace(/\, (\d{2,3} мл)/,' ($1)')
-					.replace(/\, (\d{2,3} г)/,' ($1)')
-					.replace(/\, (объем \d{2,3} мл)/,' ($1)')
-					.replace(/\, (\d+ капсул)/,' ($1)')
-					.replace('Духи-концентрат,','Духи-концентрат')
-					.replace(/Фиточай из диких трав №( |)/,'Чай №')
-					.replace(' Siberian Herbs','')
-					.replace(' GREENPIN','')
-					.replace(/^Витаминно-минеральный комплекс$/,sendData.vendor)
-					.replace(/^Энергомодулирующий комплекс в формате спрея$/,sendData.vendor)
-					.replace(/^Набор для комплексного очищения организма$/,sendData.vendor)
-					.replace(/^Премиум набор для комплексного очищения организма$/,'Истоки чистоты Премиум (Renaissance Triple Set)')
-					.replace(/^Истоки чистоты. Формула 3$/,'Формула 3 (антиоксидантный комплекс)')
-					.replace(/^(Природный инулиновый концентрат)$/,'$1 (ПИК)')
-					.replace(/^(Восстанавливающий бальзам)$/,'$1 (для кожи)')
-					.replace(/^Бальзам с экстрактом окопника\, глюкозамином и хондроитином$/,sendData.vendor)
-					.replace(/^«Живокост», восстанавливающий бальзам форте$/,'Бальзам Живокост форте')
-					.replace(/^\«Уян Номо\»\, бальзам для тела$/,'Бальзам Уян Номо (Гибкий лук)')
-					.replace(/^(Бальзам широкого спектра действия)$/,'$1 Корень (без камфоры)')
-					.replace(/^(Бальзам широкого спектра действия) «Корень»$/,'$1 Корень (с камфорой)')
-					.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов)$/,'$1 '+sendData.vendor+' ($2)')
-					.replace(/^(Зубная паста|Зубная паста с пребиотиком) (Натуральная защита|Антибактериальная защита|Интенсивное укрепление эмали|Свежесть и защита для чувствительных зубов) (Горная лаванда)/,'$1 $3 ($2)')
-					.replace('Сибирская чага, природная профилактическая зубная паста','Природная профилактическая зубная паста Сибирская чага')
-					.replace(/^Хронобиологическая защита клеток мозга$|^Хронобиологическая защита сердца$|^Хронобиологическая защита печени$|^Хронобиологическая защита суставов$|^Хронобиологическая защита зрения$/,sendData.vendor+' ('+sendData.name+')')
-					.replace(/^(Метилсульфонилметан)$/,'MSM (Органическая сера)')
-					.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
-					.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
-					.replace('. ',', ');
-				if(sendData.name.match(', ')&&sendData.name.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!sendData.name.trim().match('100%')){
-					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
-				}
-				if(sendData.name.trim().match(/парфюмиров|маска/)){
-					sendData.name=sendData.name.replace(sendData.name.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+sendData.name.split(', ')[0];
-				}
-				if(sendData.name.match(' / ')){
-					sendData.name=sendData.name.trim().replace(' / ',' (')+')';
-				}
-				var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)| \(\d+ капсул\)/;
+				sendData.name=naming(sendData.name);
 				if(sendData.name.match(measurements)){
 					sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
 				}
@@ -223,7 +120,7 @@ $(document).on('paste',function(e){
 
 				$('#header').html(sendData.name);
 				$('#price').html(oldPrice+'<span contenteditable>'+sendData.price+'</span> ₽');
-				$('#points').html(declension(points,new Array('балл','балла','баллов'))).slideDown(200);
+				$('#points').html(declension(points,['балл','балла','баллов'])).slideDown(200);
 				$('#descr').html(sendData.description);
 			}).fail(function(){
 				alert('Возможно, продукта с таким кодом нет или сайт временно не работает');
@@ -255,24 +152,44 @@ $('[name=period]').click(function(){
 	}
 });
 
+$('#remain').click(function(){
+	if($(this).prop('checked')){
+		function remain(){
+			let input=prompt('Введите остатки продукта (только цифрами от 1)');
+			if(input!=null){
+				if(input.replace(/\s/g,'').match(/^\d+$/)>0){
+					$('#remain+label span').text(input.replace(/\s/g,'').replace(/^[0]+([1-9])/g,'$1'));
+				}else{
+					remain();
+				}
+			}else{
+				$('#remain').prop('checked',false);
+			}
+		}
+		remain();
+	}else{
+		$('#remain+label span').text('');
+	}
+});
+
 $('#oldPrice').click(function(){
 	if($(this).prop('checked')){
-		function reduced_1(){
-			var reduced=prompt('Введите старую цену (только цифрами)');
-			if(reduced!=null){
-				if(reduced.replace(/\s/g,'').match(/^\d+$/)){
-					$('#oldPrice+label s').text(reduced.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
+		function reduced(){
+			let input=prompt('Введите старую цену (только цифрами)');
+			if(input!=null){
+				if(input.replace(/\s/g,'').match(/^\d+$/)>0){
+					$('#oldPrice+label s').text(input.replace(/\s/g,'').replace(/^[0]+([1-9])/g,'$1'));
 					if($('#specialPrice').prop('checked')){
 						$('#specialPrice').trigger('click');
 					}
 				}else{
-					reduced_1();
+					reduced();
 				}
 			}else{
 				$('#oldPrice').prop('checked',false);
 			}
 		}
-		reduced_1();
+		reduced();
 	}else{
 		$('#oldPrice+label s').text('');
 	}
@@ -280,48 +197,28 @@ $('#oldPrice').click(function(){
 
 $('#specialPrice').click(function(){
 	if($(this).prop('checked')){
-		function specialPrice_1(){
-			var specialPrice=prompt('Введите специальную цену (только цифрами)');
-			if(specialPrice!=null){
-				if(specialPrice.replace(/\s/g,'').match(/^\d+$/)){
-					$('#specialPrice+label span').text(specialPrice.replace(/\s/g,'').replace(/^[0]+$/g,'0').replace(/^[0]+([1-9])/g,'$1'));
+		function specialPrice(){
+			let input=prompt('Введите специальную цену (только цифрами)');
+			if(input!=null){
+				if(input.replace(/\s/g,'').match(/^\d+$/)){
+					$('#specialPrice+label span').text(input.replace(/\s/g,'').replace(/^[0]+([0-9])/g,'$1'));
 					$('#price span').addClass('del');
 					$('#points').slideUp(200);
 					if($('#oldPrice').prop('checked')){
 						$('#oldPrice').trigger('click');
 					}
 				}else{
-					specialPrice_1();
+					specialPrice();
 				}
 			}else{
 				$('#specialPrice').prop('checked',false);
 			}
 		}
-		specialPrice_1();
+		specialPrice();
 	}else{
 		$('#specialPrice+label span').text('');
 		$('#price span').removeClass('del');
 		$('#points').slideDown(200);
-	}
-});
-
-$('#remain').click(function(){
-	if($(this).prop('checked')){
-		function remain_1(){
-			var remain=prompt('Введите остатки продукта (только цифрами от 1)');
-			if(remain!=null){
-				if(remain.replace(/\s/g,'').match(/^\d+$/)>0){
-					$('#remain+label span').text(remain.replace(/\s/g,'').replace(/^[0]+([1-9])/g,'$1'));
-				}else{
-					remain_1();
-				}
-			}else{
-				$('#remain').prop('checked',false);
-			}
-		}
-		remain_1();
-	}else{
-		$('#remain+label span').text('');
 	}
 });
 
@@ -346,22 +243,15 @@ $('#other').click(function(){
 
 $('#copy button').click(function(){
 	if($(this).attr('id')=='wa'){
-		var bold='*';
-		var boldx='*';
-		var scratch='~';
-		var scratchx='~';
+		var bold=boldx='*';
+		var scratch=scratchx='~';
 	}
 	if($(this).attr('id')=='tg'){
-		var bold='**';
-		var boldx='**';
-		var scratch='~~';
-		var scratchx='~~';
+		var bold=boldx='**';
+		var scratch=scratchx='~~';
 	}
 	if($(this).attr('id')=='max'){
-		var bold='<b>';
-		var boldx='</b>';
-		var scratch='<s>';
-		var scratchx='</s>';
+		var [bold,boldx,scratch,scratchx]=['<b>','</b>','<s>','</s>'];
 	}
 	var slogan='';
 	if($('[name=period]:checked').prop('checked')&&!$('#nope').prop('checked')){
@@ -399,7 +289,7 @@ $('#copy button').click(function(){
 	}
 	var remain='';
 	if($('#remain').prop('checked')){
-		remain=bold+'Всего '+declension($('#remain+label span').text(),new Array('штука','штуки','штук'))+boldx+'\n\n';
+		remain=bold+'Всего '+declension($('#remain+label span').text(),['штука','штуки','штук'])+boldx+'\n\n';
 	}
 	var addLink='';
 	if($('#link').prop('checked')){
@@ -411,7 +301,7 @@ $('#copy button').click(function(){
 			+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
 			+' за '
 			+scratchPrice
-			+declension(price,new Array('рубль','рубля','рублей'))
+			+declension(price,['рубль','рубля','рублей'])
 		+boldx
 		+points
 		+'\n\n'
