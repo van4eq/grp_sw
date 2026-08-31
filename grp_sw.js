@@ -82,8 +82,7 @@ $(document).on('paste',function(e){
 					until=data.split('&quot;finish&quot;:&quot;')[1].split('T23:59:59')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
 				}catch{}
 				if(until!=null){
-					until=new Date(until).toLocaleDateString('ru-RU',options);
-					console.log(until+', '+new Date())
+					until=new Date(until);
 				}
 
 				$('#copy button').prop('disabled',false);
@@ -153,7 +152,7 @@ $(document).on('paste',function(e){
 						$('#'+before).addClass('before');
 						$('.no_offer').prop({'disabled':true,'checked':false});
 					}
-					if(until==new Date().toLocaleDateString('ru-RU',options)){
+					if(until.toLocaleDateString('ru-RU',options)==new Date().toLocaleDateString('ru-RU',options)){
 						before='last_day';
 					}else{
 						before='until';
