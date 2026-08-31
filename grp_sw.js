@@ -183,9 +183,9 @@ $(document).on('paste',function(e){
 				}
 
 				var points=data.split('params.points = ')[1].split(';')[0].trim().replace('.',',');
-				if(data.indexOf("params.amount = '")!=-1){
+				try{
 					amount=data.split("params.amount = '")[1].split("';")[0].trim();
-				}else{
+				}catch{
 					amount='';
 				}
 
