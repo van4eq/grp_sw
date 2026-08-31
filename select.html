@@ -55,7 +55,7 @@ $.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
 				sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином&nbsp;C').replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
 	
 				try{
-					amount=data.split("params.amount = '")[1].split("';")[0].trim();
+					amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
 				}catch{
 					amount='';
 				}
