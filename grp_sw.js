@@ -80,11 +80,11 @@ $(document).on('paste',function(e){
 				//}
 				try{
 					until=data.split('&quot;finish&quot;:&quot;')[1].split('T23:59:59')[0].match(/(\d{4}-\d{2}-\d{2})/g)[0];
-					concole.log(until)
+					console.log(until)
 				}catch{}
 				if(until!=null){
 					until=new Date(until);
-					concole.log(until)
+					console.log(until)
 				}
 
 				$('#copy button').prop('disabled',false);
@@ -154,7 +154,7 @@ $(document).on('paste',function(e){
 						$('#'+before).addClass('before');
 						$('.no_offer').prop({'disabled':true,'checked':false});
 					}
-					concole.log(new Date().toLocaleDateString('ru-RU',options))
+					console.log(new Date().toLocaleDateString('ru-RU',options))
 					if(until==new Date().toLocaleDateString('ru-RU',options)){
 						before='last_day';
 					}else{
