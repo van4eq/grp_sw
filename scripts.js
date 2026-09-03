@@ -123,7 +123,7 @@ function naming(n){
 	if(n.match(', ')&&n.trim().match(/^[^А-ЯЁа-яё]{3}|Корень/)&&!n.trim().match('100%')){
 		n=n.replace(n.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+n.split(', ')[0];
 	}
-	if(n.trim().match(/, (парфюмиров|маска)/)){
+	if(n.trim().match(/, (парфюмиров|маска|скраб)/)){
 		n=n.replace(n.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+n.split(', ')[0];
 	}
 	if(n.match(' / ')&&!n.match(/ \/ PA( |)\+/)){
