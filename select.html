@@ -167,6 +167,8 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.
 			post();
 		}
 	}
+}).fail(function(){
+	window.location.href=window.location.pathname;
 });
 
 
