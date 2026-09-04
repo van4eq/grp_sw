@@ -49,7 +49,7 @@
 <script>
 $('#headers').hide();
 $('h2').animate({top:0},0);
-$.get('https://van4eq.github.io/grp_sw/'+(url.get('source')??'selection')+'?'+Date.now(),function(data){
+$.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.now(),function(data){
 	if(url.get('id')){
 		items=url.get('id').trim().split(',').map(row=>row.split('\t'));
 		discount=
