@@ -168,6 +168,7 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.
 		}
 	}
 }).fail(function(){
+	alert('Возможно, такого набора продуктов нет или сайт временно не работает');
 	window.location.href=window.location.pathname;
 });
 
