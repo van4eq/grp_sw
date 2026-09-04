@@ -61,8 +61,12 @@ var amount; //Фасовка продукта
 var before; //Предыдущий выбор заголовка
 var link; //Ссылка на продукт
 var stories; //Для корректного входа в режим редактирования сторис/статуса
-var discount; //Скидка
 var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)| \(\d+ капсул\)/; //Меры фасовок
+var url=new URLSearchParams(window.location.search); //Адрес страницы
+var time=300; //Скорость анимаций
+var items; //Список продуктов
+var discount; //Скидка
+var qty=[]; //Подсчёт продуктов в var items
 
 function sortAlphabet(){ //Сортировка по алфавиту 
 	$('.category').each(function(){ //Для продуктов
