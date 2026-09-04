@@ -4,9 +4,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
 <link rel="icon" href="https://ru.siberianhealth.com/shopen/public/icon.svg" type="image/svg+xml">
-<title>Варианты продуктов с дополнительной скидкой</title>
+<title>Список продуктов со&nbsp;скидкой&nbsp;</title>
 
-<link href="kp.css" rel="stylesheet">
+<link href="select.css" rel="stylesheet">
 
 <header>
 	<object id="logo" data="logo.svg" type="image/svg+xml"></object>
@@ -15,7 +15,20 @@
 	<p style="color:var(--subtext);"><span style="color:var(--important);">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</p>
 </header>
 
-<div id="items" style="margin:0 auto calc(50px);"></div>
+<div id="headers">
+	<div class="headers"></div>
+</div>
+
+<div id="items">
+	<section id="supplements"><h2>Витамины и минералы</h2></section>
+	<section id="perfumes"><h2>Парфюмерия</h2></section>
+	<section id="cosmetics"><h2>Косметика</h2></section>
+	<section id="sport"><h2>Для спорта</h2></section>
+	<section id="other"><h2>Прочее</h2></section>
+	<section id="all"></section>
+</div>
+
+<div id="up"></div>
 
 <div id="item">
 	<div id="share"></div>
@@ -34,57 +47,143 @@
 <script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
 <script src="scripts.js"></script>
 <script>
-var items; // ID продуктов
-$.get('https://van4eq.github.io/grp_sw/selection?'+Date.now(),function(data){
-	items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.split('\t'));
-	discount=items[0][0];
-	if(location.href.match(/\?id=/)){
-		items=location.href.split(/\?id=/)[1].trim().split(/&/).map(row=>row.split('\t'));
-		discount=location.href.split(/\?disc=/)[1].match(/^\d+/);
+$('#headers').hide();
+$('h2').animate({top:0},0);
+$.get('https://van4eq.github.io/grp_sw/'+(url.get('source')??'selection')+'?'+Date.now(),function(data){
+	if(url.get('id')){
+		items=url.get('id').trim().split(',').map(row=>row.split('\t'));
+		discount=
+			url.get('disc')&&url.get('disc').match(/\d+/)?
+			Number(url.get('disc')):
+			discount;
+		$('h1,title').text(!discount?$('h1').text():$('h1').text()+discount+'%');
+	}else{
+		items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.trim().split('\t'));
+		discount=
+			items[1][0]&&items[1][0].match(/\d+/)?
+			Number(items[1][0]):
+			discount;
+		$('h1,title').text(items[0][0]);
 	}
-	$('h1').append(discount+'%');
+	//items=items.sort((a,b)=>a-b);
 	for(let i=0;i<items.length;i++){
-		if(items[i][0].trim().match(/^\d{6}$/)){
-			$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+items[i][0].trim().match(/^\d{6}$/)+'/',function(data){
-				let sendData=eval('({'+data.match(/\'id\'\: \d{6}\,/)+data.split(/\'id\'\: \d{6}\,/)[1].split("'params': params")[0]+'})');
-	
-				sendData.name=naming(sendData.name);
-				if(sendData.name.match(measurements)){
-					sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
-				}
-				sendData.name=sendData.name.replace(/(\b\d+\b)\s/g,'$1&nbsp;').replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>').replace(/витамином С/g,'витамином&nbsp;C').replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
-	
-				try{
-					amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
-				}catch{
-					amount='';
-				}
-
-				sendData.description=$(data).find('div[itemprop="description"]').html();
-				if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
-					var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
-					var $descr=$(descr[Object.keys(descr)[0]].description);
-					sendData.description=$descr.html();
-					if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
-						sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
+		if(items[i][0].match(/^\d{6}$/)){
+			qty.push(i);
+			function post(index=items[i][0]){
+				$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+index+'/',function(data){
+					let sendData;
+					try{
+						sendData=eval('({'+data.split(/sendData\s*=\s*\{\n/g)[1].split('};')[0]+'})');
+					}catch{
+						post();
 					}
-				}
-				//sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
-				sendData.description=sendData.description.replaceAll('• ','- ').replace(/группы В/g,'группы&nbsp;B').replace(/витамина С/g,'витамина&nbsp;C').replace(/ D3/g,'&nbsp;D3').replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum').replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>').replace(/\s+/g,' ').trim().replace(/\.(\ |)(?=$|<)/gm,'');
-	
-				var new_item='<div class="item _'+items[i][0]+'"><img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more"><div class="article">#'+items[i][0]+'</div><div class="name more">'+prepositions(sendData.name)+'</div><div class="amount more">'+amount+'</div><div class="price"><s>'+sendData.oldPrice+'</s><span>'+Math.ceil((1-discount/100)*sendData.oldPrice)+'</span></div><div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div></div>';
-	
-				$('#items .'+category).append(new_item);
-	
-				var category='all';
-				if(!$('.'+category).length){
-					$('#items').append('<div class="category '+category+'">'+new_item+'</div>');
-				}else{
-					$('#items .category').append(new_item);
-				}
-			});
+
+					sendData.name=naming(sendData.name);
+					if(sendData.name.match(measurements)){
+						sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
+					}
+					sendData.name=sendData.name
+						.replace(/(\b\d+\b)\s/g,'$1&nbsp;')
+						.replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>')
+						.replace(/витамином С/g,'витамином&nbsp;C')
+						.replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
+
+					try{
+						amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
+					}catch{
+						amount='';
+					}
+
+					sendData.description=$(data).find('div[itemprop="description"]').html();
+					if(sendData.description.length<115){ // Если слишком короткое описание, то рассмотрим первый абзац полного описания продукта
+						var descr=JSON.parse($(data).find('param[get-dom-data="product.data"]').attr('value'));
+						var $descr=$(descr[Object.keys(descr)[0]].description);
+						sendData.description=$descr.html();
+						if(sendData.description.length<115){ // Если слишком короткий первый абзац полного описания продукта, то рассмотрим описание полностью
+							sendData.description=$descr.toArray().map(el=>el.outerHTML).join('');
+						}
+					}
+					//sendData.description=sendData.description.replace(/\&amp\;/g,'&').replace(/\&bull\;/g,'•').replace(/\.([А-ЯA-Z0-9\«])/g,'<br>$1').replace(/(\.|)(\•)/g,'<br>$2').replace(/([…!🙂])([А-ЯA-Z0-9])/g,'$1<br>$2').trim().replace(/\.(\ |)(?=$|<)/gm,'');
+					sendData.description=sendData.description
+						.replaceAll('• ','- ')
+						.replace(/группы В/g,'группы&nbsp;B')
+						.replace(/витамина С/g,'витамина&nbsp;C')
+						.replace(/ D3/g,'&nbsp;D3')
+						.replace(/ de Parfum/g,'&nbsp;de&nbsp;Parfum')
+						.replace(/\b(L|D|BB)-[A-Za-zА-ЯЁа-яё]+/g,'<span style="white-space:nowrap;">$&</span>')
+						.replace(/\s+/g,' ').trim()
+						.replace(/\.(\ |)(?=$|<)/gm,'');
+
+					var new_item=
+					'<div class="item _'+sendData.id+'">\
+						<img src="'+sendData.pictureUrl.replace('_resize/','').replace('_fit_300_300','')+'" class="more">\
+						<div class="article">#'+sendData.id+'</div>\
+						<div class="name more">'+prepositions(sendData.name)+'</div>\
+						<div class="amount more">'+amount+'</div>\
+						<div class="price">\
+							<s>'+sendData.oldPrice+'</s>\
+							<span>'+(
+								discount?
+								Math.ceil((1-discount/100)*sendData.oldPrice):
+								1
+							)+'</span>\
+						</div>\
+						<div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div>\
+					</div>';
+
+					if($('h1').text().match('Клуб постоянства')){
+						var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim();
+						if(!$('.category[category-name="'+category+'"]').length){
+							var section=
+								category.match(/парфюм|perfum|аромат|aroma|роза|чайные|1996/i)?'perfumes':
+								category.match(/vitamama|essential|daily|health|новомин/i)?'supplements':
+								category.match(/experalta/i)?'cosmetics':
+								category.match(/fitness|keforma/i)?'sport':
+								'other';
+							$('#'+section).append('<div class="category" category-name="'+category+'">'+new_item+'</div>');
+							$('#'+section+' h2').slideDown(time);
+						}else{
+							$('.category[category-name="'+category+'"]').append(new_item);
+							$('#up').show();
+							$('#items').addClass('up');
+						}
+						if($('.item').length==qty.length){
+							sortAlphabet();
+							$('h2:visible').each(function(){
+								$('.headers').append('<a href="#'+$(this).closest('section').attr('id')+'">'+$(this).text()+'</a>');
+								$('#headers').slideDown(time);
+								$('h2').animate({top:'3em'},time);
+							});
+						}
+					}else{
+						if(!$('#all .category').length){
+							$('#all').append('<div class="category">'+new_item+'</div>');
+						}else{
+							$('#all .category').append(new_item);
+						}
+					}
+				});
+			}
+			post();
 		}
 	}
+});
+
+
+$(window).on('scroll',function(){
+	$('#headers').scrollLeft(
+		($('.headers').innerWidth()-$('#headers').innerWidth())
+		*
+		(($('#headers').offset().top-$('#items').offset().top) / ($('#items').height()-$(window).height()))
+	);
+});
+
+$('#headers').on('click','a',function(){
+	setTimeout(()=>{
+		if(Math.round($($(this).attr('href')).offset().top-$(window).scrollTop())<1){
+			$(window).scrollTop($(window).scrollTop()-$('#headers').height());
+		}
+	});
 });
 
 $('#up').click(function(){
@@ -93,7 +192,7 @@ $('#up').click(function(){
 
 $('#share').click(function(){
 	navigator.share({
-		text:`Пожалуйста, оформите по бомба-офферу:\n#${$('#share').attr('item')} / ${$('#name').text()}`
+		text:`Пожалуйста, оформите по офферу «${$('h1').text()}»:\n\n#${$('#share').attr('item')} / ${$('#name').text()}\n\nhttps://ru.siberianhealth.com/ru/shop/catalog/product/${$('#share').attr('item')}/`
 	}).catch((err)=>{
 		console.log('Опять чё-то не так',err);
 	});
