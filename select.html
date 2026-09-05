@@ -59,15 +59,19 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.
 		$('h1,title').text(
 			!discount?
 			$('h1').text():
-			url.get('h1')??$('h1').text()+discount+'%'
+			url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):$('h1').text()+discount+'%'
 		);
 	}else{
 		items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.trim().split('\t'));
 		discount=
+			url.get('disc')?
+				url.get('disc').match(/\d+/)?
+					Number(url.get('disc')):
+						discount:
 			items[1][0]&&items[1][0].match(/\d+/)?
-			Number(items[1][0]):
-			discount;
-		$('h1,title').text(items[0][0]);
+				Number(items[1][0]):
+					discount;
+		$('h1,title').text(url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):items[0][0]);
 	}
 	//items=items.sort((a,b)=>a-b);
 	for(let i=0;i<items.length;i++){
