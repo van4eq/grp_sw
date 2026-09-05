@@ -61,7 +61,7 @@ var amount; //Фасовка продукта
 var before; //Предыдущий выбор заголовка
 var link; //Ссылка на продукт
 var stories; //Для корректного входа в режим редактирования сторис/статуса
-var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)| \(\d+ капсул\)/; //Меры фасовок
+var measurements=/ \(1\,5 мл\)| \(\d{2,3} мл\)| \(\d{2,3} г\)| \(объем \d{2,3} мл\)| \(\d+ капсул\)| \(10 порций по 8 г\)/; //Меры фасовок
 var url=new URLSearchParams(window.location.search); //Адрес страницы
 var time=300; //Скорость анимаций
 var items; //Список продуктов
@@ -74,7 +74,7 @@ function sortAlphabet(){ //Сортировка по алфавиту
 		items.sort(function(a,b){
 			var nameA=$(a).find('.name').text().trim().toLowerCase();
 			var nameB=$(b).find('.name').text().trim().toLowerCase();
-			return nameA.localeCompare(nameB,'ru');
+			return nameA.localeCompare(nameB,'ru',{numeric:true});
 		});
 		$(this).empty().append(items);
 	});
@@ -97,6 +97,7 @@ function naming(n){
 		.replace(/, (\d{2,3} г)/,' ($1)')
 		.replace(/, (объем \d{2,3} мл)/,' ($1)')
 		.replace(/, (\d+ капсул)/,' ($1)')
+		.replace(/, (10 порций по 8 г)/,' ($1)')
 		.replace('Духи-концентрат,','Духи-концентрат')
 		.replace(/Фиточай из диких трав №( |)/,'Чай №')
 		.replace(/ (Siberian Herbs|GREENPIN|Vitamama Family|Pure Life|Intestinal Defense)/,'')
