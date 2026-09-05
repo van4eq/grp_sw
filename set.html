@@ -134,7 +134,7 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 							<s>'+sendData.oldPrice+'</s>\
 							<span>'+(
 								discount?
-								Math.ceil((1-discount/100)*sendData.oldPrice):
+								Math.round((1-discount/100)*sendData.oldPrice):
 								1
 							)+'</span>\
 						</div>\
