@@ -6,7 +6,7 @@
 <link rel="icon" href="https://ru.siberianhealth.com/shopen/public/icon.svg" type="image/svg+xml">
 <title>Список продуктов со&nbsp;скидкой&nbsp;</title>
 
-<link href="select.css" rel="stylesheet">
+<link href="set.css" rel="stylesheet">
 
 <header>
 	<object id="logo" data="logo.svg" type="image/svg+xml"></object>
@@ -49,9 +49,10 @@
 <script>
 $('#headers').hide();
 $('h2').animate({top:0},0);
-$.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.now(),function(data){
+$.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now(),function(data){
 	if(url.get('id')){
-		items=url.get('id').trim().split(',').map(row=>row.split('\t'));
+		<!-- items=url.get('id').trim().split(',').map(row=>row.split('\t')); -->
+		items=[...new Set(url.get('id').trim().split(','))].map(row=>row.split('\t'));console.log(items)
 		discount=
 			url.get('disc')&&url.get('disc').match(/\d+/)?
 			Number(url.get('disc')):
@@ -62,7 +63,7 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.
 			url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):$('h1').text()+discount+'%'
 		);
 	}else{
-		items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.trim().split('\t'));
+		items=[...new Set(data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/))].map(row=>row.trim().split('\t'));
 		discount=
 			url.get('disc')?
 				url.get('disc').match(/\d+/)?
@@ -73,7 +74,7 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.
 					discount;
 		$('h1,title').text(url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):items[0][0]);
 	}
-	//items=items.sort((a,b)=>a-b);
+	items=items.sort((a,b)=>a-b);
 	for(let i=0;i<items.length;i++){
 		if(items[i][0].match(/^\d{6}$/)){
 			qty.push(i);
@@ -91,8 +92,9 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.
 						sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
 					}
 					sendData.name=sendData.name
+						.replace(/\s+/g,' ')
 						.replace(/(\b\d+\b)\s/g,'$1&nbsp;')
-						.replaceAll(/(Парфюмерная вода|Духи-концентрат) /g,'$&<br>')
+						.replace(/(Парфюмерная вода|Духи-концентрат) /g,'$1<br>')
 						.replace(/витамином С/g,'витамином&nbsp;C')
 						.replace(/ D3/g,'&nbsp;D3'); <!-- необязательно -->
 
@@ -139,12 +141,12 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.
 						<div class="descr" style="display:none;">'+prepositions(sendData.description)+'</div>\
 					</div>';
 
-					if($('h1').text().match('Клуб постоянства')){
+					if(items.length>11){
 						var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim();
 						if(!$('.category[category-name="'+category+'"]').length){
 							var section=
 								category.match(/парфюм|perfum|аромат|aroma|роза|чайные|1996/i)?'perfumes':
-								category.match(/vitamama|essential|daily|health|новомин/i)?'supplements':
+								category.match(/vitamama|essential|daily|health|новомин|renaissance/i)?'supplements':
 								category.match(/experalta/i)?'cosmetics':
 								category.match(/fitness|keforma/i)?'sport':
 								'other';
