@@ -51,8 +51,7 @@ $('#headers').hide();
 $('h2').animate({top:0},0);
 $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now(),function(data){
 	if(url.get('id')){
-		<!-- items=url.get('id').trim().split(',').map(row=>row.split('\t')); -->
-		items=[...new Set(url.get('id').trim().split(','))].map(row=>row.split('\t'));console.log(items)
+		items=[...new Set(url.get('id').trim().split(','))].map(row=>row.split('\t'));
 		discount=
 			url.get('disc')&&url.get('disc').match(/\d+/)?
 			Number(url.get('disc')):
