@@ -56,7 +56,11 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'selection')+'?'+Date.
 			url.get('disc')&&url.get('disc').match(/\d+/)?
 			Number(url.get('disc')):
 			discount;
-		$('h1,title').text(!discount?$('h1').text():$('h1').text()+discount+'%');
+		$('h1,title').text(
+			!discount?
+			$('h1').text():
+			url.get('h1')??$('h1').text()+discount+'%'
+		);
 	}else{
 		items=data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/).map(row=>row.trim().split('\t'));
 		discount=
