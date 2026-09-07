@@ -73,6 +73,7 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 					discount;
 		$('h1,title').text(url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):items[0][0]);
 	}
+	$('h1').html(prepositions($('h1').text().replace(/(\b\d+\b)\s/g,'$1&nbsp;')));
 	items=items.sort((a,b)=>a-b);
 	for(let i=0;i<items.length;i++){
 		if(items[i][0].match(/^\d{6}$/)){
