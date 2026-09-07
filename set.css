@@ -52,7 +52,7 @@ display:block;
 }
 
 h1,h2{
-margin:50px 0;
+margin:50px 0 30px;
 color:var(--headers);
 }
 
