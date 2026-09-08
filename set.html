@@ -146,9 +146,9 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 						var category=$(data).find('a.im21--link.im21--product-main__link').last().text().trim();
 						if(!$('.category[category-name="'+category+'"]').length){
 							var section=
-								category.match(/vitamama|essential|daily|health|новомин|renaissance/i)?'supplements':
+								category.match(/vitamama|essential|daily|health|новомин|renaissance|эпам/i)?'supplements':
 								category.match(/фиточая/i)?'tea':
-								category.match(/парфюм|perfum|аромат|aroma|роза|чайные|1996/i)?'perfumes':
+								category.match(/парфюм|perfum|аромат|aroma|роза|чайные|1996|Счастливые моменты/i)?'perfumes':
 								category.match(/experalta/i)?'cosmetics':
 								category.match(/fitness|keforma/i)?'sport':
 								'other';
