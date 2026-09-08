@@ -96,7 +96,7 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 						.replace(/витамином С/g,'витамином&nbsp;C')
 						.replace(/ D3/g,'&nbsp;D3')
 						.replace(/\s+/g,' ')
-						.replace(/(парфюмерная вода|духи-концентрат|box|Синхровитал [IVX]+|чай №\d+)(&nbsp;| )/gi,'$1<br>'); <!-- необязательно -->
+						.replace(/((парфюмерная|туалетная) вода|духи-концентрат|box|синхровитал [IVX]+|чай №\d+|эпам \d+)(&nbsp;| )/gi,'$1<br>'); <!-- необязательно -->
 
 					try{
 						amount=prepositions(data.split("params.amount = '")[1].split("';")[0].trim().replace(/(\b\d+\b)\s/g,'$1&nbsp;'));
