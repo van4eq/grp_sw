@@ -209,7 +209,7 @@ $('#up').click(function(){
 
 $('#share').click(function(){
 	navigator.share({
-		text:`Пожалуйста, оформите по офферу «${$('h1').text()}»:\n\n#${$('#share').attr('item')} / ${$('#name').text()}`,
+		text:`Пожалуйста, оформите по офферу «${$('h1').text()}»:\n\n#${$('#share').attr('item')} / ${$('#name').text()}\n\n`,
 		url:`https://ru.siberianhealth.com/ru/shop/catalog/product/${$('#share').attr('item')}/`
 	});
 });
