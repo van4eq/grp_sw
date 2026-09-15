@@ -75,9 +75,9 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 		$('h1,title').text(url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):items[0][0]);
 	}
 	$('h1').html(prepositions($('h1').text().replace(/(\b\d+\b)\s/g,'$1&nbsp;')));
-	var deleter=url.get('del')&&url.get('del').trim()!=''?new Set(url.get('del').trim().split(',')):new Set();console.log(deleter);console.log(items)
+	var deleter=url.get('del')&&url.get('del').trim()!=''?new Set(url.get('del').trim().split(',')):new Set();
 	items=items.filter(d=>!deleter.has(d[0]));
-	items=items.sort((a,b)=>a-b);console.log(items)
+	items=items.sort((a,b)=>a-b);
 	for(let i=0;i<items.length;i++){
 		if(items[i][0].match(/^\d{6}$/)){
 			qty.push(i);
@@ -209,9 +209,8 @@ $('#up').click(function(){
 
 $('#share').click(function(){
 	navigator.share({
-		text:`Пожалуйста, оформите по офферу «${$('h1').text()}»:\n\n#${$('#share').attr('item')} / ${$('#name').text()}\n\nhttps://ru.siberianhealth.com/ru/shop/catalog/product/${$('#share').attr('item')}/`
-	}).catch((err)=>{
-		console.log('Опять чё-то не так',err);
+		text:`Пожалуйста, оформите по офферу «${$('h1').text()}»:\n\n#${$('#share').attr('item')} / ${$('#name').text()}`,
+		url:`https://ru.siberianhealth.com/ru/shop/catalog/product/${$('#share').attr('item')}/`
 	});
 });
 
