@@ -6,10 +6,10 @@
 <link rel="icon" href="https://ru.siberianhealth.com/shopen/public/icon.svg" type="image/svg+xml">
 <title>Список продуктов со&nbsp;скидкой&nbsp;</title>
 
-<link href="set.css" rel="stylesheet">
+<link href="https://van4eq.github.io/grp_sw/set.css" rel="stylesheet">
 
 <header>
-	<object id="logo" data="logo.svg" type="image/svg+xml"></object>
+	<object id="logo" data="https://van4eq.github.io/grp_sw/logo.svg" type="image/svg+xml"></object>
 	<h1>Список продуктов со&nbsp;скидкой&nbsp;</h1>
 	<p>Нажав на картинку или название продукта, вы&nbsp;можете посмотреть описание к&nbsp;нему и поделиться вашим&nbsp;выбором с&nbsp;наставником/продавцом (справа вверху будет кнопка&nbsp;«Поделиться»)</p>
 	<p style="color:var(--subtext);"><span style="color:var(--important);">ВАЖНО!</span> Информация на&nbsp;этой странице <u>не&nbsp;гарантирует наличие интересующих вас продуктов</u><br>Их наличие необходимо уточнить у&nbsp;продавца</p>
@@ -46,13 +46,13 @@
 </div>
 
 <script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
-<script src="scripts.js"></script>
+<script src="https://van4eq.github.io/grp_sw/scripts.js"></script>
 <script>
 $('#headers').hide();
 $('h2').animate({top:0},0);
 $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now(),function(data){
 	if(url.get('id')){
-		items=[...new Set(url.get('id').trim().split(','))].map(row=>row.split('\t'));
+		items=url.get('id').trim().split(',').map(row=>row.trim());
 		discount=
 			url.get('disc')&&url.get('disc').match(/\d+/)?
 			Number(url.get('disc')):
@@ -63,25 +63,27 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 			url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):$('h1').text()+discount+'%'
 		);
 	}else{
-		items=[...new Set(data.trim().replace(/^\r\n$/,'').split(/\r\n|\r|\n/))].map(row=>row.trim().split('\t'));
+		items=data.trim().split(/\r\n|\r|\n/).map(row=>row.trim());
 		discount=
 			url.get('disc')?
 				url.get('disc').match(/\d+/)?
 					Number(url.get('disc')):
 						discount:
-			items[1][0]&&items[1][0].match(/\d+/)?
-				Number(items[1][0]):
+			items[1]&&items[1].match(/\d+/)?
+				Number(items[1]):
 					discount;
-		$('h1,title').text(url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):items[0][0]);
+		$('h1,title').text(url.get('h1')&&url.get('h1').trim()!=''?url.get('h1'):items[0]);
 	}
 	$('h1').html(prepositions($('h1').text().replace(/(\b\d+\b)\s/g,'$1&nbsp;')));
+	var adder=url.get('add')&&url.get('add').trim()!=''?url.get('add').trim().split(','):[];
 	var deleter=url.get('del')&&url.get('del').trim()!=''?new Set(url.get('del').trim().split(',')):new Set();
-	items=items.filter(d=>!deleter.has(d[0]));
-	items=items.sort((a,b)=>a-b);
+	items=items.concat(adder);
+	items=items.filter(a=>!deleter.has(a));
+	items=[...new Set(items)].sort((a,b)=>a-b);
 	for(let i=0;i<items.length;i++){
-		if(items[i][0].match(/^\d{6}$/)){
+		if(items[i].match(/^\d{6}$/)){
 			qty.push(i);
-			function post(index=items[i][0]){
+			function post(index=items[i]){
 				$.post('https://ru.siberianhealth.com/ru/shop/catalog/product/'+index+'/',function(data){
 					let sendData;
 					try{
