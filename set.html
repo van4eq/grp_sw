@@ -77,8 +77,11 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 	$('h1').html(prepositions($('h1').text().replace(/(\b\d+\b)\s/g,'$1&nbsp;')));
 	var adder=url.get('add')&&url.get('add').trim()!=''?url.get('add').trim().split(','):[];
 	var deleter=url.get('del')&&url.get('del').trim()!=''?new Set(url.get('del').trim().split(',')):new Set();
-	items=items.concat(adder);
-	items=items.filter(a=>!deleter.has(a));
+	if(location.search.lastIndexOf('add')>location.search.lastIndexOf('del')){
+		items=items.filter(a=>!deleter.has(a)).concat(adder);
+	}else{
+		items=items.concat(adder).filter(a=>!deleter.has(a));
+	}
 	items=[...new Set(items)].sort((a,b)=>a-b);
 	for(let i=0;i<items.length;i++){
 		if(items[i].match(/^\d{6}$/)){
