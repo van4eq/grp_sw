@@ -27,9 +27,6 @@ $(document).on('paste',function(e){
 				$('#pic').attr('src',$('#img img').attr('src'));
 
 				sendData.name=naming(sendData.name);
-				if(sendData.name.match(measurements)){
-					sendData.name=sendData.name.replace(sendData.name.match(measurements),'')+sendData.name.match(measurements);
-				}
 				if(localStorage[`h${text}`]){
 					if(confirm('Использовать сохранённый заголовок по этому продукту?')){
 						sendData.name=localStorage[`h${text}`];
