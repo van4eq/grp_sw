@@ -134,6 +134,9 @@ function naming(n){
 	if(n.match(' / ')&&!n.match(/ \/ PA( |)\+/)){
 		n=n.trim().replace(' / ',' (')+')';
 	}
+	if(n.match(measurements)){
+		n=n.replace(n.match(measurements),''); <!-- убрал фасовки из названий -->
+	}
 
 	return n;
 }
