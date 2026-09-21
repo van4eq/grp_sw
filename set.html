@@ -96,9 +96,6 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 					}
 
 					sendData.name=naming(sendData.name);
-					if(sendData.name.match(measurements)){
-						sendData.name=sendData.name.replace(sendData.name.match(measurements),''); <!-- убрал фасовки из названий -->
-					}
 					sendData.name=sendData.name
 						.replace(/(\b\d+\b)\s/g,'$1&nbsp;')
 						.replace(/витамином С/g,'витамином&nbsp;C')
