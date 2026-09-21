@@ -296,7 +296,10 @@ $('#copy button').click(function(){
 	var clipboard=slogan
 		+bold
 			+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
-			+' за '
+		+boldx
+		+(amount!=''?'\n'+amount:'')
+		+'\n———\n'
+		+bold
 			+scratchPrice
 			+declension(price,['рубль','рубля','рублей'])
 		+boldx
