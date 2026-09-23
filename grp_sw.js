@@ -79,6 +79,7 @@ $(document).on('paste',function(e){
 				var points=data.split('params.points = ')[1].split(';')[0].trim().replace('.',',');
 				try{
 					amount=data.split("params.amount = '")[1].split("';")[0].trim();
+					$('#amount').text(amount);
 				}catch{
 					amount='';
 				}
