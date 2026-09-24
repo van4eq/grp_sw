@@ -300,12 +300,12 @@ $('#copy button').click(function(){
 		+boldx
 		+(amount!=''?'\n'+amount:'')
 		+'\n\n'
-		+points
+		+points.toUpperCase()
 		+bold
 			+scratchPrice
 			+declension(price,['рубль','рубля','рублей']).toUpperCase()
 		+boldx
-		+'\n\n- - - - -\n\n'
+		+'\n\n– – –\n\n'
 		+remain
 		+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()
 		+addLink;
