@@ -299,7 +299,7 @@ $('#copy button').click(function(){
 			+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').toUpperCase().trim()
 		+boldx
 		+(amount!=''?'\n'+amount:'')
-		+'\n\n\n'
+		+'\n\n'
 		+points
 		+bold
 			+scratchPrice
