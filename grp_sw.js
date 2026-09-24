@@ -272,7 +272,7 @@ $('#copy button').click(function(){
 	}
 	var points='';
 	if($('#points').is(':visible')){
-		points='\n'+$('#points').text();
+		points=$('#points').text()+'\n';
 	}
 	var scratchPrice='';
 	if($('#price span.del').text()!=''){
