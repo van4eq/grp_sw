@@ -296,16 +296,16 @@ $('#copy button').click(function(){
 	$('#copy_descr').html($('#descr').html().replace(/\&nbsp\;|\t/g,' '));
 	var clipboard=slogan
 		+bold
-			+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').trim()
+			+$('#header').text().replace(/\n/g,' ').replace(/\s+/g,' ').toUpperCase().trim()
 		+boldx
 		+(amount!=''?'\n'+amount:'')
-		+'\n———\n'
+		+'\n\n\n'
+		+points
 		+bold
 			+scratchPrice
-			+declension(price,['рубль','рубля','рублей'])
+			+declension(price,['рубль','рубля','рублей']).toUpperCase()
 		+boldx
-		+points
-		+'\n\n'
+		+'\n\n- - - - -\n\n'
 		+remain
 		+document.querySelector('#copy_descr').innerText.replace(/\ +/g,' ').replace(/^\ |\ $/gm,'').replace(/\n{2,}/g,'\n\n').trim()
 		+addLink;
