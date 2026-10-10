@@ -150,6 +150,7 @@ font-weight:500;
 .price s{
 color:var(--subtext);
 font-size:.75em;
+margin-right:1em;
 }
 .price s:after,.price span:after{
 content:'₽';
@@ -157,7 +158,6 @@ margin-left:.2em;
 }
 .price span{
 color:var(--important);
-margin-left:.5em;
 }
 
 .more{
