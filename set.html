@@ -136,10 +136,15 @@ $.get('https://van4eq.github.io/grp_sw/'+(url.get('src')??'select')+'?'+Date.now
 						<div class="name more">'+prepositions(sendData.name)+'</div>\
 						<div class="amount more">'+amount+'</div>\
 						<div class="price">\
-							<s>'+sendData.oldPrice+'</s>\
-							<span>'+(
+							'+(
+								(discount==0)&(sendData.oldPrice==sendData.price)?
+								"":
+								"<s>"+sendData.oldPrice+"</s>"
+							)+'<span>'+(
 								discount?
 								Math.round((1-discount/100)*sendData.oldPrice):
+								discount==0?
+								sendData.price:
 								1
 							)+'</span>\
 						</div>\
