@@ -99,7 +99,7 @@ function naming(n){
 		.replace(/, (\d+ капсул)/,' ($1)')
 		.replace(/, (10 порций по 8 г)/,' ($1)')
 		.replace(/№ 04/g,'№04')
-		.replace(/(du|дю) /g,'&1&nbsp;')
+		.replace(/(du|дю) /g,'$1&nbsp;')
 		.replace('Духи-концентрат,','Духи-концентрат')
 		.replace(/Фиточай из диких трав №( |)/,'Чай №')
 		.replace(/ (Siberian Herbs|GREENPIN|Vitamama Family|Pure Life|Intestinal Defense)/,'')
