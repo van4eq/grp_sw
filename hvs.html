@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="theme-color" content="#264281">
+
+<link rel="icon" href="https://ru.siberianhealth.com/shopen/public/icon.svg" type="image/svg+xml">
+
+<title>Умный счётчик ХВС</title>
+
+<style>
+body{
+font-family:monospace;
+text-transform:uppercase;
+color:#264281;
+font-size:1.2em;
+margin:0 auto;
+max-width:1300px;
+}
+:root{
+--outer:30px;
+--inner:20px;
+}
+
+h1{
+margin:0;
+font-size:1em;
+float:left;
+font-weight:bold;
+padding:var(--outer) calc(var(--outer) / 2) var(--inner) var(--outer);
+}
+
+#battery{
+float:right;
+padding:var(--outer) var(--outer) var(--inner) calc(var(--outer) / 2);
+text-align:right;
+}
+#battery span{
+font-weight:bold;
+}
+
+.sep{
+max-width:100%;
+height:0;
+border-top:3.5px dotted;
+margin:0 var(--outer);
+clear:both;
+}
+
+#credentials{
+width:370px;
+padding:var(--inner) var(--outer);
+}
+	#address{
+	float:left;
+	padding:0 calc(var(--outer) / 2) 0 0;
+	}
+	#account{
+	float:right;
+	padding:0 0 0 calc(var(--outer) / 2);
+	text-align:right;
+	}
+
+#wrap_coldWater{
+display:grid;
+place-items:center;
+min-height:100vh;
+width:100%;
+position:absolute;
+top:0;
+left:0;
+right:0;
+z-index:-1;
+}
+	#coldWater{
+	clear:both;
+	margin-top:3em;
+	text-align:center;
+	}
+		.coldWater_1{
+		font-size:clamp(5em,15vw,150px);
+		line-height:1em;
+		}
+		.coldWater_2{
+		padding-top:.15em;
+		font-size:.55em;
+		}
+		.coldWater_1 div{
+		position:relative;
+		float:left;
+		line-height:1em;
+		height:1em;
+		overflow-y:hidden;
+		}
+		.coldWaterSaved span{
+		font-weight:bold;
+		}
+
+#wrap_note{
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+width:100%;
+}
+	#note{
+	width:50%;
+	margin:auto;
+	padding:var(--outer);
+	text-transform:none;
+	text-align:center;
+	font-size:.85em;
+	}
+
+@media(max-width:700px){
+	#credentials,#note{
+	width:calc(100% - (var(--outer) * 2));
+	}
+}
+</style>
+<body>
+	<h1>Умный счётчик ХВС</h1>
+	<div id="battery">Батарея<br><span>87%</span></div>
+
+	<div class="sep"></div>
+	
+	<div id="credentials">
+		<div id="address">Камышловская, 7<br>квартира 3</div>
+		<div id="account">Лицевой счёт<br>№100231923</div>
+	</div>
+	<div id="wrap_coldWater">
+		<div id="coldWater">
+			<div class="coldWater_1">
+				<div class="digit">9</div>
+				<div class="digit">9</div>
+				<div class="digit">9</div>
+				<div class="coldWater_2">
+					<div>,</div>
+					<div class="digit">9</div>
+					<div class="digit">9</div>
+					<div class="digit">9</div>
+				</div>
+			</div>
+			<div style="clear:both;height:1rem;"></div>
+			<div class="coldWaterSaved">Cохранённые показания<br><span>110,117</span>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap_note">
+		<div id="note">Здесь будут уведомления</div>
+	</div>
+</body>
+
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script>
+var change="999999";
+if(localStorage['coldWater']){
+	change=localStorage['coldWater'];
+	changes();
+}
+var stop=false;
+function changes(){
+	if(stop) return;
+	stop=true;
+	var q=$('.digit').length-change.length;
+	var maxTime=0;
+	if(q<0){
+		for(var i=0;i>q;i--){
+			var w=$('.digit').length+q;
+			$('.coldWater_1').prepend('<div class="digit" style="display:none;"></div>');
+			var delay=250*i*(-1);
+			maxTime=Math.max(maxTime,delay+500);
+			$('.digit:hidden').delay(250*w).show(500);
+		}
+	}
+	$($('.digit').get().reverse()).each(function(i){
+		var $this=$(this);
+		var ch=change[change.length-1-i];
+		if(ch!=$this.text()){
+			$this.find('span').stop(true,true);
+			$this.html('<span style="display:block;">'+$this.text()+'<br>'+ch+'</span>');
+			var delay=250*i;
+			maxTime=Math.max(maxTime,delay+500);
+			$this.find('span').delay(delay).animate({'margin-top':'-1em'},500,function(){
+				$this.html(ch);
+			});
+		}
+	});
+	setTimeout(()=>{
+		stop=false;
+	},maxTime);
+}
+$('body').click(()=>{
+	change=String(Number(change)+1)
+	changes()
+})
+function wsConnect(){
+	var connect=new WebSocket('ws://'+location.hostname+':81/');
+	connect.onmessage=function(e){
+		var data=JSON.parse(e.data);
+		$('.coldWaterSaved span').text(data.coldWaterSaved);
+		localStorage['coldWater']=data.coldWaterSaved.replace(',','');
+		change=data.coldWater_1+data.coldWater_2;
+		changes();
+		$('#time').text(data.time);
+		$('#note').text(data.note);
+	};
+	connect.onclose=function(){
+		$('#note').text('Секунду...');
+		setTimeout(wsConnect,1000);
+	};
+};
+wsConnect();
+</script>
