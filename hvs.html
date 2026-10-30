@@ -161,35 +161,37 @@ if(localStorage['coldWater']){
 }
 var stop=false;
 function changes(){
-	if(stop) return;
+	if (stop) return;
 	stop=true;
-	var q=$('.digit').length-change.length;
-	var maxTime=0;
-	if(q<0){
-		for(var i=0;i>q;i--){
-			var w=$('.digit').length+q;
-			$('.coldWater_1').prepend('<div class="digit" style="display:none;"></div>');
-			var delay=250*i*(-1);
-			maxTime=Math.max(maxTime,delay+500);
-			$('.digit:hidden').delay(250*w).show(500);
-		}
+	if(change.length>$('.digit').length){
+		var x=$('.digit').length-1;
+		$('.coldWater_1').prepend('<div class="digit" style="display:none;"></div>');
+		$('.digit:hidden').delay(250*x).show(500);
 	}
+	var x0=x1=0;
+	var g;
 	$($('.digit').get().reverse()).each(function(i){
 		var $this=$(this);
-		var ch=change[change.length-1-i];
-		if(ch!=$this.text()){
-			$this.find('span').stop(true,true);
-			$this.html('<span style="display:block;">'+$this.text()+'<br>'+ch+'</span>');
-			var delay=250*i;
-			maxTime=Math.max(maxTime,delay+500);
-			$this.find('span').delay(delay).animate({'margin-top':'-1em'},500,function(){
-				$this.html(ch);
-			});
+		var z=change[change.length-1-i];
+		if(z!=$this.text().trim()){
+			x0++;
+			$this.html('<span style="display:block;">'+$this.text().trim()+'<br>'+z+'</span>');
+			$this.find('span').delay(250*i).animate({'margin-top':'-1em'},500,function(){
+				x1++;
+				$this.html(z);
+				if(x1==g){
+					stop=false;
+					var s='';
+					$('.digit').each(function(){
+						s+=$(this).text().trim();
+					});
+					if (change!=s) changes();
+				}
+			});	
 		}
+		if (i==$('.digit').length-1) g=x0;
 	});
-	setTimeout(()=>{
-		stop=false;
-	},maxTime);
+	if (x0==0) stop=false;
 }
 $('body').click(()=>{
 	change=String(Number(change)+1)
