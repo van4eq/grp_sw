@@ -78,7 +78,7 @@ $(document).on('paste',function(e){
 			$('#w div').html('<span></span><br><br>'+text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>В наличии. Заказ готов к выдаче');
 			$('#e div').html(text.trim().split('Срок действия')[0].replace('Стоимость:',new Date().toLocaleString('ru',{weekday:'long'})).replace('Номер QR-кода: ',' (#').replace(/\s+/g,' ').trim()+') ОТДАНО');
 			$('#r div').html('<span></span><br><br>'+text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ отдан');
-			$('#t div').html('<span></span><br><br>'+text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ не готов к выдаче. Поступит в течение 1-2 недель. Мы сообщим, когда он будет готов');
+			$('#t div').html('<span></span><br><br>'+text.trim().replace('Стоимость:','К оплате').match(/К оплате \d+/g)+'<br>Ссылка на оплату'+text.split('Ссылка на оплату')[1].trim().replace('\r\n','<br>')+'<br><br>Заказ не готов к выдаче, поступит в ближайшие дни');
 		}
 	}).catch(err=>{
 		console.log('Опять чё-то не так',err);
