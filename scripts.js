@@ -98,8 +98,6 @@ function naming(n){
 		.replace(/, (объем \d{2,3} мл)/,' ($1)')
 		.replace(/, (\d+ капсул)/,' ($1)')
 		.replace(/, (10 порций по 8 г)/,' ($1)')
-		.replace(/ № 04/g,'&nbsp;№04')
-		.replace(/ (du|дю) /g,'&nbsp;$1&nbsp;')
 		.replace('Духи-концентрат,','Духи-концентрат')
 		.replace(/Фиточай из диких трав №( |)/,'Чай №')
 		.replace(/ (Siberian Herbs|GREENPIN|Vitamama Family|Pure Life|Intestinal Defense)/,'')
@@ -127,10 +125,10 @@ function naming(n){
 		.replace(/^Чайханский чай. Черный с травами$/,'Чайханский чёрный чай с травами')
 		.replace(/^Чайханский чай. Зеленый с травами$/,'Чайханский зелёный чай с травами')
 		.replace('. ',', ');
-	if(n.match(', ')&&n.trim().match(/^[^А-ЯЁа-яё]{3}|Корень|Торгон/)&&!n.trim().match('100%')){
+	if(n.match(', ')&&n.trim().match(/^[^А-ЯЁа-яё]{3}|Корень|Мужская территория|Торгон/)&&!n.trim().match('100%')){
 		n=n.replace(n.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+n.split(', ')[0];
 	}
-	if(n.trim().match(/, парфюмиров/)){
+	if(n.trim().match(/, (парфюмиров|арома)/)){
 		n=n.replace(n.split(', ')[0]+', ','').replace(/^./,char=>char.toUpperCase())+' '+n.split(', ')[0];
 	}
 	if(n.match(' / ')&&!n.match(/ \/ PA( |)\+/)){
